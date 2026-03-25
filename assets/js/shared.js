@@ -16,7 +16,7 @@
         name:     '重庆大学新生服务融合中心平台',
         nameEn:   'Chong Qing University Freshman Integration Center',
         abbr:     'CQUFIC',
-        logoSrc:  'CQUS.svg',
+        logoSrc:  'assets/images/CQUS.svg',
         logoAlt:  '重庆大学校徽',
         homeUrl:  'index.html',
         easterEgg: 'easter-egg.html',
