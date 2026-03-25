@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>功能开发中 - 重庆大学新生服务融合中心平台</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
 <style>
 /* CSS 变量已移入 shared.css */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -285,7 +285,7 @@ header.scrolled{background:rgba(255,255,255,.35);box-shadow:var(--shadow-lg)}
 </div>
 </div>
 </section>
-    <script src="shared.js"></script>
+    <script src="assets/js/shared.js"></script>
 <script>
 // 移动端菜单功能
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -377,7 +377,7 @@ function handleSpecialBubbleClick(e){
         if(clickSequence.length===a.length){
             easterEggActive=!0;
             const t=document.createElement("div");
-            t.innerHTML='<div class="easter-egg-popup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(30,79,161,0.6);z-index:3000;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;text-align:center;padding:20px;"><h1 style="font-size:4rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;justify-content:center;"><img src="CQUS.svg" style="width:45px;height:45px;"> 江汉思禹功，教化溯文翁</h1><p style="font-size:1.5rem;margin-bottom:3rem;">耐劳苦、尚俭朴、勤学业、爱国家</p><button id="closeEasterEgg" style="padding:1rem 2rem;font-size:1.2rem;background:rgba(255,255,255,0.2);border:2px solid white;border-radius:12px;color:white;cursor:pointer;">关闭彩蛋</button></div>';
+            t.innerHTML='<div class="easter-egg-popup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(30,79,161,0.6);z-index:3000;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;text-align:center;padding:20px;"><h1 style="font-size:4rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;justify-content:center;"><img src="assets/images/CQUS.svg" style="width:45px;height:45px;"> 江汉思禹功，教化溯文翁</h1><p style="font-size:1.5rem;margin-bottom:3rem;">耐劳苦、尚俭朴、勤学业、爱国家</p><button id="closeEasterEgg" style="padding:1rem 2rem;font-size:1.2rem;background:rgba(255,255,255,0.2);border:2px solid white;border-radius:12px;color:white;cursor:pointer;">关闭彩蛋</button></div>';
             document.body.appendChild(t);
             document.getElementById("closeEasterEgg").addEventListener("click",()=>{
                 t.remove();
