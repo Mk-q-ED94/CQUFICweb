@@ -55,11 +55,7 @@
 <label for="problemDescription" class="form-label">问题描述</label>
 <textarea id="problemDescription" class="form-textarea" placeholder="请详细描述您遇到的问题..." required></textarea>
 </div>
-<div class="form-group">
-<label for="screenshot" class="form-label">上传截图（可选）</label>
-<input type="file" id="screenshot" class="form-input" accept="image/*">
-</div>
-<button type="submit" class="submit-btn">提交反馈</button>
+<button type="submit" class="submit-btn" id="submitBtn">提交反馈</button>
 </form>
 </div>
 </div>
@@ -67,7 +63,7 @@
 
     <script src="shared.js"></script>
 <script>
-let isScrolling=!1,scrollTimer;window.addEventListener('scroll',()=>{const header=document.getElementById('header');window.scrollY>50?header.classList.add('scrolled'):header.classList.remove('scrolled');isScrolling||(document.querySelectorAll('section').forEach(section=>section.style.transform='scale(0.98)'),isScrolling=!0);clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{document.querySelectorAll('section').forEach(section=>section.style.transform='scale(1)');isScrolling=!1},100)});const feedbackForm=document.getElementById('feedbackForm');feedbackForm.addEventListener('submit',function(e){e.preventDefault();const formData={name:document.getElementById('name').value,studentId:document.getElementById('studentId').value,contact:document.getElementById('contact').value,problemType:document.getElementById('problemType').value,problemDescription:document.getElementById('problemDescription').value,screenshot:document.getElementById('screenshot').files[0]?document.getElementById('screenshot').files[0].name:'无'};console.log('表单数据:',formData);alert('感谢您的反馈！我们已收到您的问题，将尽快处理。');feedbackForm.reset()});window.dispatchEvent(new Event('scroll'));
+let isScrolling=!1,scrollTimer;window.addEventListener('scroll',()=>{const header=document.getElementById('header');window.scrollY>50?header.classList.add('scrolled'):header.classList.remove('scrolled');isScrolling||(document.querySelectorAll('section').forEach(section=>section.style.transform='scale(0.98)'),isScrolling=!0);clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{document.querySelectorAll('section').forEach(section=>section.style.transform='scale(1)');isScrolling=!1},100)});const feedbackForm=document.getElementById('feedbackForm');feedbackForm.addEventListener('submit',async function(e){e.preventDefault();const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='提交中…';try{const res=await fetch('/api/submit-feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('name').value.trim(),student_id:document.getElementById('studentId').value.trim(),contact:document.getElementById('contact').value.trim(),type:document.getElementById('problemType').value,description:document.getElementById('problemDescription').value.trim()})});const data=await res.json();if(res.ok&&data.success){btn.textContent='✅ 已提交，感谢反馈！';feedbackForm.reset();}else{btn.disabled=false;btn.textContent='提交反馈';alert(data.error||'提交失败，请稍后重试');}}catch{btn.disabled=false;btn.textContent='提交反馈';alert('网络错误，请检查连接后重试');}});window.dispatchEvent(new Event('scroll'));
 </script>
 </body>
 </html>

@@ -41,6 +41,16 @@ CREATE TABLE IF NOT EXISTS blocked_comments (
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS feedback (
+    id          TEXT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    student_id  TEXT,
+    contact     TEXT,
+    type        TEXT,
+    description TEXT NOT NULL,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- 索引：按帖子查询评论（最常用查询）
 CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
 CREATE INDEX IF NOT EXISTS idx_comments_approved ON comments(post_id, is_approved);

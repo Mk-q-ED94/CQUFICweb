@@ -4,7 +4,9 @@
  *   GET  /api/posts                  公开：获取帖子列表
  *   GET  /api/comments               公开：获取指定帖子的已审核评论
  *   POST /api/submit-comment         公开：提交评论（含审核）
+ *   POST /api/submit-feedback        公开：提交问题反馈
  *   POST /api/admin/login            管理员登录
+ *   GET  /api/admin/feedback         管理员：获取所有反馈
  *   GET  /api/admin/comments         管理员：获取所有评论
  *   POST /api/admin/posts            管理员：新建帖子
  *   PUT  /api/admin/posts/:id        管理员：编辑帖子
@@ -67,6 +69,9 @@ export default {
         if (method === 'POST' && pathname === '/api/submit-comment') {
             return handleSubmitComment(request, env, cors);
         }
+        if (method === 'POST' && pathname === '/api/submit-feedback') {
+            return handleSubmitFeedback(request, env, cors);
+        }
         if (method === 'POST' && pathname === '/api/admin/login') {
             return handleAdminLogin(request, env, cors);
         }
@@ -80,6 +85,9 @@ export default {
 
             if (method === 'GET' && pathname === '/api/admin/comments') {
                 return handleGetAllComments(env, url, cors);
+            }
+            if (method === 'GET' && pathname === '/api/admin/feedback') {
+                return handleGetAllFeedback(env, cors);
             }
             if (method === 'POST' && pathname === '/api/admin/posts') {
                 return handleCreatePost(request, env, cors);
@@ -310,6 +318,53 @@ async function handleDeleteComment(env, id, cors) {
         return cors({ success: true }, 200);
     } catch (e) {
         return cors({ error: '删除失败' }, 500);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   问题反馈
+══════════════════════════════════════════════════════════ */
+async function handleSubmitFeedback(request, env, cors) {
+    let body;
+    try { body = await request.json(); }
+    catch { return cors({ error: '请求格式错误' }, 400); }
+
+    const { name, student_id, contact, type, description } = body;
+    if (!name?.trim() || !description?.trim()) {
+        return cors({ error: '缺少必填字段' }, 400);
+    }
+
+    const descLower = description.toLowerCase();
+    const hitWord = BLOCKED_WORDS.find(w => descLower.includes(w.toLowerCase()));
+    if (hitWord) {
+        return cors({ error: '内容含有不当词汇，请修改后重试' }, 422);
+    }
+
+    try {
+        await env.DB.prepare(
+            'INSERT INTO feedback (id, name, student_id, contact, type, description) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(
+            crypto.randomUUID(),
+            name.trim(),
+            student_id?.trim() || null,
+            contact?.trim() || null,
+            type?.trim() || null,
+            description.trim()
+        ).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '提交失败，请稍后重试' }, 500);
+    }
+}
+
+async function handleGetAllFeedback(env, cors) {
+    try {
+        const { results } = await env.DB.prepare(
+            'SELECT id, name, student_id, contact, type, description, created_at FROM feedback ORDER BY created_at DESC'
+        ).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
     }
 }
 
