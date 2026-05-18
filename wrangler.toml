@@ -19,5 +19,5 @@ binding = "ASSETS"
 
 # cqufic.cn 全部由此 Worker 接管（静态文件 + /api/*）
 [[routes]]
-pattern = "cqufic.cn/*"
+pattern = "cqufic.cn"
 custom_domain = true
