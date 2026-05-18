@@ -1,0 +1,10 @@
+# Cloudflare Workers Assets — 排除服务端文件，不作为静态资源提供
+worker.js
+wrangler.toml
+setup-supabase.sql
+.assetsignore
+.gitignore
+*.sh
+node_modules/
+dist/
+.wrangler/
