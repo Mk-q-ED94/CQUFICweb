@@ -1,40 +1,10 @@
-name: Deploy to Cloudflare
+name: Deploy Worker
 
 on:
   push:
     branches: [main]
 
 jobs:
-  # ── 静态站 → Cloudflare Pages → cqufic.cn ───────────────
-  deploy-pages:
-    name: Deploy static site
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build static dist
-        run: |
-          mkdir dist
-          # HTML / CSS / JSON
-          find . -maxdepth 1 \( -name "*.html" -o -name "*.css" -o -name "*.json" \) \
-            ! -name "package*.json" \
-            -exec cp {} dist/ \;
-          # 前端 JS（排除 worker.js）
-          for f in shared.js bg.js map-data.js; do
-            [ -f "$f" ] && cp "$f" dist/
-          done
-          # 图片 & SVG（兼容中文文件名）
-          find . -maxdepth 1 \( -name "*.jpg" -o -name "*.png" -o -name "*.svg" \) \
-            -exec cp {} dist/ \;
-
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=cquficweb --branch=main --commit-dirty=true
-
-  # ── API → Cloudflare Worker → api.cqufic.cn ─────────────
   deploy-worker:
     name: Deploy Worker API
     runs-on: ubuntu-latest
