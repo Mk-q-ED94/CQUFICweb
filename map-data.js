@@ -163,8 +163,53 @@ const CAMPUS_DATA = {
   'B': {
     name: 'B区', badge: 'badge-B',
     locations: [
-      { name: '建筑馆',     type: 'teach', lng: 106.45263, lat: 29.56744, desc: '建筑学院', class: 'c-teach', icon: '📐' },
-      { name: 'B区综合楼', type: 'teach', lng: 106.45646, lat: 29.57216, desc: '教学楼',   class: 'c-teach', icon: '📚' },
+
+      // ── 地标 ───────────────────────────────────────
+      { name: '毛泽东雕像', type: 'landmark', lng: 106.45661, lat: 29.57132, desc: '地标', class: 'c-main',    icon: '🗿' },
+      { name: '科学会堂',   type: 'landmark', lng: 106.45764, lat: 29.57192, desc: '地标', class: 'c-main',    icon: '🏛️' },
+      { name: '林钟琪雕像', type: 'landmark', lng: 106.45713, lat: 29.56945, desc: '地标', class: 'c-main',    icon: '🗿' },
+      { name: '档案馆',     type: 'landmark', lng: 106.45509, lat: 29.57106, desc: '地标', class: 'c-main',    icon: '🗄️' },
+      { name: '岩土楼',     type: 'lab',      lng: 106.45443, lat: 29.57072, desc: '实验楼', class: 'c-lab',   icon: '⛏️' },
+      { name: '勤工助学楼', type: 'life',     lng: 106.45321, lat: 29.56833, desc: '生活',  class: 'c-life',   icon: '💼' },
+
+      // ── 图书馆 ─────────────────────────────────────
+      { name: '图书馆', type: 'library', lng: 106.45659, lat: 29.56916, desc: '图书馆', class: 'c-library', icon: '📖' },
+
+      // ── 校门 ───────────────────────────────────────
+      { name: '正门',    type: 'gate', lng: 106.45833, lat: 29.57167, desc: '大门', class: 'c-gate', icon: '🏛️' },
+      { name: '中门',    type: 'gate', lng: 106.45793, lat: 29.56816, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '西南门',  type: 'gate', lng: 106.45465, lat: 29.56693, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '沙杨路门', type: 'gate', lng: 106.45278, lat: 29.56755, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '劳动路门', type: 'gate', lng: 106.45542, lat: 29.57316, desc: '大门', class: 'c-gate', icon: '🚪' },
+
+      // ── 食堂 ───────────────────────────────────────
+      { name: '学生二食堂', type: 'food', lng: 106.45493, lat: 29.56718, desc: '食堂', class: 'c-food', icon: '🍚' },
+
+      // ── 教学楼 ─────────────────────────────────────
+      { name: '第一教学楼', type: 'teach', lng: 106.45684, lat: 29.57001, desc: '教学楼', class: 'c-teach', icon: '📚' },
+      { name: '第二综合楼', type: 'teach', lng: 106.45748, lat: 29.56945, desc: '教学楼', class: 'c-teach', icon: '🏛️' },
+      { name: '第三教学楼', type: 'teach', lng: 106.45864, lat: 29.56921, desc: '教学楼', class: 'c-teach', icon: '📚' },
+      { name: '第四教学楼', type: 'teach', lng: 106.45457, lat: 29.57002, desc: '教学楼', class: 'c-teach', icon: '📚' },
+      { name: '第八教学楼', type: 'teach', lng: 106.45357, lat: 29.56978, desc: '教学楼', class: 'c-teach', icon: '📚' },
+
+      // ── 实验楼 ─────────────────────────────────────
+      { name: '实验楼',       type: 'lab', lng: 106.45445, lat: 29.56927, desc: '实验楼', class: 'c-lab', icon: '🔬' },
+      { name: '城环实验楼',   type: 'lab', lng: 106.45363, lat: 29.56919, desc: '实验楼', class: 'c-lab', icon: '🏗️' },
+      { name: '振动台实验室', type: 'lab', lng: 106.45282, lat: 29.56922, desc: '实验楼', class: 'c-lab', icon: '📡' },
+
+      // ── 学院 ───────────────────────────────────────
+      { name: '成教学院',             type: 'college', lng: 106.45440, lat: 29.57003, desc: '学院', class: 'c-college', icon: '🎓' },
+      { name: '生物工程学院',         type: 'college', lng: 106.45442, lat: 29.56998, desc: '学院', class: 'c-college', icon: '🧬' },
+      { name: '生物科学学院',         type: 'college', lng: 106.45567, lat: 29.56872, desc: '学院', class: 'c-college', icon: '🔬' },
+      { name: '经济与工商管理学院',   type: 'college', lng: 106.45582, lat: 29.56879, desc: '学院', class: 'c-college', icon: '📊' },
+      { name: '管理科学与房地产学院', type: 'college', lng: 106.45665, lat: 29.56834, desc: '学院', class: 'c-college', icon: '🏢' },
+      { name: '建筑学院',             type: 'college', lng: 106.45755, lat: 29.57080, desc: '学院', class: 'c-college', icon: '📐' },
+      { name: '设计院',               type: 'college', lng: 106.45603, lat: 29.57184, desc: '学院', class: 'c-college', icon: '🎨' },
+      { name: '法学院',               type: 'college', lng: 106.45583, lat: 29.57136, desc: '学院', class: 'c-college', icon: '⚖️' },
+      { name: '前沿交叉学科研究院',   type: 'college', lng: 106.45567, lat: 29.56819, desc: '学院', class: 'c-college', icon: '🔭' },
+
+      // ── 运动 ───────────────────────────────────────
+      { name: '足球场', type: 'sport', lng: 106.45593, lat: 29.57066, desc: '运动场', class: 'c-sport', icon: '⚽' },
     ]
   },
 

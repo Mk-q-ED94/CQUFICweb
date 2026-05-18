@@ -7,6 +7,7 @@
 #   ADMIN_PASSWORD            — 管理员登录密码
 #   ADMIN_SECRET              — HMAC 签名密钥（任意随机字符串）
 #   ALLOWED_ORIGIN            — https://cqufic.cn
+#   MAPBOX_TOKEN              — Mapbox public access token (pk.eyJ1Ij...)
 
 name = "cqufic-api"
 main = "worker.js"

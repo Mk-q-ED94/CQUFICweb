@@ -24,7 +24,7 @@
             --glass-border: rgba(255, 255, 255, 0.4);
             --glass-highlight: rgba(255, 255, 255, 0.8);
             --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --blur: blur(40px) saturate(180%);
+            --blur: blur(20px) saturate(150%);
             --ease-elastic: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -79,7 +79,7 @@
         /* 下拉菜单 (液态展开) */
         .search-results {
             position: absolute; top: 60px; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(50px);
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(24px);
             border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
             max-height: 0; opacity: 0; overflow: hidden; /* 动画初始状态 */
             transition: all 0.3s cubic-bezier(0.3, 0, 0, 1);
@@ -343,8 +343,8 @@
             display: flex; align-items: center; gap: 10px;
             padding: 13px 20px; border-radius: 100px;
             background: rgba(29, 29, 31, 0.82);
-            backdrop-filter: blur(32px) saturate(200%);
-            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
             border: 0.5px solid rgba(255,255,255,0.14);
             box-shadow: 0 8px 32px rgba(0,0,0,0.28),
                         inset 0 1px 0 rgba(255,255,255,0.10);
@@ -542,56 +542,12 @@
                 activeCampus = targetCampusKey;
                 const geoInfo = calculateGeoInfo(RAW_BOUNDARIES[targetCampusKey]);
                 document.getElementById('search-input').placeholder = `Search ${CAMPUS_DATA[activeCampus].name}...`;
-        
-        // ── filter scroll 边缘检测（控制遮罩显示）──
-        (function() {
-            const wrap  = document.getElementById('filterWrap');
-            const scrl  = document.getElementById('filterScroll');
-            if (!wrap || !scrl) return;
-
-            function updateEdge() {
-                const atStart = scrl.scrollLeft <= 4;
-                const atEnd   = scrl.scrollLeft + scrl.clientWidth >= scrl.scrollWidth - 4;
-                wrap.classList.toggle('at-start', atStart);
-                wrap.classList.toggle('at-end',   atEnd);
-            }
-            scrl.addEventListener('scroll', updateEdge, { passive: true });
-            // 初始状态 & 内容变化后重算
-            updateEdge();
-            new ResizeObserver(updateEdge).observe(scrl);
-        })();
-
-        renderCards('all');
-
-        // ── 底部区域滚轮 → 横向滚动 ───────────────────────────
-        (function () {
-            const bottomArea = document.querySelector('.bottom-area');
-            if (!bottomArea) return;
-
-            bottomArea.addEventListener('wheel', function (e) {
-                // 找到鼠标下方最近的可横向滚动容器
-                const target = e.target.closest('#filterScroll, #cards-container') || e.currentTarget;
-                const scrollable = target.scrollWidth > target.clientWidth ? target
-                    : (document.getElementById('filterScroll').scrollWidth > document.getElementById('filterScroll').clientWidth
-                        ? document.getElementById('filterScroll')
-                        : document.getElementById('cards-container'));
-
-                if (!scrollable) return;
-
-                e.preventDefault();   // 阻止地图缩放
-                e.stopPropagation();
-
-                // deltaY → scrollLeft（兼容触控板的两轴输入）
-                const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-                scrollable.scrollBy({ left: delta * 1.2, behavior: 'auto' });
-            }, { passive: false });   // passive:false 才能 preventDefault
-        })();
-
-                
-                // 飞行特效
                 map.flyTo({ center: [targetLoc.lng, targetLoc.lat], zoom: 17.5, pitch: 60, speed: 1.8, curve: 1 });
                 map.getSource('campus-boundary').setData(geoInfo.sourceData);
-                map.once('moveend', () => map.setMaxBounds(geoInfo.bounds));
+                map.once('moveend', () => {
+                    map.setMaxBounds(geoInfo.bounds);
+                    renderCards('all');
+                });
                 addMarker(targetLoc);
             } else {
                 flyTo(targetLoc);
@@ -599,15 +555,15 @@
         }
 
         function switchCampus(campusKey, btn) {
-            if(activeCampus === campusKey && !btn) { toggleMenu(); return; }
+            if (activeCampus === campusKey && !btn) { toggleMenu(); return; }
             activeCampus = campusKey;
-            
-            if(btn) {
+
+            if (btn) {
                 document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
                 btn.classList.add('active');
             }
             toggleMenu();
-            document.getElementById('search-input').value = "";
+            document.getElementById('search-input').value = '';
             document.getElementById('search-input').placeholder = `Search ${CAMPUS_DATA[activeCampus].name}...`;
 
             const geoInfo = calculateGeoInfo(RAW_BOUNDARIES[campusKey]);
@@ -616,47 +572,8 @@
             map.flyTo({ center: geoInfo.center, zoom: 16, bearing: -20, pitch: 50, speed: 1.6 });
             map.once('moveend', () => {
                 map.setMaxBounds(geoInfo.bounds);
-        
-        // ── filter scroll 边缘检测（控制遮罩显示）──
-        (function() {
-            const wrap  = document.getElementById('filterWrap');
-            const scrl  = document.getElementById('filterScroll');
-            if (!wrap || !scrl) return;
-
-            function updateEdge() {
-                const atStart = scrl.scrollLeft <= 4;
-                const atEnd   = scrl.scrollLeft + scrl.clientWidth >= scrl.scrollWidth - 4;
-                wrap.classList.toggle('at-start', atStart);
-                wrap.classList.toggle('at-end',   atEnd);
-            }
-            scrl.addEventListener('scroll', updateEdge, { passive: true });
-            // 初始状态 & 内容变化后重算
-            updateEdge();
-            new ResizeObserver(updateEdge).observe(scrl);
-        })();
-
-        renderCards('all');
+                renderCards('all');
             });
-    
-        // ── filter scroll 边缘检测（控制遮罩显示）──
-        (function() {
-            const wrap  = document.getElementById('filterWrap');
-            const scrl  = document.getElementById('filterScroll');
-            if (!wrap || !scrl) return;
-
-            function updateEdge() {
-                const atStart = scrl.scrollLeft <= 4;
-                const atEnd   = scrl.scrollLeft + scrl.clientWidth >= scrl.scrollWidth - 4;
-                wrap.classList.toggle('at-start', atStart);
-                wrap.classList.toggle('at-end',   atEnd);
-            }
-            scrl.addEventListener('scroll', updateEdge, { passive: true });
-            // 初始状态 & 内容变化后重算
-            updateEdge();
-            new ResizeObserver(updateEdge).observe(scrl);
-        })();
-
-        renderCards('all');
         }
 
         function renderCards(filterType) {

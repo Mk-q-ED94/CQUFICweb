@@ -23,6 +23,7 @@
             opacity: 0.4;
             filter: blur(1px);
             animation: sand-flow 20s infinite linear;
+            will-change: transform;
         }
 
         @keyframes sand-flow {
@@ -208,7 +209,7 @@
         (function () {
             const colors = ['#1e4fa1', '#2a65c7', '#1e88e5', '#64b5f6', '#90caf9'];
             const container = document.getElementById('sandBackground');
-            for (let i = 0; i < 120; i++) {
+            for (let i = 0; i < 50; i++) {
                 const p = document.createElement('div');
                 p.className = 'sand-particle';
                 p.style.cssText = [
