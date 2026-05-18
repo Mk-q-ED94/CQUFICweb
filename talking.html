@@ -642,11 +642,7 @@
     /* ============================================================
        ⚙️  配置区
     ============================================================ */
-    // Worker 地址（两个填一样也可以）
-    // WORKER_URL：用于管理员面板，填 workers.dev 地址即可
-    // COMMENT_URL：用于游客留言，填 api.cqufic.cn 保证国内可用
-    const WORKER_URL    = 'https://cqufic-comment.notetopdf.workers.dev'; // ← 改成你的 workers.dev 地址
-    const COMMENT_URL   = 'https://api.cqufic.cn';  // 留言提交走这里，国内可用
+    const API_URL = 'https://api.cqufic.cn';
     const SUPABASE_URL      = 'https://rvlwcucuhiigiwwaxcvb.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bHdjdWN1aGlpZ2l3d2F4Y3ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3ODY0NDgsImV4cCI6MjA4ODM2MjQ0OH0.dpgMRMAcjD5QIgY5fINWOzYvI0-4F8Z4BcTKkW9oYF8';
 
@@ -680,7 +676,7 @@
 
     async function loadPosts() {
         try {
-            const res = await fetch(`${WORKER_URL}/api/posts`);
+            const res = await fetch(`${API_URL}/api/posts`);
             allPosts = filteredPosts = await res.json();
         } catch (e) {
             console.error('无法加载帖子', e);
@@ -896,7 +892,7 @@
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> 发送中…';
 
         try {
-            const res = await fetch(`${COMMENT_URL}/api/submit-comment`, {
+            const res = await fetch(`${API_URL}/api/submit-comment`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

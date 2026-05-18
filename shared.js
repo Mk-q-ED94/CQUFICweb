@@ -101,14 +101,6 @@
         return path.split('/').pop() || 'index.html';
     }
 
-    /** 构建 HTML 字符串（避免 XSS，属性值通过函数传入） */
-    function el(tag, attrs, ...children) {
-        const attrStr = Object.entries(attrs || {})
-            .map(([k, v]) => v != null ? ` ${k}="${v}"` : '')
-            .join('');
-        return `<${tag}${attrStr}>${children.join('')}</${tag}>`;
-    }
-
     /* --------------------------------------------------------
        3. 构建导航 HTML
     -------------------------------------------------------- */

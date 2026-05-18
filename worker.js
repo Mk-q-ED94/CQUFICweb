@@ -45,12 +45,13 @@ const MAX_VIOLATIONS = 3;
 
 export default {
     async fetch(request, env) {
-        if (request.method === 'OPTIONS') return cors(null, 204);
+        if (request.method === 'OPTIONS') return makeCors(null, 204, request, env);
 
         const url      = new URL(request.url);
         const pathname = url.pathname;
         const method   = request.method;
         const sb       = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+        const cors     = (data, status) => makeCors(data, status, request, env);
 
         /* ── 公开接口 ──────────────────────────────────── */
         if (method === 'GET' && pathname === '/api/posts') {
@@ -66,7 +67,7 @@ export default {
         /* ── 管理员接口 ────────────────────────────────── */
         if (pathname.startsWith('/api/admin/')) {
             const token = request.headers.get('X-Admin-Token');
-            if (!isValidToken(token, env.ADMIN_SECRET)) {
+            if (!await isValidToken(token, env.ADMIN_SECRET)) {
                 return cors({ error: '未授权，请先登录' }, 401);
             }
 
@@ -131,10 +132,11 @@ async function handleSubmitComment(request, env, sb) {
             ip, post_id, nickname: nickname.trim(),
             content: content.trim(), reason: `命中关键词：${hitWord}`,
         });
-        const currentCount = vData?.[0]?.count || 0;
+        const hasRecord = vData && vData.length > 0;
+        const currentCount = hasRecord ? (vData[0].count || 0) : 0;
         const newCount = currentCount + 1;
         const shouldBan = newCount >= MAX_VIOLATIONS;
-        if (currentCount === 0) {
+        if (!hasRecord) {
             await sb.insert('ip_violations', { ip, count: 1, banned: shouldBan });
         } else {
             await sb.patch('ip_violations', `ip=eq.${encodeURIComponent(ip)}`, {
@@ -171,7 +173,7 @@ async function handleAdminLogin(request, env) {
         return cors({ error: '密码错误' }, 401);
     }
     const today = new Date().toISOString().slice(0, 10);
-    const token = btoa(`${env.ADMIN_SECRET}:${today}`);
+    const token = await hmacSign(env.ADMIN_SECRET, today);
     return cors({ token }, 200);
 }
 
@@ -238,13 +240,23 @@ async function handleDeleteComment(sb, id) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   Token 验证（每日过期）
+   HMAC-SHA256 Token（每日过期）
 ══════════════════════════════════════════════════════════ */
-function isValidToken(token, secret) {
+async function hmacSign(secret, message) {
+    const key = await crypto.subtle.importKey(
+        'raw', new TextEncoder().encode(secret),
+        { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    );
+    const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message));
+    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function isValidToken(token, secret) {
     if (!token || !secret) return false;
     try {
         const today = new Date().toISOString().slice(0, 10);
-        return token === btoa(`${secret}:${today}`);
+        const expected = await hmacSign(secret, today);
+        return token === expected;
     } catch { return false; }
 }
 
@@ -286,14 +298,20 @@ function createClient(url, key) {
     };
 }
 
-function cors(data, status = 200) {
+function makeCors(data, status = 200, request, env) {
+    const allowedOrigin = env?.ALLOWED_ORIGIN || '';
+    const requestOrigin = request?.headers?.get('Origin') || '';
+    const origin = allowedOrigin
+        ? (requestOrigin === allowedOrigin ? allowedOrigin : 'null')
+        : requestOrigin;
     return new Response(data ? JSON.stringify(data) : null, {
         status,
         headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': origin,
             'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
+            'Vary': 'Origin',
         },
     });
 }

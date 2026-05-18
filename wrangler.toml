@@ -1,0 +1,18 @@
+# Cloudflare Worker — CQU FIC API
+# 文档：https://developers.cloudflare.com/workers/wrangler/configuration/
+#
+# 部署前须用 wrangler secret put 设置以下 Secret：
+#   SUPABASE_URL              — Supabase 项目 URL
+#   SUPABASE_SERVICE_ROLE_KEY — Supabase service_role 密钥（仅后端使用）
+#   ADMIN_PASSWORD            — 管理员登录密码
+#   ADMIN_SECRET              — HMAC 签名密钥（任意随机字符串）
+#   ALLOWED_ORIGIN            — https://cqufic.cn
+
+name = "cqufic-api"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# api.cqufic.cn 完全由此 Worker 接管
+[[routes]]
+pattern = "api.cqufic.cn/*"
+custom_domain = true
