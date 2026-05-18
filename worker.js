@@ -5,8 +5,13 @@
  *   GET  /api/comments               公开：获取指定帖子的已审核评论
  *   POST /api/submit-comment         公开：提交评论（含审核）
  *   POST /api/submit-feedback        公开：提交问题反馈
+ *   POST /api/submit-suggestion      公开：提交功能建议
+ *   POST /api/submit-rating          公开：提交评分评价
+ *   GET  /api/stats                  公开：获取评分统计数据
  *   POST /api/admin/login            管理员登录
  *   GET  /api/admin/feedback         管理员：获取所有反馈
+ *   GET  /api/admin/suggestions      管理员：获取所有功能建议
+ *   GET  /api/admin/ratings          管理员：获取所有评价
  *   GET  /api/admin/comments         管理员：获取所有评论
  *   POST /api/admin/posts            管理员：新建帖子
  *   PUT  /api/admin/posts/:id        管理员：编辑帖子
@@ -72,6 +77,15 @@ export default {
         if (method === 'POST' && pathname === '/api/submit-feedback') {
             return handleSubmitFeedback(request, env, cors);
         }
+        if (method === 'POST' && pathname === '/api/submit-suggestion') {
+            return handleSubmitSuggestion(request, env, cors);
+        }
+        if (method === 'POST' && pathname === '/api/submit-rating') {
+            return handleSubmitRating(request, env, cors);
+        }
+        if (method === 'GET' && pathname === '/api/stats') {
+            return handleGetStats(env, cors);
+        }
         if (method === 'POST' && pathname === '/api/admin/login') {
             return handleAdminLogin(request, env, cors);
         }
@@ -88,6 +102,12 @@ export default {
             }
             if (method === 'GET' && pathname === '/api/admin/feedback') {
                 return handleGetAllFeedback(env, cors);
+            }
+            if (method === 'GET' && pathname === '/api/admin/suggestions') {
+                return handleGetAllSuggestions(env, cors);
+            }
+            if (method === 'GET' && pathname === '/api/admin/ratings') {
+                return handleGetAllRatings(env, cors);
             }
             if (method === 'POST' && pathname === '/api/admin/posts') {
                 return handleCreatePost(request, env, cors);
@@ -361,6 +381,109 @@ async function handleGetAllFeedback(env, cors) {
     try {
         const { results } = await env.DB.prepare(
             'SELECT id, name, student_id, contact, type, description, created_at FROM feedback ORDER BY created_at DESC'
+        ).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   功能建议 & 评分评价
+══════════════════════════════════════════════════════════ */
+async function handleSubmitSuggestion(request, env, cors) {
+    let body;
+    try { body = await request.json(); }
+    catch { return cors({ error: '请求格式错误' }, 400); }
+
+    const { name, contact, category, content } = body;
+    if (!name?.trim() || !content?.trim()) {
+        return cors({ error: '缺少必填字段' }, 400);
+    }
+
+    const contentLower = content.toLowerCase();
+    const hitWord = BLOCKED_WORDS.find(w => contentLower.includes(w.toLowerCase()));
+    if (hitWord) return cors({ error: '内容含有不当词汇，请修改后重试' }, 422);
+
+    try {
+        await env.DB.prepare(
+            'INSERT INTO suggestions (id, name, contact, category, content) VALUES (?, ?, ?, ?, ?)'
+        ).bind(
+            crypto.randomUUID(), name.trim(),
+            contact?.trim() || null, category?.trim() || null, content.trim()
+        ).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '提交失败，请稍后重试' }, 500);
+    }
+}
+
+async function handleSubmitRating(request, env, cors) {
+    let body;
+    try { body = await request.json(); }
+    catch { return cors({ error: '请求格式错误' }, 400); }
+
+    const { name, category, rating, review } = body;
+    if (!name?.trim() || !review?.trim() || !rating) {
+        return cors({ error: '缺少必填字段' }, 400);
+    }
+    const ratingNum = parseInt(rating, 10);
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+        return cors({ error: '评分须在 1–5 之间' }, 400);
+    }
+
+    const reviewLower = review.toLowerCase();
+    const hitWord = BLOCKED_WORDS.find(w => reviewLower.includes(w.toLowerCase()));
+    if (hitWord) return cors({ error: '内容含有不当词汇，请修改后重试' }, 422);
+
+    try {
+        await env.DB.prepare(
+            'INSERT INTO ratings (id, name, category, rating, review) VALUES (?, ?, ?, ?, ?)'
+        ).bind(
+            crypto.randomUUID(), name.trim(),
+            category?.trim() || null, ratingNum, review.trim()
+        ).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '提交失败，请稍后重试' }, 500);
+    }
+}
+
+async function handleGetStats(env, cors) {
+    try {
+        const row = await env.DB.prepare(
+            `SELECT
+                COUNT(*)                                                        AS total_count,
+                ROUND(AVG(CAST(rating AS REAL)), 1)                            AS avg_rating,
+                ROUND(100.0 * SUM(CASE WHEN rating >= 4 THEN 1 ELSE 0 END)
+                      / MAX(COUNT(*), 1), 0)                                   AS recommend_rate
+             FROM ratings`
+        ).first();
+        return cors({
+            total_count:    row.total_count    || 0,
+            avg_rating:     row.avg_rating     || null,
+            recommend_rate: row.recommend_rate || null,
+        }, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
+}
+
+async function handleGetAllSuggestions(env, cors) {
+    try {
+        const { results } = await env.DB.prepare(
+            'SELECT id, name, contact, category, content, created_at FROM suggestions ORDER BY created_at DESC'
+        ).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
+}
+
+async function handleGetAllRatings(env, cors) {
+    try {
+        const { results } = await env.DB.prepare(
+            'SELECT id, name, category, rating, review, created_at FROM ratings ORDER BY created_at DESC'
         ).all();
         return cors(results, 200);
     } catch (e) {
