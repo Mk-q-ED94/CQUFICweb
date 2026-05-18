@@ -1,0 +1,57 @@
+-- CQU FIC — Cloudflare D1 数据库初始化脚本
+-- 执行方式：
+--   wrangler d1 create cqufic-db
+--   wrangler d1 execute cqufic-db --file=setup-d1.sql
+
+CREATE TABLE IF NOT EXISTS posts (
+    id          TEXT PRIMARY KEY,
+    title       TEXT NOT NULL,
+    category    TEXT NOT NULL,
+    summary     TEXT NOT NULL,
+    content     TEXT NOT NULL,
+    date        TEXT NOT NULL,
+    is_pinned   INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id          TEXT PRIMARY KEY,
+    post_id     TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    parent_id   TEXT REFERENCES comments(id),
+    nickname    TEXT NOT NULL,
+    contact     TEXT,
+    content     TEXT NOT NULL,
+    is_approved INTEGER NOT NULL DEFAULT 1,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS ip_violations (
+    ip      TEXT PRIMARY KEY,
+    count   INTEGER NOT NULL DEFAULT 0,
+    banned  INTEGER NOT NULL DEFAULT 0,
+    last_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS blocked_comments (
+    id         TEXT PRIMARY KEY,
+    ip         TEXT NOT NULL,
+    post_id    TEXT NOT NULL,
+    nickname   TEXT NOT NULL,
+    content    TEXT NOT NULL,
+    reason     TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- 索引：按帖子查询评论（最常用查询）
+CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
+CREATE INDEX IF NOT EXISTS idx_comments_approved ON comments(post_id, is_approved);
+
+-- 初始帖子数据（从 posts.json 导入）
+INSERT OR IGNORE INTO posts (id, title, category, summary, content, date, is_pinned) VALUES (
+    'about-cqufic-platform-2026',
+    'CQU FIC 是什么？一文读懂这个平台',
+    '通知公告',
+    '重庆大学新生服务融合中心平台（CQU FIC）正式上线。我们是谁、能帮你做什么、怎么用——这里一次说清楚。',
+    '<p>你好，欢迎来到 <strong>CQU FIC——重庆大学新生服务融合中心平台</strong>。</p><p>我们是一支由重庆大学在校学生组成的团队，深知每一位新生在入学前后都会面临大量信息轰炸：报到流程、宿舍安排、军训须知、选课技巧……信息分散在各处，找起来费时费力。CQU FIC 的目标很简单：<strong>把新生最需要的一切，整合到一个地方。</strong></p><h3>平台提供什么</h3><ul><li><strong>入学流程</strong> — 从录取通知书到正式开学，每个环节的时间节点和注意事项，一步一步告诉你</li><li><strong>信息汇总库</strong> — 选课指南、学业规划、图书馆资源、校园网使用……新生常见问题的答案都在这里</li><li><strong>校园地图</strong> — 虎溪、沙坪坝、华岩三个校区的交互式地图，食堂、宿舍、教学楼一目了然</li><li><strong>包罗万象社区</strong> — 就是你现在所在的地方，有问题可以在这里留言，我们和其他同学会认真回复</li><li><strong>问题反馈 & 功能建议</strong> — 平台还在持续完善中，你的意见直接影响我们的迭代方向</li></ul><h3>这个留言板怎么用</h3><p>不需要注册，不需要登录。在任意帖子下方填写你的昵称和内容，就可以留言。如果希望我们私下联系你，可以填写邮箱或手机号，<strong>联系方式只有管理员可见，不会公开显示</strong>。</p><p>你也可以直接回复其他同学的留言，和大家互相帮助。</p><h3>关于我们</h3><p>CQU FIC 是一个纯公益的学生自发项目，不收费、不商业化。我们的使命是让每一位重大新生都能少走弯路，快速适应大学生活。</p><p>如果这个平台对你有帮助，欢迎转发给同学。如果有任何问题或者建议，直接在下方留言就好——我们都会看到 💙</p>',
+    '2026-03-07',
+    1
+);

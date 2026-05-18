@@ -6,8 +6,7 @@
     <title>包罗万象社区 - CQU FIC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
-    <!-- Supabase JS SDK (v2) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
     <style>
         /* ── 页面背景 ─────────────────────────────────── */
@@ -643,13 +642,6 @@
        ⚙️  配置区
     ============================================================ */
     const API_URL = '';
-    const SUPABASE_URL      = 'https://rvlwcucuhiigiwwaxcvb.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bHdjdWN1aGlpZ2l3d2F4Y3ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3ODY0NDgsImV4cCI6MjA4ODM2MjQ0OH0.dpgMRMAcjD5QIgY5fINWOzYvI0-4F8Z4BcTKkW9oYF8';
-
-    /* ============================================================
-       初始化 Supabase 客户端（仅用于读评论）
-    ============================================================ */
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /* ============================================================
        应用状态
@@ -779,21 +771,15 @@
     async function loadComments(postId) {
         document.getElementById('commentsList').innerHTML =
             `<div class="loading-comments"><i class="fas fa-circle-notch fa-spin"></i>&nbsp; 加载留言中…</div>`;
-
-        const { data, error } = await db
-            .from('comments')
-            .select('id, parent_id, nickname, content, created_at')
-            .eq('post_id', postId)
-            .eq('is_approved', true)
-            .order('created_at', { ascending: true });
-
-        if (error) {
+        try {
+            const res = await fetch(`${API_URL}/api/comments?post_id=${encodeURIComponent(postId)}`);
+            if (!res.ok) throw new Error(res.status);
+            const data = await res.json();
+            renderComments(data || []);
+        } catch {
             document.getElementById('commentsList').innerHTML =
                 `<p class="no-comments"><i class="fas fa-exclamation-circle"></i> 加载失败，请刷新重试</p>`;
-            return;
         }
-
-        renderComments(data || []);
     }
 
     /* ============================================================
