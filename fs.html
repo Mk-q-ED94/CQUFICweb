@@ -206,21 +206,36 @@
             });
         });
 
-        document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+        document.getElementById('suggestionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const category = document.getElementById('category').value;
-            const suggestion = document.getElementById('suggestion').value;
-            
-            if (!name || !email || !category || !suggestion) {
-                alert('请填写所有必填字段！');
-                return;
+            const btn = this.querySelector('.form-submit');
+            btn.disabled = true;
+            btn.textContent = '提交中…';
+            try {
+                const res = await fetch('/api/submit-suggestion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name:     document.getElementById('name').value.trim(),
+                        contact:  document.getElementById('email').value.trim(),
+                        category: document.getElementById('category').value,
+                        content:  document.getElementById('suggestion').value.trim(),
+                    })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    btn.textContent = '✅ 已提交，感谢建议！';
+                    this.reset();
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = '提交建议';
+                    alert(data.error || '提交失败，请稍后重试');
+                }
+            } catch {
+                btn.disabled = false;
+                btn.textContent = '提交建议';
+                alert('网络错误，请检查连接后重试');
             }
-            
-            alert('感谢您的建议！我们已收到您的反馈。');
-            this.reset();
         });
 
         document.addEventListener('DOMContentLoaded', function() {

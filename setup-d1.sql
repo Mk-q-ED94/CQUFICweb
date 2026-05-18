@@ -51,6 +51,24 @@ CREATE TABLE IF NOT EXISTS feedback (
     created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS suggestions (
+    id          TEXT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    contact     TEXT,
+    category    TEXT,
+    content     TEXT NOT NULL,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS ratings (
+    id          TEXT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    category    TEXT,
+    rating      INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+    review      TEXT NOT NULL,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- 索引：按帖子查询评论（最常用查询）
 CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
 CREATE INDEX IF NOT EXISTS idx_comments_approved ON comments(post_id, is_approved);

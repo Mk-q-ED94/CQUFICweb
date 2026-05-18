@@ -92,15 +92,15 @@
             
             <div class="stats-container">
                 <div class="stat-card">
-                    <div class="stat-value">4.7</div>
+                    <div class="stat-value" id="statAvg">--</div>
                     <div class="stat-label">综合评分</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">128</div>
+                    <div class="stat-value" id="statCount">--</div>
                     <div class="stat-label">评价总数</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">92%</div>
+                    <div class="stat-value" id="statRecommend">--</div>
                     <div class="stat-label">推荐率</div>
                 </div>
             </div>
@@ -284,21 +284,59 @@
             });
         });
 
-        document.getElementById('ratingForm').addEventListener('submit', function(e) {
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                if (!res.ok) return;
+                const d = await res.json();
+                document.getElementById('statAvg').textContent =
+                    d.total_count > 0 ? d.avg_rating : '暂无';
+                document.getElementById('statCount').textContent = d.total_count;
+                document.getElementById('statRecommend').textContent =
+                    d.total_count > 0 ? d.recommend_rate + '%' : '暂无';
+            } catch {}
+        }
+        loadStats();
+
+        document.getElementById('ratingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const category = document.getElementById('category').value;
+            const btn = this.querySelector('.form-submit');
             const rating = document.querySelector('input[name="rating"]:checked');
-            const review = document.getElementById('review').value;
-            
-            if (!name || !category || !rating || !review) {
+            if (!document.getElementById('name').value.trim() ||
+                !document.getElementById('category').value ||
+                !rating ||
+                !document.getElementById('review').value.trim()) {
                 alert('请填写所有必填字段！');
                 return;
             }
-            
-            alert('感谢您的评价！我们已收到您的反馈。');
-            this.reset();
+            btn.disabled = true;
+            btn.textContent = '提交中…';
+            try {
+                const res = await fetch('/api/submit-rating', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name:     document.getElementById('name').value.trim(),
+                        category: document.getElementById('category').value,
+                        rating:   parseInt(rating.value, 10),
+                        review:   document.getElementById('review').value.trim(),
+                    })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    btn.textContent = '✅ 已提交，感谢评价！';
+                    this.reset();
+                    loadStats();
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = '提交评价';
+                    alert(data.error || '提交失败，请稍后重试');
+                }
+            } catch {
+                btn.disabled = false;
+                btn.textContent = '提交评价';
+                alert('网络错误，请检查连接后重试');
+            }
         });
 
         document.querySelectorAll('.rating-star').forEach(star => {
