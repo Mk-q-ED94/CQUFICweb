@@ -267,9 +267,6 @@
     <script src="shared.js"></script>
     <script>
         window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-            
             const featureCards = document.querySelectorAll('.feature-card, .review-card, .stat-card');
             featureCards.forEach((card, index) => {
                 const scrollY = window.scrollY;
