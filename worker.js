@@ -97,7 +97,22 @@ export default {
         }
 
         /* ── 其余请求：托管静态文件 ─────────────────────── */
-        return env.ASSETS.fetch(request);
+        const assetRes = await env.ASSETS.fetch(request);
+
+        // 对 map.html 注入 Mapbox token（避免将 token 写入 git）
+        if (pathname === '/map.html' || pathname === '/map' || pathname === '/') {
+            const ct = assetRes.headers.get('content-type') || '';
+            if (ct.includes('text/html') && env.MAPBOX_TOKEN) {
+                const html = await assetRes.text();
+                const patched = html.replace("'YOUR_MAPBOX_TOKEN'", `'${env.MAPBOX_TOKEN}'`);
+                return new Response(patched, {
+                    status: assetRes.status,
+                    headers: assetRes.headers,
+                });
+            }
+        }
+
+        return assetRes;
     },
 };
 
