@@ -13,9 +13,9 @@ name = "cqufic-api"
 main = "worker.js"
 compatibility_date = "2025-01-01"
 
-# 静态文件目录（由 build 命令生成）
+# 静态文件目录（根目录直接提供，无需 build 步骤）
 [assets]
-directory = "./dist"
+directory = "."
 binding = "ASSETS"
 
 # cqufic.cn 全部由此 Worker 接管（静态文件 + /api/*）

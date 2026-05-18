@@ -11,11 +11,13 @@
  *   PATCH  /api/admin/comments/:id   管理员：切换审核状态
  *   DELETE /api/admin/comments/:id   管理员：删除评论
  *
- * 环境变量（Worker → Settings → Variables and Secrets）：
- *   SUPABASE_URL
- *   SUPABASE_SERVICE_ROLE_KEY
- *   ADMIN_PASSWORD   ← 你设置的管理员密码
- *   ADMIN_SECRET     ← 任意随机字符串，例如 "xK9mP2qR7vL4"
+ * Secrets（wrangler secret put <NAME>）：
+ *   SUPABASE_URL              — Supabase 项目 URL
+ *   SUPABASE_SERVICE_ROLE_KEY — Supabase service_role 密钥
+ *   ADMIN_PASSWORD            — 管理员登录密码
+ *   ADMIN_SECRET              — HMAC 签名密钥（任意随机字符串）
+ *   ALLOWED_ORIGIN            — https://cqufic.cn
+ *   MAPBOX_TOKEN              — Mapbox public access token (pk.eyJ1Ij...)
  */
 
 const BLOCKED_WORDS = [
@@ -55,13 +57,13 @@ export default {
 
         /* ── 公开接口 ──────────────────────────────────── */
         if (method === 'GET' && pathname === '/api/posts') {
-            return handleGetPosts(sb);
+            return handleGetPosts(sb, cors);
         }
         if (method === 'POST' && pathname === '/api/submit-comment') {
-            return handleSubmitComment(request, env, sb);
+            return handleSubmitComment(request, env, sb, cors);
         }
         if (method === 'POST' && pathname === '/api/admin/login') {
-            return handleAdminLogin(request, env);
+            return handleAdminLogin(request, env, cors);
         }
 
         /* ── 管理员接口 ────────────────────────────────── */
@@ -72,22 +74,22 @@ export default {
             }
 
             if (method === 'GET' && pathname === '/api/admin/comments') {
-                return handleGetAllComments(sb, url);
+                return handleGetAllComments(sb, url, cors);
             }
             if (method === 'POST' && pathname === '/api/admin/posts') {
-                return handleCreatePost(request, sb);
+                return handleCreatePost(request, sb, cors);
             }
             if (method === 'PUT' && pathname.startsWith('/api/admin/posts/')) {
-                return handleUpdatePost(request, sb, decodeURIComponent(pathname.split('/').pop()));
+                return handleUpdatePost(request, sb, decodeURIComponent(pathname.split('/').pop()), cors);
             }
             if (method === 'DELETE' && pathname.startsWith('/api/admin/posts/')) {
-                return handleDeletePost(sb, decodeURIComponent(pathname.split('/').pop()));
+                return handleDeletePost(sb, decodeURIComponent(pathname.split('/').pop()), cors);
             }
             if (method === 'PATCH' && pathname.startsWith('/api/admin/comments/')) {
-                return handleToggleComment(request, sb, pathname.split('/').pop());
+                return handleToggleComment(request, sb, pathname.split('/').pop(), cors);
             }
             if (method === 'DELETE' && pathname.startsWith('/api/admin/comments/')) {
-                return handleDeleteComment(sb, pathname.split('/').pop());
+                return handleDeleteComment(sb, pathname.split('/').pop(), cors);
             }
         }
 
@@ -96,19 +98,17 @@ export default {
             return cors({ error: '接口不存在' }, 404);
         }
 
-        /* ── 其余请求：托管静态文件 ─────────────────────── */
+        /* ── 静态文件：对 map.html 注入 Mapbox token ────── */
         const assetRes = await env.ASSETS.fetch(request);
 
-        // 对 map.html 注入 Mapbox token（避免将 token 写入 git）
-        if (pathname === '/map.html' || pathname === '/map' || pathname === '/') {
+        if ((pathname === '/map.html' || pathname === '/map') && env.MAPBOX_TOKEN) {
             const ct = assetRes.headers.get('content-type') || '';
-            if (ct.includes('text/html') && env.MAPBOX_TOKEN) {
+            if (ct.includes('text/html')) {
                 const html = await assetRes.text();
                 const patched = html.replace("'YOUR_MAPBOX_TOKEN'", `'${env.MAPBOX_TOKEN}'`);
-                return new Response(patched, {
-                    status: assetRes.status,
-                    headers: assetRes.headers,
-                });
+                const headers = new Headers(assetRes.headers);
+                headers.delete('content-length'); // 长度已变，让运行时重新计算
+                return new Response(patched, { status: assetRes.status, headers });
             }
         }
 
@@ -119,7 +119,7 @@ export default {
 /* ══════════════════════════════════════════════════════════
    公开接口
 ══════════════════════════════════════════════════════════ */
-async function handleGetPosts(sb) {
+async function handleGetPosts(sb, cors) {
     const { data, error } = await sb.select(
         'posts',
         'select=id,title,category,summary,date,is_pinned&order=is_pinned.desc,date.desc'
@@ -128,7 +128,7 @@ async function handleGetPosts(sb) {
     return cors(data, 200);
 }
 
-async function handleSubmitComment(request, env, sb) {
+async function handleSubmitComment(request, env, sb, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -185,7 +185,7 @@ async function handleSubmitComment(request, env, sb) {
 /* ══════════════════════════════════════════════════════════
    管理员接口
 ══════════════════════════════════════════════════════════ */
-async function handleAdminLogin(request, env) {
+async function handleAdminLogin(request, env, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -198,7 +198,7 @@ async function handleAdminLogin(request, env) {
     return cors({ token }, 200);
 }
 
-async function handleGetAllComments(sb, url) {
+async function handleGetAllComments(sb, url, cors) {
     const postId = url.searchParams.get('post_id');
     let query = 'select=id,post_id,parent_id,nickname,contact,content,is_approved,created_at&order=created_at.desc';
     if (postId) query += `&post_id=eq.${encodeURIComponent(postId)}`;
@@ -207,7 +207,7 @@ async function handleGetAllComments(sb, url) {
     return cors(data, 200);
 }
 
-async function handleCreatePost(request, sb) {
+async function handleCreatePost(request, sb, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -225,7 +225,7 @@ async function handleCreatePost(request, sb) {
     return cors({ success: true }, 200);
 }
 
-async function handleUpdatePost(request, sb, id) {
+async function handleUpdatePost(request, sb, id, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -239,13 +239,13 @@ async function handleUpdatePost(request, sb, id) {
     return cors({ success: true }, 200);
 }
 
-async function handleDeletePost(sb, id) {
+async function handleDeletePost(sb, id, cors) {
     const { error } = await sb.delete('posts', `id=eq.${encodeURIComponent(id)}`);
     if (error) return cors({ error: '删除失败' }, 500);
     return cors({ success: true }, 200);
 }
 
-async function handleToggleComment(request, sb, id) {
+async function handleToggleComment(request, sb, id, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -254,7 +254,7 @@ async function handleToggleComment(request, sb, id) {
     return cors({ success: true }, 200);
 }
 
-async function handleDeleteComment(sb, id) {
+async function handleDeleteComment(sb, id, cors) {
     const { error } = await sb.delete('comments', `id=eq.${id}`);
     if (error) return cors({ error: '删除失败' }, 500);
     return cors({ success: true }, 200);
