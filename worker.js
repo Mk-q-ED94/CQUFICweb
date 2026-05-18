@@ -91,7 +91,13 @@ export default {
             }
         }
 
-        return cors({ error: '接口不存在' }, 404);
+        /* ── 未知 /api/* 路由 ──────────────────────────── */
+        if (pathname.startsWith('/api/')) {
+            return cors({ error: '接口不存在' }, 404);
+        }
+
+        /* ── 其余请求：托管静态文件 ─────────────────────── */
+        return env.ASSETS.fetch(request);
     },
 };
 
