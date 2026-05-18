@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  # ── 静态站 → Cloudflare Pages ────────────────────────────
+  # ── 静态站 → Cloudflare Pages → cqufic.cn ───────────────
   deploy-pages:
     name: Deploy static site
     runs-on: ubuntu-latest
@@ -32,9 +32,9 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=cquficweb --commit-dirty=true
+          command: pages deploy dist --project-name=cquficweb --branch=main --commit-dirty=true
 
-  # ── API → Cloudflare Worker ──────────────────────────────
+  # ── API → Cloudflare Worker → api.cqufic.cn ─────────────
   deploy-worker:
     name: Deploy Worker API
     runs-on: ubuntu-latest
@@ -47,3 +47,9 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+
+      - name: Smoke test — GET /api/posts
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" https://api.cqufic.cn/api/posts)
+          echo "HTTP $status"
+          [ "$status" = "200" ] || { echo "Smoke test failed"; exit 1; }
