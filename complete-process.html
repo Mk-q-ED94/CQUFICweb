@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整流程 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before { content: ''; position: absolute; left: 16px; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--cqu-blue), var(--cqu-orange)); border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: var(--spacing-lg); }
+        .timeline-dot { position: absolute; left: -32px; top: 18px; width: 14px; height: 14px; border-radius: 50%;
+            background: var(--cqu-blue); border: 3px solid rgba(255,255,255,0.8);
+            box-shadow: 0 0 0 2px var(--cqu-blue); }
+        .timeline-item.highlight .timeline-dot { background: var(--cqu-orange); box-shadow: 0 0 0 2px var(--cqu-orange); width: 18px; height: 18px; left: -34px; }
+        .timeline-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .timeline-card:hover { box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .timeline-item.highlight .timeline-card { border-color: rgba(245,124,0,0.3); background: rgba(245,124,0,0.05); }
+        .timeline-date { font-size: 0.85rem; font-weight: var(--font-weight-semibold); color: var(--cqu-orange);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .timeline-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 6px; }
+        .timeline-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .timeline-desc ul { padding-left: 16px; margin-top: 6px; }
+        .timeline-desc li { margin-bottom: 4px; }
+        .timeline-link { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--spacing-sm);
+            color: var(--cqu-blue); text-decoration: none; font-size: 0.9rem; font-weight: var(--font-weight-medium);
+            transition: all var(--transition-fast) ease; }
+        .timeline-link:hover { transform: translateX(4px); }
+        .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xxl); }
+        .overview-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center; }
+        .overview-icon { font-size: 2rem; color: var(--cqu-blue); margin-bottom: 8px; }
+        .overview-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .overview-value { font-size: 1.3rem; font-weight: var(--font-weight-bold); color: var(--cqu-blue); }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+            .timeline { padding-left: 28px; }
+            .timeline-card { padding: var(--spacing-md); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-list-alt hero-icon"></i>
+            <h1 class="section-title">完整入学流程</h1>
+            <p class="section-subtitle">从收到录取通知书到正式上课，完整时间轴一页看懂，不废话。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="overview-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="overview-label">从通知书到开课</div>
+                    <div class="overview-value">约 6–8 周</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon"><i class="fas fa-running"></i></div>
+                    <div class="overview-label">军训时长</div>
+                    <div class="overview-value">约 2–3 周</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="overview-label">报到手续项目</div>
+                    <div class="overview-value">约 6 个</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon"><i class="fas fa-clock"></i></div>
+                    <div class="overview-label">报到当天用时</div>
+                    <div class="overview-value">3–5 小时</div>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">7月 · 高考出分</div>
+                        <div class="timeline-title">填报志愿 → 等待录取结果</div>
+                        <div class="timeline-desc">高考出分后填报平行志愿，等待各批次录取结果。重庆大学通常在本科一批次录取，7月下旬至8月初出录取结果。</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">8月上旬 · 里程碑</div>
+                        <div class="timeline-title">收到录取通知书</div>
+                        <div class="timeline-desc">挂号信寄到家庭地址，请注意查收。收到后立即保存，这是所有后续手续的核心凭证。
+                            <ul>
+                                <li>登录迎新网完成网上预报到</li>
+                                <li>关注重庆大学官方公众号</li>
+                                <li>加入所在学院新生群</li>
+                                <li>完成学费住宿费网上缴纳</li>
+                            </ul>
+                        </div>
+                        <a href="admission-letter.html" class="timeline-link"><i class="fas fa-arrow-right"></i> 查看详细说明</a>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">8月下旬</div>
+                        <div class="timeline-title">准备阶段：材料 + 行李 + 身体</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>整理报到所需全部证件材料（见材料清单）</li>
+                                <li>将大件行李提前快递到校（建议报到前3–5天发货）</li>
+                                <li>规划交通路线，购买车票/机票</li>
+                                <li>适当运动，为军训做体能准备</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">9月初 · 里程碑</div>
+                        <div class="timeline-title">到校报到</div>
+                        <div class="timeline-desc">报到当天流程：领取报到手册 → 缴费 → 领校园卡 → 入住宿舍 → 学院报到 → 军训报到。建议早上9点前到校，避开高峰。</div>
+                        <a href="registration.html" class="timeline-link"><i class="fas fa-arrow-right"></i> 查看报到详细流程</a>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">报到后2–3天</div>
+                        <div class="timeline-title">适应校园生活</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>连接校园网，激活各类账号（教务系统、图书馆、一卡通）</li>
+                                <li>熟悉宿舍周边：食堂、超市、洗衣房位置</li>
+                                <li>认识室友、同班同学，加入各类群聊</li>
+                                <li>去开银行卡（工行/建行，校内或附近均有）</li>
+                            </ul>
+                        </div>
+                        <a href="freshman-tips.html" class="timeline-link"><i class="fas fa-arrow-right"></i> 查看初来乍到贴士</a>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">9月初–中旬 · 里程碑</div>
+                        <div class="timeline-title">军训（约2–3周）</div>
+                        <div class="timeline-desc">每天6:00起床，上下午训练，晚间有班务会或内务检查。重庆9月气温高，做好防晒和防中暑准备，保持好心态，这段时间结识的朋友往往是大学里最深厚的友谊。</div>
+                        <a href="pre-military.html" class="timeline-link"><i class="fas fa-arrow-right"></i> 军训前准备</a>
+                        <a href="military-tips.html" class="timeline-link" style="margin-left: var(--spacing-sm);"><i class="fas fa-arrow-right"></i> 军训贴士</a>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">9月中下旬</div>
+                        <div class="timeline-title">军训结束 → 正式开学</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>完成新生选课（在综合教务系统操作，有时间窗口，务必不要错过）</li>
+                                <li>参加各社团的招新摆摊活动（校园里一年一度最热闹的时候）</li>
+                                <li>领取教材，了解各科老师风格</li>
+                                <li>正式开始大学学习生活！</li>
+                            </ul>
+                        </div>
+                        <a href="freshman-trivia.html" class="timeline-link"><i class="fas fa-arrow-right"></i> 新生琐事全攻略</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>

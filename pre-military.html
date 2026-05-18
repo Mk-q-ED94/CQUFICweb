@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>军训前几天 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .tip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .tip-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .tip-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .tip-icon { font-size: 2.2rem; color: var(--cqu-blue); margin-bottom: var(--spacing-sm); }
+        .tip-title { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: var(--spacing-xs); }
+        .tip-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .checklist-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-md); }
+        .checklist-card .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .checklist-card .card-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .checklist-card .card-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .checklist { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 16px; }
+        .checklist li { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04); color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist li i { color: var(--cqu-blue); margin-top: 3px; flex-shrink: 0; }
+        .checklist.single-col { grid-template-columns: 1fr; }
+        .info-box { background: rgba(30,79,161,0.06); border: 1px solid rgba(30,79,161,0.2);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-lg); }
+        .info-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
+        .info-box i { color: var(--cqu-blue); margin-right: 6px; }
+        .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .tip-grid { grid-template-columns: 1fr; }
+            .checklist { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-running hero-icon"></i>
+            <h1 class="section-title">军训前几天</h1>
+            <p class="section-subtitle">报到完成，军训即将开始。这几天好好利用，提前准备，让军训不那么难熬。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <div class="info-box">
+                <p><i class="fas fa-info-circle"></i><strong>军训概况：</strong>重庆大学军训通常在9月初报到后开始，持续约 <strong>2–3 周</strong>，安排在虎溪校区操场，每天6:00起床，晚上通常有班务活动。军训结束后正式开课。</p>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">这几天该干什么</h2>
+            <div class="tip-grid">
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-route"></i></div>
+                    <div class="tip-title">熟悉校园地形</div>
+                    <div class="tip-desc">趁空闲时间把虎溪校区走一遍：操场、食堂、宿舍楼、学院楼、超市、医务室各在哪里，军训时能省不少时间。</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-users"></i></div>
+                    <div class="tip-title">认识室友和同班同学</div>
+                    <div class="tip-desc">军训是快速建立感情的黄金期。主动打招呼，一起吃饭，和室友约好互相帮忙打水、洗衣，军训期间彼此扶持很重要。</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-running"></i></div>
+                    <div class="tip-title">适当活动身体</div>
+                    <div class="tip-desc">如果长时间坐车、久坐，提前几天做做拉伸和慢跑，让身体适应户外活动。军训第一天就拼命容易崴脚或中暑。</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="tip-title">采购军训必备品</div>
+                    <div class="tip-desc">校内外超市和网购均可。防晒霜、运动鞋、护唇膏等在学校周边小超市都能买到，不需要从家里千里迢迢带来。</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="tip-title">完成网络 & 账号注册</div>
+                    <div class="tip-desc">登录校园网（CQU-WiFi），注册重庆大学综合教务系统账号，下载学校官方App，提前熟悉操作，军训结束选课时不手忙脚乱。</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-moon"></i></div>
+                    <div class="tip-title">调整作息</div>
+                    <div class="tip-desc">军训需要6点起床集合。如果习惯晚睡，提前几天把作息向前调整，第一周会轻松很多。</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">军训必备清单</h2>
+            <div class="checklist-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-list-ul"></i></div>
+                    <div class="card-title">强烈推荐自备</div>
+                </div>
+                <ul class="checklist">
+                    <li><i class="fas fa-check-circle"></i>防晒霜（SPF50+ PA++++）</li>
+                    <li><i class="fas fa-check-circle"></i>运动鞋（跑步鞋，底厚耐磨）</li>
+                    <li><i class="fas fa-check-circle"></i>大容量水杯（800ml以上保温）</li>
+                    <li><i class="fas fa-check-circle"></i>藿香正气水 / 仁丹（防中暑）</li>
+                    <li><i class="fas fa-check-circle"></i>创可贴、水泡贴、碘伏棉签</li>
+                    <li><i class="fas fa-check-circle"></i>护唇膏（防晒晒干裂）</li>
+                    <li><i class="fas fa-check-circle"></i>晒后修复喷雾或芦荟胶</li>
+                    <li><i class="fas fa-check-circle"></i>备用袜子（每天换，防脚气）</li>
+                    <li><i class="fas fa-check-circle"></i>折叠小风扇（宿舍用）</li>
+                    <li><i class="fas fa-check-circle"></i>充电宝（10000mAh以上）</li>
+                </ul>
+            </div>
+
+            <div class="checklist-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="card-title">军方统一发放（不用自备）</div>
+                </div>
+                <ul class="checklist single-col">
+                    <li><i class="fas fa-check-circle"></i>迷彩服（上衣 + 裤子，按身高分配）</li>
+                    <li><i class="fas fa-check-circle"></i>军帽（注意佩戴规范）</li>
+                    <li><i class="fas fa-check-circle"></i>解放鞋（军训时统一穿，自备跑步鞋作为备用）</li>
+                </ul>
+            </div>
+
+            <div class="warn-box">
+                <p><i class="fas fa-exclamation-triangle"></i><strong>重要提醒：</strong>重庆9月初仍是"火炉"模式，气温高、湿度大，中暑风险较高。务必备好防暑药品，感觉不舒服立即告诉教官或班长，不要硬撑。身体是一切的基础。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宿舍一览 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .dorm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .dorm-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .dorm-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .dorm-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .dorm-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .dorm-name { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .dorm-campus { font-size: 0.8rem; color: var(--text-secondary); }
+        .dorm-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin-bottom: var(--spacing-sm); }
+        .dorm-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag { display: inline-block; padding: 3px 10px; background: rgba(30,79,161,0.1);
+            color: var(--cqu-blue); border-radius: 20px; font-size: 0.8rem; }
+        .tag.orange { background: rgba(245,124,0,0.1); color: var(--cqu-orange); }
+        .checklist-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-md); }
+        .checklist-card .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .checklist-card .card-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .checklist-card .card-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .two-col-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 24px; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04); color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist li i { color: var(--cqu-blue); margin-top: 3px; flex-shrink: 0; }
+        .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+        .rule-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center;
+            transition: all var(--transition-normal) ease; }
+        .rule-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .rule-icon { font-size: 2rem; margin-bottom: 8px; }
+        .rule-title { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .rule-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; }
+        .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .dorm-grid { grid-template-columns: 1fr; }
+            .two-col-list { grid-template-columns: 1fr; }
+            .rules-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-home hero-icon"></i>
+            <h1 class="section-title">宿舍一览</h1>
+            <p class="section-subtitle">你的大学小家——入住前先了解这些，搬进去就能立刻安顿。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">各校区宿舍概况</h2>
+            <div class="dorm-grid">
+                <div class="dorm-card">
+                    <div class="dorm-header">
+                        <div class="dorm-icon"><i class="fas fa-building"></i></div>
+                        <div>
+                            <div class="dorm-name">虎溪校区宿舍</div>
+                            <div class="dorm-campus">大多数新生所在校区</div>
+                        </div>
+                    </div>
+                    <p class="dorm-desc">虎溪校区为新校区，宿舍楼较新，设施完善。一般为4人间或6人间，配备独立卫生间、空调、宽带接口。部分楼栋已安装热水器，洗澡方便。</p>
+                    <div class="dorm-tags">
+                        <span class="tag">4人间 / 6人间</span>
+                        <span class="tag">独卫</span>
+                        <span class="tag">空调</span>
+                        <span class="tag">宽带接口</span>
+                    </div>
+                </div>
+                <div class="dorm-card">
+                    <div class="dorm-header">
+                        <div class="dorm-icon"><i class="fas fa-university"></i></div>
+                        <div>
+                            <div class="dorm-name">A / B 区宿舍</div>
+                            <div class="dorm-campus">沙坪坝老校区</div>
+                        </div>
+                    </div>
+                    <p class="dorm-desc">A/B区为老校区，部分宿舍楼年代较早，条件相对简单，但地理位置好（靠近主城区），距地铁站、商场较近。部分高年级专业在此就读。</p>
+                    <div class="dorm-tags">
+                        <span class="tag">4人间 / 8人间</span>
+                        <span class="tag">公共浴室</span>
+                        <span class="tag orange">部分无独卫</span>
+                    </div>
+                </div>
+                <div class="dorm-card">
+                    <div class="dorm-header">
+                        <div class="dorm-icon"><i class="fas fa-star"></i></div>
+                        <div>
+                            <div class="dorm-name">C 区宿舍</div>
+                            <div class="dorm-campus">FIC 校区</div>
+                        </div>
+                    </div>
+                    <p class="dorm-desc">C区校区宿舍为近年新建，条件较好。部分联合办学项目或特定学院的学生在此居住，宿舍间数少，氛围安静。</p>
+                    <div class="dorm-tags">
+                        <span class="tag">4人间</span>
+                        <span class="tag">独卫</span>
+                        <span class="tag">空调</span>
+                    </div>
+                </div>
+                <div class="dorm-card">
+                    <div class="dorm-header">
+                        <div class="dorm-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <div class="dorm-name">以录取通知书为准</div>
+                            <div class="dorm-campus">最终分配由学院决定</div>
+                        </div>
+                    </div>
+                    <p class="dorm-desc">具体宿舍楼号和房间号在报到当天领取报到手册后才会确定，部分学院会在新生群提前公布。入住后如有问题可找宿舍管理员或学院辅导员协调。</p>
+                    <div class="dorm-tags">
+                        <span class="tag orange">以通知为准</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">宿舍常见设施</h2>
+            <div class="rules-grid" style="margin-bottom: var(--spacing-xxl);">
+                <div class="rule-card">
+                    <div class="rule-icon">❄️</div>
+                    <div class="rule-title">空调</div>
+                    <div class="rule-desc">大多数宿舍有挂式空调，使用电费从宿舍电费账户扣除，充值在校园卡App操作</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">🚿</div>
+                    <div class="rule-title">热水 / 洗澡</div>
+                    <div class="rule-desc">虎溪部分楼有独立热水器，部分需去集中浴室，需校园卡计费（约0.5–1元/分钟）</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">🌐</div>
+                    <div class="rule-title">宽带网络</div>
+                    <div class="rule-desc">每个床位配一个有线网络接口，月度流量套餐制，超出限速；Wi-Fi覆盖走廊</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">👕</div>
+                    <div class="rule-title">洗衣</div>
+                    <div class="rule-desc">每层或每栋楼设有共享洗衣机（手机App预约 + 支付，约2–3元/次）</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">🔋</div>
+                    <div class="rule-title">电费充值</div>
+                    <div class="rule-desc">宿舍电费独立核算，可在校园卡App或校内充值机充值，余量不足会断电</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">📦</div>
+                    <div class="rule-title">快递收取</div>
+                    <div class="rule-desc">菜鸟驿站 / 快递柜分布在各宿舍楼附近，收到短信/App通知后自取</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">行李打包清单</h2>
+            <div class="checklist-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-suitcase"></i></div>
+                    <div class="card-title">需自带（宿舍不提供）</div>
+                </div>
+                <div class="two-col-list">
+                    <ul class="checklist">
+                        <li><i class="fas fa-check-circle"></i>床上四件套（枕套/被套/床单）</li>
+                        <li><i class="fas fa-check-circle"></i>枕头、被子（或网购寄到校）</li>
+                        <li><i class="fas fa-check-circle"></i>洗漱用品（牙刷、牙膏、洗发水）</li>
+                        <li><i class="fas fa-check-circle"></i>毛巾、浴巾</li>
+                        <li><i class="fas fa-check-circle"></i>拖鞋（宿舍用 + 公共浴室用）</li>
+                        <li><i class="fas fa-check-circle"></i>水杯（保温杯）</li>
+                        <li><i class="fas fa-check-circle"></i>台灯（宿舍熄灯后学习用）</li>
+                    </ul>
+                    <ul class="checklist">
+                        <li><i class="fas fa-check-circle"></i>充电器、数据线、插线板</li>
+                        <li><i class="fas fa-check-circle"></i>网线（部分宿舍需要）</li>
+                        <li><i class="fas fa-check-circle"></i>衣架（宿舍晾衣用）</li>
+                        <li><i class="fas fa-check-circle"></i>洗衣液/洗衣凝珠</li>
+                        <li><i class="fas fa-check-circle"></i>常用药品（感冒药、肠胃药等）</li>
+                        <li><i class="fas fa-check-circle"></i>雨伞</li>
+                        <li><i class="fas fa-check-circle"></i>存储设备（U盘/移动硬盘）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warn-box">
+                <p><i class="fas fa-exclamation-triangle"></i><strong>安全提示：</strong>宿舍严禁使用大功率电器（热得快、电磁炉、电热锅等），违规轻则没收重则处分。洗漱间禁止存放充电宝充电过夜。离开宿舍记得关窗、锁门、关闭空调，保管好宿舍钥匙。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>

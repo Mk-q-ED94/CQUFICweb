@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初来乍到 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .tip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+        .tip-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .tip-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .tip-icon { font-size: 2.2rem; color: var(--cqu-blue); margin-bottom: var(--spacing-sm); }
+        .tip-title { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: var(--spacing-xs); }
+        .tip-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .tip-desc ul { padding-left: 16px; margin-top: 6px; }
+        .tip-desc li { margin-bottom: 4px; }
+        .info-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-xl); }
+        .info-card .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .info-card .card-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .info-card .card-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .info-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: var(--spacing-sm); }
+        .info-card p:last-child { margin-bottom: 0; }
+        .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+        .app-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center;
+            transition: all var(--transition-normal) ease; }
+        .app-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .app-icon { font-size: 2rem; color: var(--cqu-blue); margin-bottom: 8px; }
+        .app-name { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .app-desc { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .tip-grid { grid-template-columns: 1fr; }
+            .app-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .app-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-home hero-icon"></i>
+            <h1 class="section-title">初来乍到</h1>
+            <p class="section-subtitle">刚到学校，什么都是新的。这些生活贴士帮你快速上手重大日常。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">校园生活速通指南</h2>
+            <div class="tip-grid" style="margin-bottom: var(--spacing-xxl);">
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-wifi"></i></div>
+                    <div class="tip-title">连上校园网</div>
+                    <div class="tip-desc">
+                        宿舍有有线网接口，Wi-Fi连接「CQU-WiFi」或「CQU-S」，首次登录需用学号+初始密码认证（初始密码通常为身份证后6位）。
+                        <ul>
+                            <li>宿舍有线宽带：每月有流量套餐，超出后限速</li>
+                            <li>教学楼/图书馆：连接「CQU-WiFi」免认证使用</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-utensils"></i></div>
+                    <div class="tip-title">吃饭去哪里</div>
+                    <div class="tip-desc">
+                        虎溪校区有多个食堂，口味各异，价格公道（一顿饭6–15元）。
+                        <ul>
+                            <li>结算方式：校园卡扫码 / 微信支付宝</li>
+                            <li>营业时间：早6:30–9:00，午11:00–13:30，晚17:00–19:30</li>
+                            <li>周末有些窗口关闭，可去校门口餐饮街</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-bicycle"></i></div>
+                    <div class="tip-title">校园内出行</div>
+                    <div class="tip-desc">
+                        虎溪校区面积较大，骑车是最高效的出行方式。
+                        <ul>
+                            <li>共享单车：哈啰、美团单车校内均有，月卡划算</li>
+                            <li>校园班车：定时运营，连通各校区及地铁站</li>
+                            <li>步行约15–20分钟可走完大部分区域</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="tip-title">购物去哪里</div>
+                    <div class="tip-desc">
+                        <ul>
+                            <li>校内超市：日用品、零食，价格略高于外面</li>
+                            <li>校门口步行街：餐饮、奶茶、复印、修鞋应有尽有</li>
+                            <li>蔡家附近：有大型超市（沃尔玛等），骑车10分钟</li>
+                            <li>网购：京东/淘宝，快递寄到菜鸟驿站/快递柜</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div class="tip-title">医疗 & 健康</div>
+                    <div class="tip-desc">
+                        <ul>
+                            <li>校医院（医务室）：在校区内，可处理常见小病，凭学生证就诊</li>
+                            <li>校外就医：蔡家附近有综合医院，打车10分钟内</li>
+                            <li>药店：校门口步行街有药店，常备感冒药、肠胃药</li>
+                            <li>学生医保：入校后会统一参加，注意保存医保凭证</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-book"></i></div>
+                    <div class="tip-title">图书馆怎么用</div>
+                    <div class="tip-desc">
+                        <ul>
+                            <li>凭校园卡进入，首次需在前台激活图书馆借阅功能</li>
+                            <li>可借阅纸质书，也可在官网/App下载电子资源</li>
+                            <li>自习室需提前预约（在「重庆大学图书馆」公众号或App）</li>
+                            <li>开放时间：工作日7:30–22:30，周末8:00–22:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">必装 App</h2>
+            <div class="app-grid" style="margin-bottom: var(--spacing-xxl);">
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="app-name">重庆大学 App</div>
+                    <div class="app-desc">课表、成绩、一卡通余额、校园巴士实时位置，一站搞定</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="app-name">综合教务系统</div>
+                    <div class="app-desc">选课、查成绩、查课表，开学第一件事先把账号激活</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="app-name">重大图书馆</div>
+                    <div class="app-desc">预约自习室、借阅查询、电子书下载，学习必备</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-qrcode"></i></div>
+                    <div class="app-name">重大一卡通</div>
+                    <div class="app-desc">查余额、充值、查消费记录，告别现金</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-bicycle"></i></div>
+                    <div class="app-name">哈啰 / 美团单车</div>
+                    <div class="app-desc">校内骑行首选，办理月卡更划算</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-box"></i></div>
+                    <div class="app-name">菜鸟 / 快递100</div>
+                    <div class="app-desc">查快递，设置取件提醒，开学季必备</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="card-title">适应大学生活的几个心理准备</div>
+                </div>
+                <p>大学和高中最大的不同是<strong>自由度</strong>。没有人管你几点睡、有没有完成作业。自律才是大学里最重要的能力，比任何一门课都值钱。</p>
+                <p>刚来可能会感到孤独、找不到归属感，这很正常。军训是快速认识朋友的机会，别错过。进了社团后会更快融入。</p>
+                <p>遇到任何问题——学业、生活、心理——都可以找辅导员谈，或联系学校心理健康教育与咨询中心（完全保密）。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>
