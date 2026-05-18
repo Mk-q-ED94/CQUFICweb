@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>军训贴士 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .tip-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .tip-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .tip-icon { font-size: 2.2rem; color: var(--cqu-blue); margin-bottom: var(--spacing-sm); }
+        .tip-title { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: var(--spacing-xs); }
+        .tip-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .tip-desc ul { padding-left: 16px; margin-top: 6px; }
+        .tip-desc li { margin-bottom: 4px; }
+        .schedule-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-xl); }
+        .schedule-row { display: flex; align-items: flex-start; gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .schedule-row:last-child { border-bottom: none; }
+        .schedule-time { min-width: 80px; font-size: 0.9rem; font-weight: var(--font-weight-semibold); color: var(--cqu-orange); }
+        .schedule-event { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+        .mindset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+        .mindset-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center;
+            transition: all var(--transition-normal) ease; }
+        .mindset-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .mindset-emoji { font-size: 2.5rem; margin-bottom: 8px; }
+        .mindset-title { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .mindset-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+        .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .tips-grid { grid-template-columns: 1fr; }
+            .mindset-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-shield-alt hero-icon"></i>
+            <h1 class="section-title">军训贴士</h1>
+            <p class="section-subtitle">老兵过来人总结的实战经验，让你的军训少受点苦、多收获点东西。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-sm);">典型作息时间</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--spacing-lg);">以下为参考，具体以教官安排为准，每年略有差异。</p>
+            <div class="schedule-card" style="margin-bottom: var(--spacing-xxl);">
+                <div class="schedule-row">
+                    <div class="schedule-time">06:00</div>
+                    <div class="schedule-event">起床号，紧急集合出早操，注意着装整齐</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">07:00</div>
+                    <div class="schedule-event">早餐（食堂），注意不要吃得过饱，容易晕</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">08:00</div>
+                    <div class="schedule-event">上午训练：队列、正步、站军姿等，持续约2–3小时</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">11:30</div>
+                    <div class="schedule-event">午餐，午休（约1小时，利用这段时间补充睡眠）</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">14:30</div>
+                    <div class="schedule-event">下午训练，通常包含国防教育讲座、急救知识等</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">17:30</div>
+                    <div class="schedule-event">晚餐，自由活动（洗漱、休息、和室友聊天）</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">20:00</div>
+                    <div class="schedule-event">班务会 / 内务检查，交流当天心得</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">22:30</div>
+                    <div class="schedule-event">熄灯，准时就寝（睡前把明天的物品准备好）</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">实战贴士</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">☀️</div>
+                    <div class="tip-title">防晒要认真做</div>
+                    <div class="tip-desc">
+                        重庆9月高温烈日，防晒是头等大事。
+                        <ul>
+                            <li>出训前15分钟涂SPF50+ PA++++防晒霜</li>
+                            <li>脖子、耳朵、手背都要涂，容易忽略</li>
+                            <li>军帽起到一定防护，但侧脸和颈后仍暴露</li>
+                            <li>晒后用芦荟胶或修复喷雾舒缓</li>
+                            <li>黑了不要焦虑，军训结束会慢慢恢复</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">💧</div>
+                    <div class="tip-title">补水是关键</div>
+                    <div class="tip-desc">
+                        出汗量大，水分流失快，中暑多数是因为没喝够水。
+                        <ul>
+                            <li>随身带大容量水杯（800ml以上），多次少量补水</li>
+                            <li>喝温水优于冰水，避免胃部不适</li>
+                            <li>训练间隙教官会给休息时间，抓紧喝水</li>
+                            <li>感觉头晕、恶心，立即举手告知教官</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">👟</div>
+                    <div class="tip-title">脚的保护很重要</div>
+                    <div class="tip-desc">
+                        长时间站立和行走，脚是最容易受伤的部位。
+                        <ul>
+                            <li>穿好跑步鞋，避免穿解放鞋训练（易磨脚）</li>
+                            <li>多备几双袜子，每天更换，保持脚部干燥</li>
+                            <li>出现水泡用水泡贴处理，不要强行挑破</li>
+                            <li>晚上可以泡脚放松，减轻疲劳</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">😴</div>
+                    <div class="tip-title">睡眠质量决定状态</div>
+                    <div class="tip-desc">
+                        军训期间睡眠不足会让一切都变难受。
+                        <ul>
+                            <li>熄灯后立即休息，不要熬夜刷手机</li>
+                            <li>午休时间充分利用，哪怕只是闭目养神</li>
+                            <li>睡前把第二天的衣物和物品准备好，早晨不手忙脚乱</li>
+                            <li>耳塞可以帮助入睡（宿舍可能有人打鼾）</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🍽️</div>
+                    <div class="tip-title">饮食策略</div>
+                    <div class="tip-desc">
+                        <ul>
+                            <li>早餐一定要吃，但不宜过饱，容易训练时难受</li>
+                            <li>多吃蛋白质（鸡蛋、肉类），补充体力消耗</li>
+                            <li>少吃辛辣油腻，肠胃不适会让训练更痛苦</li>
+                            <li>备好藿香正气水、仁丹等防暑药品</li>
+                            <li>可以带些能量棒，训练间隙快速补充能量</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🤝</div>
+                    <div class="tip-title">团队协作很关键</div>
+                    <div class="tip-desc">
+                        军训是集体行动，一个人的状态影响整个班。
+                        <ul>
+                            <li>主动帮助状态不好的同学，互相关照</li>
+                            <li>有人晕倒或不适，立即告知教官，不要拖延</li>
+                            <li>和室友约好互相叫早，避免迟到</li>
+                            <li>班长和教官是可以求助的人，不要因为面子硬撑</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: var(--spacing-xxl);">
+                <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">心态篇</h2>
+                <div class="mindset-grid">
+                    <div class="mindset-card">
+                        <div class="mindset-emoji">😤</div>
+                        <div class="mindset-title">累是正常的</div>
+                        <div class="mindset-desc">每个人都一样，你不是最惨的那个。咬牙坚持，两三周后你会发现自己比想象中强多了。</div>
+                    </div>
+                    <div class="mindset-card">
+                        <div class="mindset-emoji">📸</div>
+                        <div class="mindset-title">这是值得记录的经历</div>
+                        <div class="mindset-desc">多拍照，和战友留合影。军训结束后这段记忆会变成大学里很特别的一部分。</div>
+                    </div>
+                    <div class="mindset-card">
+                        <div class="mindset-emoji">🌱</div>
+                        <div class="mindset-title">收获不止于体能</div>
+                        <div class="mindset-desc">认识了一群患难与共的朋友，学会了服从和纪律——这些是你在大学其他阶段很难获得的。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warn-box">
+                <p><i class="fas fa-exclamation-triangle"></i><strong>重要提醒：</strong>身体出现严重不适（持续头晕、呕吐、高烧、昏厥）务必立即报告教官，不要为了"不拖累集体"而隐忍。中暑如果处理不及时可能引发热射病，是严重的医疗紧急情况。你的健康永远比集体荣誉重要。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>

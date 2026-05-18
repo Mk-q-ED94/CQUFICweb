@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>到校报到 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .steps-grid { display: grid; gap: var(--spacing-md); }
+        .step-card { display: flex; align-items: flex-start; gap: var(--spacing-md);
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .step-card:hover { transform: translateX(6px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .step-num { min-width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.1rem; font-weight: var(--font-weight-bold); flex-shrink: 0; }
+        .step-content h3 { color: var(--cqu-blue); font-size: 1.1rem; font-weight: var(--font-weight-semibold); margin-bottom: 6px; }
+        .step-content p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
+        .info-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-md); }
+        .info-card .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .info-card .card-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .info-card .card-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .info-card p, .info-card li { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
+        .info-card ul { padding-left: var(--spacing-md); }
+        .info-card li { margin-bottom: 6px; }
+        .transport-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .transport-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); text-align: center;
+            transition: all var(--transition-normal) ease; }
+        .transport-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .transport-icon { font-size: 2.5rem; color: var(--cqu-blue); margin-bottom: var(--spacing-sm); }
+        .transport-title { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: var(--spacing-xs); }
+        .transport-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+        .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .transport-grid { grid-template-columns: 1fr; }
+            .step-card { padding: var(--spacing-md); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-university hero-icon"></i>
+            <h1 class="section-title">到校报到</h1>
+            <p class="section-subtitle">踏入重大门，一生重大人。按流程走，报到当天一切顺畅。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">怎么到校</h2>
+            <div class="transport-grid">
+                <div class="transport-card">
+                    <div class="transport-icon"><i class="fas fa-train"></i></div>
+                    <div class="transport-title">高铁 / 火车</div>
+                    <div class="transport-desc">抵达重庆北站或沙坪坝站，乘地铁6号线至蔡家站，再换乘校车或公交前往虎溪校区。建议错峰出行，开学季人流量大。</div>
+                </div>
+                <div class="transport-card">
+                    <div class="transport-icon"><i class="fas fa-plane"></i></div>
+                    <div class="transport-title">飞机</div>
+                    <div class="transport-desc">重庆江北国际机场乘轨道交通10号线至红旗河沟换乘，或直接打车。出租车/网约车至虎溪校区约40–60分钟。</div>
+                </div>
+                <div class="transport-card">
+                    <div class="transport-icon"><i class="fas fa-bus"></i></div>
+                    <div class="transport-title">市内公交 / 地铁</div>
+                    <div class="transport-desc">重庆市内乘地铁6号线至蔡家站下车，有专车接送或校园班车。具体接站安排以学院通知为准。</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">报到当天流程</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>在校门口领取报到手册</h3>
+                        <p>凭录取通知书在迎新服务台领取新生报到手册，内含当天所有流程说明、宿舍楼分配信息和校园地图。</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>缴纳学费 & 住宿费</h3>
+                        <p>如未在网上预报到时完成缴费，需前往财务处窗口现场缴纳。支持校园卡、银行卡、微信支付。</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>领取校园卡</h3>
+                        <p>在指定窗口凭身份证领取校园卡（饭卡+门禁卡+图书馆卡三合一）。首次充值100–300元用于餐厅消费。</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h3>前往宿舍楼入住</h3>
+                        <p>凭报到手册中的宿舍分配信息，前往对应宿舍楼办理入住。宿管阿姨会登记信息并分配房间钥匙。</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">5</div>
+                    <div class="step-content">
+                        <h3>完成学院报到</h3>
+                        <p>前往所在学院的报到点（通常在学院楼前广场），提交材料、签到，领取学生手册和入学须知。</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">6</div>
+                    <div class="step-content">
+                        <h3>军训集合点报到</h3>
+                        <p>在规定时间前往军训集合点签到，领取迷彩服。具体集合时间以辅导员通知为准，一般为报到次日。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: var(--spacing-xxl);">
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="card-title">报到当天小贴士</div>
+                    </div>
+                    <ul>
+                        <li>报到当天人流量极大，建议<strong>早上7–9点</strong>抵达，避免中午高峰</li>
+                        <li>行李太多可先在宿舍放下，再去各窗口排队，不必带着大行李转</li>
+                        <li>学长学姐迎新志愿者遍布校园，有任何问题直接问他们，非常热情</li>
+                        <li>校园内有免费行李托运车，帮你把行李从校门口运到宿舍楼</li>
+                        <li>手机保持电量充足，带上充电宝</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warn-box">
+                <p><i class="fas fa-exclamation-triangle"></i><strong>注意：</strong>开学季快递量激增，建议<strong>提前3–5天</strong>将大件行李快递到校（寄到「重庆大学虎溪校区菜鸟驿站」），报到当天只带随身证件材料即可，轻装上阵。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新生琐事 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xl); text-align: center; }
+        .page-hero .hero-icon { font-size: 4rem; color: var(--cqu-blue); margin-bottom: var(--spacing-md); display: block;
+            filter: drop-shadow(0 4px 12px rgba(30,79,161,0.3)); }
+        .content-section { padding: var(--spacing-xl) 0 var(--spacing-xxl); }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--cqu-blue); text-decoration: none;
+            font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
+            transition: all var(--transition-fast) ease; }
+        .nav-back:hover { transform: translateX(-4px); }
+        .section-label { font-size: 0.85rem; font-weight: var(--font-weight-semibold); color: var(--cqu-orange);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--spacing-sm); }
+        .tasks-grid { display: grid; gap: var(--spacing-md); margin-bottom: var(--spacing-xxl); }
+        .task-card { display: flex; align-items: flex-start; gap: var(--spacing-md);
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .task-card:hover { transform: translateX(6px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .task-icon { min-width: 48px; height: 48px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.3rem; flex-shrink: 0; }
+        .task-body h3 { color: var(--cqu-blue); font-size: 1.1rem; font-weight: var(--font-weight-semibold); margin-bottom: 4px; }
+        .task-body p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .task-body ul { padding-left: 16px; margin-top: 6px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+        .task-body li { margin-bottom: 3px; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: var(--font-weight-medium); margin-left: 8px; vertical-align: middle; }
+        .badge-urgent { background: rgba(198,40,40,0.1); color: var(--cqu-red); }
+        .badge-soon { background: rgba(245,124,0,0.1); color: var(--cqu-orange); }
+        .badge-anytime { background: rgba(30,79,161,0.1); color: var(--cqu-blue); }
+        .course-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+        .course-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .course-icon { font-size: 2rem; color: var(--cqu-blue); margin-bottom: var(--spacing-sm); }
+        .course-title { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: var(--spacing-xs); }
+        .course-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
+        .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        @media (max-width: 768px) {
+            .page-hero { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-lg); }
+            .page-hero .hero-icon { font-size: 3rem; }
+            .task-card { padding: var(--spacing-md); }
+            .course-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="page-hero">
+        <div class="container">
+            <i class="fas fa-clipboard-list hero-icon"></i>
+            <h1 class="section-title">新生琐事</h1>
+            <p class="section-subtitle">一堆不起眼、但不做会后悔的小事。按顺序做完，大学生活从此顺畅。</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
+
+            <div class="section-label">报到后一周内完成</div>
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">紧急要办的事</h2>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="task-body">
+                        <h3>激活校园卡 <span class="badge badge-urgent">报到当天</span></h3>
+                        <p>报到时领取校园卡后，当场或次日在校园卡服务中心激活。激活后可用于食堂消费、图书馆借阅、宿舍门禁、洗澡计费等。首次充值建议200–500元。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-user-shield"></i></div>
+                    <div class="task-body">
+                        <h3>激活教务系统账号 <span class="badge badge-urgent">开学当周</span></h3>
+                        <p>登录重庆大学综合教务系统，用学号+初始密码（通常为身份证后6位）激活，并立即修改密码。这是选课、查成绩的唯一渠道，务必记住账号密码。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-wifi"></i></div>
+                    <div class="task-body">
+                        <h3>注册校园网 <span class="badge badge-urgent">报到当周</span></h3>
+                        <p>连接 CQU-WiFi，首次认证需要学号和统一认证密码。宿舍有线网络也需激活。部分学术资源（中国知网、数据库等）需在校园网内访问，校外需使用校园VPN。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: var(--spacing-xl);">报到后一个月内</div>
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">越早办越好</h2>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="task-body">
+                        <h3>开一张银行卡 <span class="badge badge-soon">军训期间</span></h3>
+                        <p>学校发奖学金、退费等均打入银行卡，且校内多处需要绑卡。</p>
+                        <ul>
+                            <li>推荐：工商银行、建设银行（校内有网点和ATM）</li>
+                            <li>带身份证去银行柜台或自助开卡机办理</li>
+                            <li>开好后绑定微信/支付宝，日常消费更方便</li>
+                            <li>提前了解所在学院指定绑卡银行（部分学院有要求）</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="task-body">
+                        <h3>手机号实名认证 <span class="badge badge-soon">开学当月</span></h3>
+                        <p>根据国家规定，手机号必须实名注册。如果你用的是家长实名的手机卡，建议换成自己身份证实名的，以后各类认证、银行绑卡会顺畅很多。到营业厅或线上App即可办理。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-book"></i></div>
+                    <div class="task-body">
+                        <h3>激活图书馆借阅 <span class="badge badge-soon">开学当月</span></h3>
+                        <p>校园卡激活后，需要在图书馆前台做一次信息绑定才能借阅图书。同时在图书馆官网或App注册账号，可在线查询馆藏和预约自习室。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div class="task-body">
+                        <h3>学生医保办理 <span class="badge badge-soon">开学当月</span></h3>
+                        <p>学校会统一为新生参加城乡居民医保。关注学院或学校通知，确认是否需要自行缴费、如何绑定医保电子凭证（通过国家医保App）。就医时凭电子凭证报销，可节省相当费用。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: var(--spacing-xl);">开学一个月后</div>
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">不着急但要做</h2>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-users"></i></div>
+                    <div class="task-body">
+                        <h3>参加社团招新 <span class="badge badge-anytime">9月下旬</span></h3>
+                        <p>社团招新是大学里最热闹的时期之一，通常在军训结束后的操场或广场举行。学生科协、学生会、各类兴趣社团、体育社团——挑一两个感兴趣的加入，大学生活会丰富很多。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="task-body">
+                        <h3>完成新生选课 <span class="badge badge-anytime">看教务通知</span></h3>
+                        <p>在综合教务系统完成第一学期的选课（大部分必修课已预置，需要自选的通常是体育课和部分公选课）。选课有时间窗口，错过后补选机会很少，务必关注通知。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-award"></i></div>
+                    <div class="task-body">
+                        <h3>了解奖助学金 <span class="badge badge-anytime">开学后了解</span></h3>
+                        <p>重庆大学设有国家奖学金、国家助学金、学校奖学金等多种资助。关注学院公告，了解申请条件和时间节点。家庭经济困难的同学尽早找辅导员了解绿色通道和助学贷款政策。</p>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div class="task-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="task-body">
+                        <h3>购买商业附加险 <span class="badge badge-anytime">酌情</span></h3>
+                        <p>学校医保覆盖基本医疗，但报销比例有限。可以考虑额外购买一份学生商业保险（一年约100–200元），涵盖意外伤害、住院补贴等，家长可以帮忙选择。</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg); margin-top: var(--spacing-xxl);">选课小知识</h2>
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-icon"><i class="fas fa-dumbbell"></i></div>
+                    <div class="course-title">体育课要认真选</div>
+                    <div class="course-desc">体育课种类丰富（游泳、羽毛球、足球、健身等），热门课程选课竞争激烈，开放选课后要第一时间抢。体育课需修满学分方能毕业。</div>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon"><i class="fas fa-globe"></i></div>
+                    <div class="course-title">公选课拓展视野</div>
+                    <div class="course-desc">重庆大学开设大量人文、艺术、科学公选课，很多老师讲课很精彩。大一就可以开始选，别等到毕业前才想起学分不够。</div>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon"><i class="fas fa-star"></i></div>
+                    <div class="course-title">看学长学姐评价</div>
+                    <div class="course-desc">选课前可以在各类平台（微信群、校内论坛）搜集老师的口碑评价，了解考试方式和难度，做出更适合自己的选择。</div>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon"><i class="fas fa-clock"></i></div>
+                    <div class="course-title">合理安排课表密度</div>
+                    <div class="course-desc">大一第一学期课程较多，不要贪心选太多公选课，留出时间适应大学节奏。课表太满容易疲惫，影响必修课的学习效果。</div>
+                </div>
+            </div>
+
+            <div class="warn-box">
+                <p><i class="fas fa-exclamation-triangle"></i><strong>防骗提醒：</strong>开学季是诈骗高发期。任何声称"助学金""奖学金"要求转账的都是诈骗；网上兼职"刷单"100%是诈骗；不要随意扫描不明二维码，不要向陌生人透露短信验证码。遇到可疑情况立即联系辅导员或拨打110。</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="shared.js"></script>
+</body>
+</html>
