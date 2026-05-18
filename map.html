@@ -259,6 +259,11 @@
 
         /* ── 移动端竖屏适配 ─────────────────────────── */
         @media (max-width: 768px) {
+            .home-btn {
+                top: max(10px, env(safe-area-inset-top, 10px));
+                left: 12px; height: 32px; border-radius: 16px;
+                padding: 0 12px 0 8px; font-size: 12px; gap: 5px;
+            }
             .top-bar {
                 padding: calc(max(12px, env(safe-area-inset-top, 12px)) + 52px) 12px 8px;
                 gap: 10px;
@@ -302,6 +307,21 @@
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
         }
+
+        /* ── 返回主页按钮 ─────────────────────────────────── */
+        .home-btn {
+            position: absolute; left: 20px;
+            top: max(14px, env(safe-area-inset-top, 14px));
+            height: 36px; border-radius: 18px;
+            padding: 0 14px 0 10px;
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; font-weight: 600; color: #1d1d1f;
+            cursor: pointer; pointer-events: auto; text-decoration: none;
+            transition: all 0.3s var(--ease-elastic);
+            z-index: 50; white-space: nowrap;
+        }
+        .home-btn:hover { transform: scale(1.05) translateY(-1px); color: #007AFF; background: rgba(255,255,255,0.88); }
+        .home-btn:active { transform: scale(0.93); }
 
         /* ── 用户蓝点 (iOS Maps 风格) ──────────────────────── */
         .user-dot-wrapper {
@@ -382,6 +402,12 @@
     <div class="ui-overlay">
         <!-- 顶部 -->
         <div class="top-bar">
+            <!-- 返回主页 -->
+            <a href="index.html" class="home-btn liquid-glass" title="返回主页">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                首页
+            </a>
+
             <!-- 定位按钮 -->
             <button class="locate-btn liquid-glass" id="locateBtn" onclick="requestLocation()" title="定位到我的位置">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -395,7 +421,7 @@
             <div class="search-wrapper">
                 <div class="search-box liquid-glass">
                     <span class="icon-search">🔍</span>
-                    <input type="text" id="search-input" placeholder="Search CQU..." oninput="handleSearch(this.value)" onfocus="handleSearch(this.value)">
+                    <input type="text" id="search-input" placeholder="搜索重庆大学…" oninput="handleSearch(this.value)" onfocus="handleSearch(this.value)">
                 </div>
                 <!-- 搜索结果 -->
                 <div class="search-results liquid-glass" id="search-results"></div>
@@ -416,7 +442,7 @@
         <div class="bottom-area">
             <div class="filter-scroll-wrap at-start" id="filterWrap">
             <div class="filter-scroll" id="filterScroll">
-                <div class="filter-chip active" onclick="filterCategory('all', this)">All</div>
+                <div class="filter-chip active" onclick="filterCategory('all', this)">全部</div>
                 <div class="filter-chip" onclick="filterCategory('landmark', this)">地标</div>
                 <div class="filter-chip" onclick="filterCategory('library', this)">图书馆</div>
                 <div class="filter-chip" onclick="filterCategory('gate', this)">校门</div>
@@ -528,7 +554,7 @@
                 `).join('');
             } else {
                 resultsContainer.classList.add('show');
-                resultsContainer.innerHTML = `<div style="padding:15px; color:#666; text-align:center;">No results</div>`;
+                resultsContainer.innerHTML = `<div style="padding:16px; color:#86868b; text-align:center; font-size:14px;">无匹配结果</div>`;
             }
         }
 
