@@ -1,13 +1,14 @@
 # Cloudflare Worker — CQU FIC API
 # 文档：https://developers.cloudflare.com/workers/wrangler/configuration/
 #
-# 部署前须用 wrangler secret put 设置以下 Secret：
-#   SUPABASE_URL              — Supabase 项目 URL
-#   SUPABASE_SERVICE_ROLE_KEY — Supabase service_role 密钥（仅后端使用）
-#   ADMIN_PASSWORD            — 管理员登录密码
-#   ADMIN_SECRET              — HMAC 签名密钥（任意随机字符串）
-#   ALLOWED_ORIGIN            — https://cqufic.cn
-#   MAPBOX_TOKEN              — Mapbox public access token (pk.eyJ1Ij...)
+# 首次部署步骤：
+#   1. wrangler d1 create cqufic-db          （创建 D1 数据库，将 database_id 填入下方）
+#   2. wrangler d1 execute cqufic-db --file=setup-d1.sql  （初始化表结构）
+#   3. wrangler secret put ADMIN_PASSWORD
+#   4. wrangler secret put ADMIN_SECRET
+#   5. wrangler secret put ALLOWED_ORIGIN    （值：https://cqufic.cn）
+#   6. wrangler secret put MAPBOX_TOKEN      （值：pk.eyJ1Ij...）
+#   7. wrangler deploy
 
 name = "cqufic-api"
 main = "worker.js"
@@ -22,3 +23,9 @@ binding = "ASSETS"
 [[routes]]
 pattern = "cqufic.cn"
 custom_domain = true
+
+# D1 数据库（执行 wrangler d1 create cqufic-db 后填入 database_id）
+[[d1_databases]]
+binding      = "DB"
+database_name = "cqufic-db"
+database_id  = "FILL_IN_AFTER_CREATING"

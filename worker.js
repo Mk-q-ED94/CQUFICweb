@@ -2,6 +2,7 @@
  * Cloudflare Worker — CQU FIC
  * 路由：
  *   GET  /api/posts                  公开：获取帖子列表
+ *   GET  /api/comments               公开：获取指定帖子的已审核评论
  *   POST /api/submit-comment         公开：提交评论（含审核）
  *   POST /api/admin/login            管理员登录
  *   GET  /api/admin/comments         管理员：获取所有评论
@@ -12,12 +13,14 @@
  *   DELETE /api/admin/comments/:id   管理员：删除评论
  *
  * Secrets（wrangler secret put <NAME>）：
- *   SUPABASE_URL              — Supabase 项目 URL
- *   SUPABASE_SERVICE_ROLE_KEY — Supabase service_role 密钥
- *   ADMIN_PASSWORD            — 管理员登录密码
- *   ADMIN_SECRET              — HMAC 签名密钥（任意随机字符串）
- *   ALLOWED_ORIGIN            — https://cqufic.cn
- *   MAPBOX_TOKEN              — Mapbox public access token (pk.eyJ1Ij...)
+ *   ADMIN_PASSWORD  — 管理员登录密码
+ *   ADMIN_SECRET    — HMAC 签名密钥（任意随机字符串）
+ *   ALLOWED_ORIGIN  — https://cqufic.cn
+ *   MAPBOX_TOKEN    — Mapbox public access token (pk.eyJ1Ij...)
+ *
+ * D1 数据库：
+ *   wrangler d1 create cqufic-db
+ *   wrangler d1 execute cqufic-db --file=setup-d1.sql
  */
 
 const BLOCKED_WORDS = [
@@ -52,15 +55,17 @@ export default {
         const url      = new URL(request.url);
         const pathname = url.pathname;
         const method   = request.method;
-        const sb       = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
         const cors     = (data, status) => makeCors(data, status, request, env);
 
         /* ── 公开接口 ──────────────────────────────────── */
         if (method === 'GET' && pathname === '/api/posts') {
-            return handleGetPosts(sb, cors);
+            return handleGetPosts(env, cors);
+        }
+        if (method === 'GET' && pathname === '/api/comments') {
+            return handleGetComments(env, url, cors);
         }
         if (method === 'POST' && pathname === '/api/submit-comment') {
-            return handleSubmitComment(request, env, sb, cors);
+            return handleSubmitComment(request, env, cors);
         }
         if (method === 'POST' && pathname === '/api/admin/login') {
             return handleAdminLogin(request, env, cors);
@@ -74,22 +79,22 @@ export default {
             }
 
             if (method === 'GET' && pathname === '/api/admin/comments') {
-                return handleGetAllComments(sb, url, cors);
+                return handleGetAllComments(env, url, cors);
             }
             if (method === 'POST' && pathname === '/api/admin/posts') {
-                return handleCreatePost(request, sb, cors);
+                return handleCreatePost(request, env, cors);
             }
             if (method === 'PUT' && pathname.startsWith('/api/admin/posts/')) {
-                return handleUpdatePost(request, sb, decodeURIComponent(pathname.split('/').pop()), cors);
+                return handleUpdatePost(request, env, decodeURIComponent(pathname.split('/').pop()), cors);
             }
             if (method === 'DELETE' && pathname.startsWith('/api/admin/posts/')) {
-                return handleDeletePost(sb, decodeURIComponent(pathname.split('/').pop()), cors);
+                return handleDeletePost(env, decodeURIComponent(pathname.split('/').pop()), cors);
             }
             if (method === 'PATCH' && pathname.startsWith('/api/admin/comments/')) {
-                return handleToggleComment(request, sb, pathname.split('/').pop(), cors);
+                return handleToggleComment(request, env, pathname.split('/').pop(), cors);
             }
             if (method === 'DELETE' && pathname.startsWith('/api/admin/comments/')) {
-                return handleDeleteComment(sb, pathname.split('/').pop(), cors);
+                return handleDeleteComment(env, pathname.split('/').pop(), cors);
             }
         }
 
@@ -107,7 +112,7 @@ export default {
                 const html = await assetRes.text();
                 const patched = html.replace("'YOUR_MAPBOX_TOKEN'", `'${env.MAPBOX_TOKEN}'`);
                 const headers = new Headers(assetRes.headers);
-                headers.delete('content-length'); // 长度已变，让运行时重新计算
+                headers.delete('content-length');
                 return new Response(patched, { status: assetRes.status, headers });
             }
         }
@@ -119,16 +124,31 @@ export default {
 /* ══════════════════════════════════════════════════════════
    公开接口
 ══════════════════════════════════════════════════════════ */
-async function handleGetPosts(sb, cors) {
-    const { data, error } = await sb.select(
-        'posts',
-        'select=id,title,category,summary,date,is_pinned&order=is_pinned.desc,date.desc'
-    );
-    if (error) return cors({ error: '获取失败' }, 500);
-    return cors(data, 200);
+async function handleGetPosts(env, cors) {
+    try {
+        const { results } = await env.DB.prepare(
+            'SELECT id, title, category, summary, date, is_pinned FROM posts ORDER BY is_pinned DESC, date DESC'
+        ).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
 }
 
-async function handleSubmitComment(request, env, sb, cors) {
+async function handleGetComments(env, url, cors) {
+    const postId = url.searchParams.get('post_id');
+    if (!postId) return cors({ error: '缺少 post_id' }, 400);
+    try {
+        const { results } = await env.DB.prepare(
+            'SELECT id, parent_id, nickname, content, created_at FROM comments WHERE post_id = ? AND is_approved = 1 ORDER BY created_at ASC'
+        ).bind(postId).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
+}
+
+async function handleSubmitComment(request, env, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -139,47 +159,54 @@ async function handleSubmitComment(request, env, sb, cors) {
     }
 
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-    const { data: vData } = await sb.select(
-        'ip_violations', `ip=eq.${encodeURIComponent(ip)}&select=count,banned`
-    );
-    if (vData?.[0]?.banned) {
+
+    // 检查封禁
+    const violation = await env.DB.prepare(
+        'SELECT count, banned FROM ip_violations WHERE ip = ?'
+    ).bind(ip).first();
+    if (violation?.banned) {
         return cors({ error: '您已因多次违规被限制留言功能' }, 403);
     }
 
+    // 违禁词检测
     const contentLower = content.toLowerCase();
     const hitWord = BLOCKED_WORDS.find(w => contentLower.includes(w.toLowerCase()));
     if (hitWord) {
-        await sb.insert('blocked_comments', {
-            ip, post_id, nickname: nickname.trim(),
-            content: content.trim(), reason: `命中关键词：${hitWord}`,
-        });
-        const hasRecord = vData && vData.length > 0;
-        const currentCount = hasRecord ? (vData[0].count || 0) : 0;
+        await env.DB.prepare(
+            'INSERT INTO blocked_comments (id, ip, post_id, nickname, content, reason) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(crypto.randomUUID(), ip, post_id, nickname.trim(), content.trim(), `命中关键词：${hitWord}`).run();
+
+        const currentCount = violation ? (violation.count || 0) : 0;
         const newCount = currentCount + 1;
         const shouldBan = newCount >= MAX_VIOLATIONS;
-        if (!hasRecord) {
-            await sb.insert('ip_violations', { ip, count: 1, banned: shouldBan });
+
+        if (!violation) {
+            await env.DB.prepare(
+                'INSERT INTO ip_violations (ip, count, banned) VALUES (?, ?, ?)'
+            ).bind(ip, 1, shouldBan ? 1 : 0).run();
         } else {
-            await sb.patch('ip_violations', `ip=eq.${encodeURIComponent(ip)}`, {
-                count: newCount, banned: shouldBan, last_at: new Date().toISOString(),
-            });
+            await env.DB.prepare(
+                'UPDATE ip_violations SET count = ?, banned = ?, last_at = datetime(\'now\') WHERE ip = ?'
+            ).bind(newCount, shouldBan ? 1 : 0, ip).run();
         }
+
         if (shouldBan) return cors({ error: '您已因多次违规被限制留言功能' }, 403);
         return cors({
             error: `留言含有不当内容，请修改后重试（还有 ${MAX_VIOLATIONS - newCount} 次机会）`,
         }, 422);
     }
 
-    const { error } = await sb.insert('comments', {
-        post_id,
-        parent_id: parent_id || null,
-        nickname: nickname.trim(),
-        contact: contact?.trim() || null,
-        content: content.trim(),
-        is_approved: true,
-    });
-    if (error) return cors({ error: '提交失败，请稍后重试' }, 500);
-    return cors({ success: true }, 200);
+    try {
+        await env.DB.prepare(
+            'INSERT INTO comments (id, post_id, parent_id, nickname, contact, content, is_approved) VALUES (?, ?, ?, ?, ?, ?, 1)'
+        ).bind(
+            crypto.randomUUID(), post_id, parent_id || null,
+            nickname.trim(), contact?.trim() || null, content.trim()
+        ).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '提交失败，请稍后重试' }, 500);
+    }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -198,16 +225,22 @@ async function handleAdminLogin(request, env, cors) {
     return cors({ token }, 200);
 }
 
-async function handleGetAllComments(sb, url, cors) {
+async function handleGetAllComments(env, url, cors) {
     const postId = url.searchParams.get('post_id');
-    let query = 'select=id,post_id,parent_id,nickname,contact,content,is_approved,created_at&order=created_at.desc';
-    if (postId) query += `&post_id=eq.${encodeURIComponent(postId)}`;
-    const { data, error } = await sb.select('comments', query);
-    if (error) return cors({ error: '获取失败' }, 500);
-    return cors(data, 200);
+    try {
+        const sql = postId
+            ? 'SELECT id, post_id, parent_id, nickname, contact, content, is_approved, created_at FROM comments WHERE post_id = ? ORDER BY created_at DESC'
+            : 'SELECT id, post_id, parent_id, nickname, contact, content, is_approved, created_at FROM comments ORDER BY created_at DESC';
+        const { results } = postId
+            ? await env.DB.prepare(sql).bind(postId).all()
+            : await env.DB.prepare(sql).all();
+        return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
 }
 
-async function handleCreatePost(request, sb, cors) {
+async function handleCreatePost(request, env, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
@@ -216,48 +249,68 @@ async function handleCreatePost(request, sb, cors) {
     if (!id || !title || !category || !summary || !content) {
         return cors({ error: '缺少必填字段' }, 400);
     }
-    const { error } = await sb.insert('posts', {
-        id: id.trim(), title: title.trim(), category: category.trim(),
-        summary: summary.trim(), content: content.trim(),
-        date: date || new Date().toISOString().slice(0, 10),
-    });
-    if (error) return cors({ error: `创建失败: ${error}` }, 500);
-    return cors({ success: true }, 200);
+    try {
+        await env.DB.prepare(
+            'INSERT INTO posts (id, title, category, summary, content, date) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(
+            id.trim(), title.trim(), category.trim(),
+            summary.trim(), content.trim(),
+            date || new Date().toISOString().slice(0, 10)
+        ).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: `创建失败: ${e.message}` }, 500);
+    }
 }
 
-async function handleUpdatePost(request, sb, id, cors) {
+async function handleUpdatePost(request, env, id, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
 
     const allowed = ['title', 'category', 'summary', 'content', 'date', 'is_pinned'];
-    const updates = {};
-    allowed.forEach(k => { if (body[k] !== undefined) updates[k] = body[k]; });
+    const fields = allowed.filter(k => body[k] !== undefined);
+    if (!fields.length) return cors({ error: '无有效字段' }, 400);
 
-    const { error } = await sb.patch('posts', `id=eq.${encodeURIComponent(id)}`, updates);
-    if (error) return cors({ error: '更新失败' }, 500);
-    return cors({ success: true }, 200);
+    const set = fields.map(k => `${k} = ?`).join(', ');
+    const vals = fields.map(k => body[k]);
+    try {
+        await env.DB.prepare(`UPDATE posts SET ${set} WHERE id = ?`).bind(...vals, id).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '更新失败' }, 500);
+    }
 }
 
-async function handleDeletePost(sb, id, cors) {
-    const { error } = await sb.delete('posts', `id=eq.${encodeURIComponent(id)}`);
-    if (error) return cors({ error: '删除失败' }, 500);
-    return cors({ success: true }, 200);
+async function handleDeletePost(env, id, cors) {
+    try {
+        await env.DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '删除失败' }, 500);
+    }
 }
 
-async function handleToggleComment(request, sb, id, cors) {
+async function handleToggleComment(request, env, id, cors) {
     let body;
     try { body = await request.json(); }
     catch { return cors({ error: '请求格式错误' }, 400); }
-    const { error } = await sb.patch('comments', `id=eq.${id}`, { is_approved: body.is_approved });
-    if (error) return cors({ error: '操作失败' }, 500);
-    return cors({ success: true }, 200);
+    try {
+        await env.DB.prepare('UPDATE comments SET is_approved = ? WHERE id = ?')
+            .bind(body.is_approved ? 1 : 0, id).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '操作失败' }, 500);
+    }
 }
 
-async function handleDeleteComment(sb, id, cors) {
-    const { error } = await sb.delete('comments', `id=eq.${id}`);
-    if (error) return cors({ error: '删除失败' }, 500);
-    return cors({ success: true }, 200);
+async function handleDeleteComment(env, id, cors) {
+    try {
+        await env.DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
+        return cors({ success: true }, 200);
+    } catch (e) {
+        return cors({ error: '删除失败' }, 500);
+    }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -282,43 +335,8 @@ async function isValidToken(token, secret) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   Supabase REST 客户端
+   CORS 响应工厂
 ══════════════════════════════════════════════════════════ */
-function createClient(url, key) {
-    const h = {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
-    };
-    return {
-        async select(table, query = '') {
-            const res = await fetch(`${url}/rest/v1/${table}?${query}`, { headers: h });
-            return { data: res.ok ? await res.json() : null, error: res.ok ? null : await res.text() };
-        },
-        async insert(table, body) {
-            const res = await fetch(`${url}/rest/v1/${table}`, {
-                method: 'POST', headers: { ...h, Prefer: 'return=minimal' },
-                body: JSON.stringify(body),
-            });
-            return { error: res.ok ? null : await res.text() };
-        },
-        async patch(table, query, body) {
-            const res = await fetch(`${url}/rest/v1/${table}?${query}`, {
-                method: 'PATCH', headers: { ...h, Prefer: 'return=minimal' },
-                body: JSON.stringify(body),
-            });
-            return { error: res.ok ? null : await res.text() };
-        },
-        async delete(table, query) {
-            const res = await fetch(`${url}/rest/v1/${table}?${query}`, {
-                method: 'DELETE', headers: { ...h, Prefer: 'return=minimal' },
-            });
-            return { error: res.ok ? null : await res.text() };
-        },
-    };
-}
-
 function makeCors(data, status = 200, request, env) {
     const allowedOrigin = env?.ALLOWED_ORIGIN || '';
     const requestOrigin = request?.headers?.get('Origin') || '';
