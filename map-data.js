@@ -61,6 +61,11 @@ const RAW_BOUNDARIES = {
     [106.44944,29.56442],[106.44896,29.56451],[106.44879,29.5644],
     [106.44871,29.56434]
   ],
+  'D': [
+    [106.296, 29.593],[106.315, 29.597],[106.315, 29.601],
+    [106.312, 29.607],[106.304, 29.607],[106.294, 29.604],
+    [106.294, 29.593]
+  ],
   'HUXI': [
     [106.28364,29.60115],[106.2831, 29.59845],[106.28881,29.59842],
     [106.28788,29.59519],[106.28806,29.59125],[106.2882, 29.5891],
@@ -219,8 +224,24 @@ const CAMPUS_DATA = {
   'C': {
     name: 'C区', badge: 'badge-C',
     locations: [
-      { name: '医学院',  type: 'college', lng: 106.45038, lat: 29.56048, desc: '医学',  class: 'c-college', icon: '💊' },
-      { name: 'C区食堂', type: 'food',    lng: 106.44944, lat: 29.56442, desc: '食堂',  class: 'c-food',    icon: '🍚' },
+
+      // ── 校门 ───────────────────────────────────────
+      { name: '正门',                       type: 'gate',    lng: 106.462251, lat: 29.566857, desc: '大门',   class: 'c-gate',    icon: '🏛️' },
+
+      // ── 图书馆 ─────────────────────────────────────
+      { name: '图书馆',                     type: 'library', lng: 106.460653, lat: 29.566549, desc: '图书馆', class: 'c-library', icon: '📖' },
+
+      // ── 教学楼 ─────────────────────────────────────
+      { name: '第一教学楼',                 type: 'teach',   lng: 106.460375, lat: 29.565541, desc: '教学楼', class: 'c-teach',   icon: '📚' },
+      { name: '第五教学楼',                 type: 'teach',   lng: 106.458960, lat: 29.566468, desc: '教学楼', class: 'c-teach',   icon: '📚' },
+      { name: 'IT人才培训与发展中心',       type: 'teach',   lng: 106.460678, lat: 29.564671, desc: '培训中心', class: 'c-teach', icon: '💻' },
+      { name: '高层管理者培训与发展中心EDP', type: 'teach',  lng: 106.459791, lat: 29.566819, desc: '培训中心', class: 'c-teach', icon: '🎓' },
+
+      // ── 实验楼 ─────────────────────────────────────
+      { name: '实验实训大楼',               type: 'lab',     lng: 106.458667, lat: 29.566515, desc: '实验楼', class: 'c-lab',     icon: '🔬' },
+
+      // ── 地标 ───────────────────────────────────────
+      { name: '办公楼',                     type: 'landmark', lng: 106.460380, lat: 29.565991, desc: '行政楼', class: 'c-main',   icon: '🏢' },
     ]
   },
 
@@ -279,6 +300,43 @@ const CAMPUS_DATA = {
       { name: '松园篮球场', type: 'sport', lng: 106.29032, lat: 29.59687, desc: '运动', class: 'c-sport', icon: '🏀' },
       { name: '田径场',     type: 'sport', lng: 106.29974, lat: 29.59966, desc: '运动', class: 'c-sport', icon: '🏅' },
       { name: '体育馆',     type: 'sport', lng: 106.30176, lat: 29.60046, desc: '运动', class: 'c-sport', icon: '🏟️' },
+    ]
+  },
+
+  // ════════════════════════════════════════════════════
+  // D区（虎溪东区）
+  // ════════════════════════════════════════════════════
+  'D': {
+    name: 'D区', badge: 'badge-D',
+    locations: [
+
+      // ── 校门 ───────────────────────────────────────
+      { name: '大门',  type: 'gate', lng: 106.311365, lat: 29.599014, desc: '大门', class: 'c-gate', icon: '🏛️' },
+      { name: '东门',  type: 'gate', lng: 106.312907, lat: 29.600395, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '北2门', type: 'gate', lng: 106.310649, lat: 29.604480, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '北门',  type: 'gate', lng: 106.307533, lat: 29.604519, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '北1门', type: 'gate', lng: 106.305410, lat: 29.604402, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '西1门', type: 'gate', lng: 106.298429, lat: 29.594528, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '西2门', type: 'gate', lng: 106.299149, lat: 29.601741, desc: '大门', class: 'c-gate', icon: '🚪' },
+      { name: '西3门', type: 'gate', lng: 106.298247, lat: 29.598328, desc: '大门', class: 'c-gate', icon: '🚪' },
+
+      // ── 图书馆 ─────────────────────────────────────
+      { name: '图书馆', type: 'library', lng: 106.308397, lat: 29.598423, desc: '图书馆', class: 'c-library', icon: '📖' },
+
+      // ── 地标 ───────────────────────────────────────
+      { name: '老门柱广场',     type: 'landmark', lng: 106.311356, lat: 29.600392, desc: '地标', class: 'c-main', icon: '🗿' },
+      { name: '物理探索科技馆', type: 'landmark', lng: 106.310544, lat: 29.601223, desc: '地标', class: 'c-main', icon: '🔭' },
+      { name: '科学中心',       type: 'landmark', lng: 106.295635, lat: 29.603080, desc: '地标', class: 'c-main', icon: '🔬' },
+      { name: '大学生活动中心', type: 'landmark', lng: 106.304781, lat: 29.596271, desc: '地标', class: 'c-main', icon: '🎭' },
+      { name: '小剧场',         type: 'landmark', lng: 106.304829, lat: 29.595586, desc: '地标', class: 'c-main', icon: '🎬' },
+      { name: '云湖',           type: 'landmark', lng: 106.309002, lat: 29.599950, desc: '地标', class: 'c-main', icon: '🌊' },
+      { name: '缙湖',           type: 'landmark', lng: 106.305439, lat: 29.599225, desc: '地标', class: 'c-main', icon: '🌊' },
+
+      // ── 学院 ───────────────────────────────────────
+      { name: '模拟法庭', type: 'college', lng: 106.306704, lat: 29.597992, desc: '学院', class: 'c-college', icon: '⚖️' },
+
+      // ── 运动 ───────────────────────────────────────
+      { name: '体育中心', type: 'sport', lng: 106.312022, lat: 29.603314, desc: '运动', class: 'c-sport', icon: '🏟️' },
     ]
   },
 
