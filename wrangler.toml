@@ -24,8 +24,6 @@ binding = "ASSETS"
 pattern = "cqufic.cn"
 custom_domain = true
 
-# D1 数据库（执行 wrangler d1 create cqufic-db 后填入 database_id）
-[[d1_databases]]
-binding      = "DB"
-database_name = "cqufic-db"
-database_id  = "FILL_IN_AFTER_CREATING"
+# D1 数据库绑定通过 Cloudflare 控制台配置：
+# Workers & Pages → cqufic-api → Settings → Bindings → D1 Database
+# binding name = "DB"，选择 "cqufic-db"
