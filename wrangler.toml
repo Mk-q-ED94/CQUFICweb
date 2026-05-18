@@ -12,7 +12,12 @@ name = "cqufic-api"
 main = "worker.js"
 compatibility_date = "2025-01-01"
 
-# api.cqufic.cn 完全由此 Worker 接管
+# 静态文件目录（由 build 命令生成）
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+# cqufic.cn 全部由此 Worker 接管（静态文件 + /api/*）
 [[routes]]
-pattern = "api.cqufic.cn/*"
+pattern = "cqufic.cn/*"
 custom_domain = true
