@@ -545,9 +545,23 @@
 
         /* ── 响应式 ───────────────────────────────────── */
         @media (max-width: 768px) {
-            .post-article { padding: var(--spacing-lg) var(--spacing-md); }
-            .form-row { grid-template-columns: 1fr; }
-            .posts-grid { grid-template-columns: 1fr; }
+            .forum-hero { padding: var(--spacing-md) 0 10px; margin-bottom: var(--spacing-md); }
+            .forum-hero-title { font-size: 1.75rem; letter-spacing: -.3px; margin-bottom: 6px; }
+            .forum-hero-subtitle { font-size: .9rem; }
+            .category-bar { gap: 6px; margin-top: var(--spacing-md); }
+            .cat-btn { padding: 5px 12px; font-size: .8rem; }
+            .posts-grid { grid-template-columns: 1fr; gap: 12px; }
+            .post-card { padding: 14px; gap: 10px; border-radius: 16px; }
+            .post-category-badge { font-size: .7rem; padding: 2px 8px; }
+            .post-card-date { font-size: .72rem; }
+            .post-card-title { font-size: 1.02rem; line-height: 1.35; }
+            .post-card-summary { font-size: .85rem; line-height: 1.5; }
+            .post-card-footer { font-size: .75rem; padding-top: 8px; gap: 12px; }
+            .back-btn { padding: 6px 14px; font-size: .85rem; margin-bottom: var(--spacing-md); }
+            .post-article { padding: var(--spacing-md); border-radius: 16px; }
+            .comments-section { padding: var(--spacing-md); border-radius: 16px; }
+            .comments-title { font-size: 1.1rem; }
+            .form-row { grid-template-columns: 1fr; gap: 10px; }
         }
     </style>
 </head>

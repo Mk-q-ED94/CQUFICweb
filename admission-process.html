@@ -60,24 +60,26 @@
         /* 移动端 */
         @media (max-width: 768px) {
             .content-section { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-xl); min-height: auto; }
-            .circle-container { height: 300px; margin: var(--spacing-lg) 0; }
-            .liquid-circle { width: 300px; height: 300px; }
-            .badge-container { width: 200px; height: 124px; }
-            .timeline-point { width: 50px; height: 25px; font-size: 12px; }
+            .content-section { padding: calc(var(--spacing-md) + 60px) 0 var(--spacing-md); min-height: auto; display: block; }
+            .circle-container { height: 280px; margin: var(--spacing-md) 0; }
+            .liquid-circle { width: 280px; height: 280px; }
+            .badge-container { width: 180px; height: 112px; }
+            .timeline-point { width: 46px; height: 24px; font-size: 11px; }
             .timeline-popup {
                 position: fixed !important; left: 50% !important; top: 50% !important;
                 transform: translate(-50%, -50%) scale(0.9);
-                width: 85vw; max-width: 300px;
+                width: 84vw; max-width: 300px;
                 padding: var(--spacing-sm); z-index: 1002;
             }
             .timeline-popup.active { transform: translate(-50%, -50%) scale(1); }
-            .timeline-popup h3 { font-size: 1.1rem; }
-            .features-section { padding: var(--spacing-xl) 0; min-height: auto; }
+            .timeline-popup h3 { font-size: 1.05rem; margin-bottom: 6px; }
+            .timeline-popup p { font-size: .85rem; margin-bottom: 10px; }
+            .features-section { padding: var(--spacing-md) 0; min-height: auto; display: block; }
         }
         @media (max-width: 480px) {
-            .liquid-circle { width: 250px; height: 250px; }
-            .circle-container { height: 250px; }
-            .badge-container { width: 166px; height: 103px; }
+            .liquid-circle { width: 240px; height: 240px; }
+            .circle-container { height: 240px; }
+            .badge-container { width: 150px; height: 93px; }
         }
         @media (hover: none) and (pointer: coarse) {
             .liquid-circle:hover, .badge-container:hover .cqu-badge, .timeline-point:hover { transform: none; }

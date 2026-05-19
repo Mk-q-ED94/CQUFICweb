@@ -74,11 +74,21 @@
         .feature-title { font-size: 1.5rem; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm); color: var(--cqu-blue); }
         .feature-description { color: var(--text-secondary); font-size: 1rem; }
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .features-grid, .reviews-grid { grid-template-columns: 1fr; }
-            header { width: 95%; top: 10px; }
-            .rating-form-container { padding: var(--spacing-md); }
-            .stats-container { flex-direction: column; }
+            .content-section { padding: calc(var(--spacing-md) + 60px) 0 var(--spacing-md); min-height: auto; display: block; }
+            .features-grid { grid-template-columns: 1fr; gap: 12px; }
+            .reviews-grid { grid-template-columns: 1fr; gap: 12px; margin-top: var(--spacing-md); }
+            .rating-form-container { padding: var(--spacing-md); border-radius: 14px; }
+            .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: var(--spacing-md) 0; }
+            .stat-card { min-width: 0; padding: 12px 8px; border-radius: 14px; }
+            .stat-card h3 { font-size: 1.4rem !important; }
+            .stat-card p { font-size: .78rem !important; }
+            .form-label { font-size: .92rem; margin-bottom: 6px; }
+            .form-input, .form-textarea, .form-select { padding: 10px 12px; font-size: .95rem; border-radius: 10px; }
+            .form-textarea { min-height: 110px; }
+            .form-submit { padding: 12px 22px; font-size: .98rem; }
+            .feature-icon { width: 56px; height: 56px; font-size: 1.4rem; border-radius: 14px; margin-bottom: 10px; }
+            .feature-title { font-size: 1.1rem; margin-bottom: 4px; }
+            .feature-description { font-size: .88rem; }
         }
     </style>
 </head>

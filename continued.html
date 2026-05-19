@@ -53,90 +53,42 @@
 
 /* 移动端优化 */
 @media (max-width: 768px) {
-    /* 导航栏优化 */
-    header { width: 95%; top: 10px; height: 60px; }
-    .nav-container { padding: 0 var(--spacing-sm); }
-    .logo { gap: var(--spacing-xs); }
-    .logo-icon { font-size: 1.5rem; letter-spacing: 2px; }
-    .logo-text { line-height: 1.1; }
-    .logo-main { font-size: 0.9rem; }
-    .logo-sub { font-size: 0.6rem; }
-    
     /* 内容区域优化 */
-    .content-section { 
-        padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-xl); 
-        min-height: auto; 
+    .content-section {
+        padding: calc(var(--spacing-md) + 60px) 0 var(--spacing-md);
+        min-height: auto;
     }
-    
+
     /* 液体圆形优化 */
-    .liquid-circle { 
-        height: 300px; 
-        width: 300px; 
-    }
-    
+    .liquid-circle { height: 260px; width: 260px; }
+
     /* 中心内容优化 */
-    .center-content { 
-        max-width: 90%; 
-        padding: var(--spacing-lg); 
-        margin-bottom: var(--spacing-xl);
+    .center-content {
+        max-width: 92%; padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
     }
-    .main-icon { 
-        font-size: 3.5rem; 
-        margin-bottom: var(--spacing-md); 
-    }
-    .main-title { 
-        font-size: 2rem; 
-        margin-bottom: var(--spacing-sm); 
-    }
-    .main-description { 
-        font-size: 1rem; 
-        margin-bottom: var(--spacing-lg); 
-        line-height: 1.5;
-    }
-    .progress-text { 
-        font-size: 1rem; 
-        margin-bottom: var(--spacing-lg); 
-    }
-    
+    .main-icon { font-size: 2.8rem; margin-bottom: 10px; }
+    .main-title { font-size: 1.55rem; margin-bottom: 6px; }
+    .main-description { font-size: .9rem; margin-bottom: var(--spacing-md); line-height: 1.5; }
+    .progress-container { height: 8px; margin-bottom: 10px; }
+    .progress-text { font-size: .88rem; margin-bottom: var(--spacing-md); }
+
     /* 按钮优化 */
-    .action-buttons { 
-        flex-direction: column; 
-        align-items: center; 
-        gap: var(--spacing-sm);
-    }
-    .action-btn { 
-        font-size: 1rem; 
-        padding: var(--spacing-sm) var(--spacing-lg);
-        width: 100%;
-        max-width: 200px;
-    }
-    
+    .action-buttons { flex-direction: row; gap: var(--spacing-sm); }
+    .action-btn { font-size: .92rem; padding: 10px var(--spacing-md); min-width: 0; max-width: none; }
+
     /* 即将上线功能优化 */
-    .upcoming-features { 
-        margin-top: var(--spacing-xl); 
+    .upcoming-features { margin-top: var(--spacing-md); }
+    .section-title { font-size: 1.3rem; margin-bottom: var(--spacing-sm); }
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: var(--spacing-md);
     }
-    .section-title { 
-        font-size: 1.8rem; 
-        margin-bottom: var(--spacing-md); 
-    }
-    .features-grid { 
-        grid-template-columns: 1fr; 
-        gap: var(--spacing-md); 
-        margin-top: var(--spacing-lg); 
-    }
-    .feature-item { 
-        padding: var(--spacing-md); 
-    }
-    .feature-icon-small { 
-        font-size: 2rem; 
-        margin-bottom: var(--spacing-xs); 
-    }
-    .feature-title { 
-        font-size: 1.1rem; 
-    }
-    .feature-desc { 
-        font-size: 0.85rem; 
-    }
+    .feature-item { padding: 12px; }
+    .feature-icon-small { font-size: 1.6rem; margin-bottom: 4px; }
+    .feature-title { font-size: 1rem; }
+    .feature-desc { font-size: .8rem; line-height: 1.45; }
     
     /* 气泡优化 */
     .bubble { 
@@ -164,18 +116,17 @@
 
 /* 小屏手机优化 */
 @media (max-width: 480px) {
-    .liquid-circle { 
-        height: 250px; 
-        width: 250px; 
-    }
-    .main-title { font-size: 1.8rem; }
-    .main-description { font-size: 0.95rem; }
-    .section-title { font-size: 1.6rem; }
-    .feature-item { padding: var(--spacing-sm); }
+    .liquid-circle { height: 220px; width: 220px; }
+    .main-title { font-size: 1.4rem; }
+    .main-description { font-size: .85rem; }
+    .section-title { font-size: 1.2rem; }
+    .feature-item { padding: 10px; }
+    .feature-icon-small { font-size: 1.4rem; }
+    .feature-title { font-size: .95rem; }
+    .feature-desc { font-size: .78rem; }
     .special-bubble {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 0.9rem !important;
+        width: 42px !important; height: 42px !important;
+        font-size: .85rem !important;
     }
 }
 
