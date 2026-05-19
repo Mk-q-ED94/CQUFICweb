@@ -340,6 +340,11 @@
             }
             .place-card:hover { transform: none; }
             .place-card:active { transform: scale(0.96); transition: transform .1s; }
+
+            /* Toast 推到搜索行下方（顶部行实际占用 safe-area + 102px）*/
+            .map-toast.show {
+                transform: translateX(-50%) translateY(calc(max(10px, env(safe-area-inset-top, 10px)) + 112px));
+            }
         }
 
         /* 小屏手机紧凑布局 (iPhone SE / Mini 等) */
@@ -442,7 +447,8 @@
             opacity: 0;
         }
         .map-toast.show {
-            transform: translateX(-50%) translateY(calc(max(10px, env(safe-area-inset-top,10px)) + 68px));
+            /* 桌面端：搜索行底部 120px + 10px 间距 */
+            transform: translateX(-50%) translateY(130px);
             opacity: 1;
         }
         .map-toast.hide {
