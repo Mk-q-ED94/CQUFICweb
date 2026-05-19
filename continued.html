@@ -10,12 +10,12 @@
 /* header/nav/body 样式由 shared.css 统一管理 */
 .content-section{padding:calc(var(--spacing-xxxl) + var(--header-height)) 0 var(--spacing-xxxl);display:flex;align-items:center;justify-content:center;position:relative;min-height:100vh}
 .central-container{position:relative;width:100%;display:flex;justify-content:center;align-items:center;flex-direction:column}
-.liquid-circle{position:absolute;width:600px;height:600px;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.15) 100%);backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.6);box-shadow:0 20px 40px rgba(0,0,0,.15),inset 0 2px 0 rgba(255,255,255,.5);transition:var(--transition-normal);overflow:hidden;cursor:pointer;z-index:1}
+.liquid-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.15) 100%);backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.6);box-shadow:0 20px 40px rgba(0,0,0,.15),inset 0 2px 0 rgba(255,255,255,.5);transition:var(--transition-normal);overflow:hidden;cursor:pointer;z-index:1}
 .liquid-circle::before{content:'';position:absolute;top:-20%;left:-20%;right:-20%;bottom:-20%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.3) 0%,rgba(255,255,255,.1) 40%,transparent 70%);border-radius:50%;filter:blur(15px);opacity:.8;transition:var(--transition-normal);pointer-events:none}
 .liquid-circle::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,rgba(255,255,255,.08) 30%,rgba(255,255,255,.15) 70%,rgba(255,255,255,.08) 100%);opacity:0;transition:var(--transition-normal);pointer-events:none}
 .liquid-circle:hover::after{opacity:1}
-.liquid-circle:hover{transform:scale(1.05);box-shadow:0 25px 50px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.6)}
-.center-content{position:relative;z-index:2;text-align:center;max-width:500px;padding:var(--spacing-xl);background:rgba(255,255,255,.5);backdrop-filter:blur(20px);border-radius:var(--border-radius-xl);border:1px solid rgba(255,255,255,.4);box-shadow:var(--shadow-md);margin-bottom:var(--spacing-xxxl)}
+.liquid-circle:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 25px 50px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.6)}
+.center-content{position:relative;z-index:2;text-align:center;max-width:500px;padding:var(--spacing-xl);background:rgba(255,255,255,.5);backdrop-filter:blur(20px);border-radius:var(--border-radius-xl);border:1px solid rgba(255,255,255,.4);box-shadow:var(--shadow-md)}
 .main-icon{font-size:5rem;color:var(--cqu-blue);margin-bottom:var(--spacing-lg);display:block;transition:all .5s ease;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
 .main-title{font-size:3rem;font-weight:var(--font-weight-bold);color:var(--cqu-blue);margin-bottom:var(--spacing-md);background:linear-gradient(135deg,var(--cqu-blue) 0%,var(--cqu-orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
 .main-description{font-size:1.3rem;color:var(--text-secondary);margin-bottom:var(--spacing-xl);line-height:1.6}
@@ -65,7 +65,6 @@
     /* 中心内容优化 */
     .center-content {
         max-width: 92%; padding: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
     }
     .main-icon { font-size: 2.8rem; margin-bottom: 10px; }
     .main-title { font-size: 1.55rem; margin-bottom: 6px; }
@@ -132,8 +131,10 @@
 
 /* 触摸设备悬停状态优化 */
 @media (hover: none) and (pointer: coarse) {
-    .nav-link:hover, .liquid-circle:hover, .action-btn:hover, .feature-item:hover, .special-bubble:hover { transform: none; }
-    .nav-link:active, .liquid-circle:active, .action-btn:active, .feature-item:active, .special-bubble:active { transform: scale(0.98); }
+    .nav-link:hover, .action-btn:hover, .feature-item:hover, .special-bubble:hover { transform: none; }
+    .liquid-circle:hover { transform: translate(-50%, -50%); }
+    .nav-link:active, .action-btn:active, .feature-item:active, .special-bubble:active { transform: scale(0.98); }
+    .liquid-circle:active { transform: translate(-50%, -50%) scale(0.98); }
     .feature-item:active { background: rgba(255,255,255,0.8); }
     .action-btn:active { background: rgba(30,79,161,0.8); }
 }
@@ -304,16 +305,23 @@ function resetBubbles(){
 function setupHoverEffects(){
     // 在移动端禁用复杂的悬停效果
     if (window.innerWidth <= 768) return;
-    
-    const e=document.getElementById("liquidCircle"),t=document.getElementById("mainIcon");
-    e.addEventListener("mousemove",e=>{
-        const t=e.getBoundingClientRect(),a=t.left+t.width/2,o=t.top+t.height/2,i=(e.clientX-a)/(t.width/2),l=(e.clientY-o)/(t.height/2);
-        e.style.transform=`scale(1.05) translate(${5*i}px, ${5*l}px)`;
-        t.style.transform=`translate(${3*i}px, ${3*l}px) rotate(${5*i}deg)`;
+
+    const circle = document.getElementById("liquidCircle");
+    const icon = document.getElementById("mainIcon");
+    if (!circle || !icon) return;
+
+    circle.addEventListener("mousemove", function(event){
+        const rect = circle.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (event.clientX - cx) / (rect.width / 2);
+        const dy = (event.clientY - cy) / (rect.height / 2);
+        circle.style.transform = `translate(-50%, -50%) scale(1.05) translate(${5*dx}px, ${5*dy}px)`;
+        icon.style.transform = `translate(${3*dx}px, ${3*dy}px) rotate(${5*dx}deg)`;
     });
-    e.addEventListener("mouseleave",()=>{
-        e.style.transform="scale(1)";
-        t.style.transform="translate(0, 0) rotate(0deg)";
+    circle.addEventListener("mouseleave", function(){
+        circle.style.transform = "translate(-50%, -50%) scale(1)";
+        icon.style.transform = "translate(0, 0) rotate(0deg)";
     });
 }
 
