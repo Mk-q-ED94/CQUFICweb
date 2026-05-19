@@ -184,6 +184,23 @@
             text-align: right;
         }
 
+        #steps,
+        #checklist,
+        #related {
+            scroll-margin-top: calc(var(--header-height) + 96px);
+        }
+
+        .mobile-jumpbar {
+            display: none;
+        }
+
+        .mobile-jumpbar a:focus-visible,
+        .tool-btn:focus-visible,
+        .secondary-cta:focus-visible {
+            outline: 2px solid rgba(30,79,161,0.3);
+            outline-offset: 3px;
+        }
+
         .detail-layout {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 320px;
@@ -424,6 +441,7 @@
             min-height: 20px;
             color: var(--text-tertiary);
             font-size: 0.86rem;
+            overflow-wrap: anywhere;
         }
 
         .fallback {
@@ -438,17 +456,204 @@
         }
 
         @media (max-width: 720px) {
-            .detail-page { padding-top: calc(var(--header-height) + 48px); }
+            .detail-page {
+                padding-top: calc(var(--header-height) + 42px);
+                padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+            }
+
+            .breadcrumb {
+                gap: 8px;
+                margin-bottom: 12px;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .breadcrumb::-webkit-scrollbar { display: none; }
+
+            .detail-hero {
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
             .hero-copy,
             .content-card,
             .side-card,
-            .hero-side { padding: var(--spacing-md); }
-            .hero-actions { flex-direction: column; }
+            .hero-side {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .topic-kicker {
+                min-height: 30px;
+                margin-bottom: 12px;
+                font-size: 0.82rem;
+            }
+
+            .topic-title {
+                font-size: 2rem;
+                line-height: 1.08;
+                margin-bottom: 12px;
+            }
+
+            .topic-summary {
+                font-size: 0.95rem;
+                line-height: 1.65;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 16px;
+            }
+
             .hero-cta,
             .secondary-cta { width: 100%; justify-content: center; }
+
+            .hero-side {
+                min-height: 0;
+                gap: 12px;
+            }
+
+            .side-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+                border-radius: 16px;
+            }
+
+            .info-list { gap: 0; }
+
+            .info-row {
+                padding: 10px 0;
+                font-size: 0.86rem;
+            }
+
+            .info-row strong {
+                max-width: 58%;
+                overflow-wrap: anywhere;
+            }
+
+            .progress-panel {
+                margin-top: 4px;
+                padding-top: 12px;
+            }
+
+            .mobile-jumpbar {
+                position: sticky;
+                top: calc(var(--header-height) + 18px);
+                z-index: 25;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+                margin: 0 0 var(--spacing-md);
+                padding: 8px;
+                border-radius: 18px;
+                background: rgba(255,255,255,0.82);
+                border: 1px solid rgba(255,255,255,0.78);
+                box-shadow: var(--shadow-sm);
+                backdrop-filter: blur(18px);
+            }
+
+            .mobile-jumpbar a {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                border-radius: 14px;
+                background: rgba(30,79,161,0.08);
+                color: var(--cqu-blue);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: var(--font-weight-semibold);
+                touch-action: manipulation;
+            }
+
+            .detail-layout {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            .main-stack,
+            .side-stack { display: contents; }
+
+            .essentials-card { order: 1; }
+            .checklist-card { order: 2; }
+            .steps-card { order: 3; }
+            .faq-card { order: 4; }
+            .notice-card { order: 5; }
+            .related-card-panel { order: 6; }
+
+            .content-card h2,
+            .side-card h2 {
+                font-size: 1.12rem;
+                margin-bottom: 14px;
+            }
+
             .essentials-grid { grid-template-columns: 1fr; }
+
+            .essential {
+                padding: 14px;
+                border-radius: 16px;
+            }
+
             .steps li { grid-template-columns: 36px minmax(0, 1fr); gap: var(--spacing-sm); }
             .steps li::before { width: 36px; height: 36px; }
+
+            .step-body h3 { font-size: 1rem; }
+
+            .step-body p,
+            .notice-box p {
+                font-size: 0.92rem;
+                line-height: 1.65;
+            }
+
+            .checklist { gap: 8px; }
+
+            .check-item {
+                min-height: 44px;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .check-box {
+                width: 28px;
+                height: 28px;
+                flex-basis: 28px;
+                margin-top: 0;
+                border-radius: 9px;
+            }
+
+            .tool-btn {
+                min-height: 48px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .topic-title { font-size: 1.82rem; }
+            .mobile-jumpbar a { font-size: 0.84rem; }
+            .info-row { align-items: flex-start; flex-direction: column; gap: 4px; }
+            .info-row strong { max-width: 100%; text-align: left; }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .secondary-cta:hover,
+            .related-card:hover,
+            .tool-btn:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .mobile-jumpbar a:active,
+            .secondary-cta:active,
+            .tool-btn:active,
+            .related-card:active {
+                transform: scale(0.98);
+            }
         }
     </style>
 </head>
@@ -964,9 +1169,15 @@
                     </aside>
                 </div>
 
+                <nav class="mobile-jumpbar" aria-label="本页快捷导航">
+                    <a href="#steps"><i class="fas fa-route"></i>步骤</a>
+                    <a href="#checklist"><i class="fas fa-list-check"></i>清单</a>
+                    <a href="#related"><i class="fas fa-link"></i>相关</a>
+                </nav>
+
                 <div class="detail-layout">
                     <main class="main-stack">
-                        <article class="content-card">
+                        <article class="content-card essentials-card">
                             <h2><i class="fas fa-thumbtack"></i> 先抓三件事</h2>
                             <div class="essentials-grid">
                                 ${topic.essentials.map(item => `
@@ -977,7 +1188,7 @@
                             </div>
                         </article>
 
-                        <article class="content-card" id="steps">
+                        <article class="content-card steps-card" id="steps">
                             <h2><i class="fas fa-route"></i> 行动步骤</h2>
                             <ol class="steps">
                                 ${topic.steps.map(step => `
@@ -990,7 +1201,7 @@
                             </ol>
                         </article>
 
-                        <article class="content-card">
+                        <article class="content-card faq-card">
                             <h2><i class="fas fa-circle-question"></i> 常见问题</h2>
                             ${topic.faq.map(item => `
                                 <div class="faq-item">
@@ -1001,7 +1212,7 @@
                     </main>
 
                     <aside class="side-stack">
-                        <div class="side-card">
+                        <div class="side-card checklist-card" id="checklist">
                             <h2><i class="fas fa-list-check"></i> 完成清单</h2>
                             <div class="checklist">
                                 ${topic.checklist.map((item, index) => `
@@ -1022,7 +1233,7 @@
                             </div>
                         </div>
 
-                        <div class="side-card">
+                        <div class="side-card notice-card">
                             <h2><i class="fas fa-triangle-exclamation"></i> 避坑提醒</h2>
                             <div class="notice-box">
                                 <strong>先核验，再行动</strong>
@@ -1030,7 +1241,7 @@
                             </div>
                         </div>
 
-                        <div class="side-card">
+                        <div class="side-card related-card-panel" id="related">
                             <h2><i class="fas fa-link"></i> 相关资源</h2>
                             <div class="related-list">
                                 ${topic.related.map(id => {
@@ -1093,7 +1304,7 @@
 
             document.getElementById('copyChecklistBtn').addEventListener('click', async () => {
                 const text = [
-                    `${topic.title}完成清单`,
+                    `${topic.title} 完成清单`,
                     ...topic.checklist.map((item, index) => `${checks[index].checked ? '☑' : '☐'} ${item}`)
                 ].join('\n');
 

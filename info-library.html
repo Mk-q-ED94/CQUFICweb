@@ -107,6 +107,7 @@
         }
 
         .search-box {
+            position: relative;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -129,11 +130,34 @@
             font-size: 1rem;
         }
 
+        .clear-search {
+            display: none;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(30,79,161,0.1);
+            color: var(--cqu-blue);
+            cursor: pointer;
+        }
+
+        .clear-search.show { display: inline-flex; }
+
+        .clear-search:focus-visible,
+        .category-tab:focus-visible {
+            outline: 2px solid rgba(30,79,161,0.3);
+            outline-offset: 3px;
+        }
+
         .category-tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             justify-content: flex-end;
+            -webkit-overflow-scrolling: touch;
         }
 
         .category-tab {
@@ -199,6 +223,7 @@
             text-decoration: none;
             color: inherit;
             transition: all var(--transition-normal) ease;
+            touch-action: manipulation;
         }
 
         .quick-card:hover,
@@ -266,6 +291,9 @@
             text-decoration: none;
             color: inherit;
             transition: all var(--transition-normal) ease;
+            content-visibility: auto;
+            contain-intrinsic-size: 230px;
+            touch-action: manipulation;
         }
 
         .resource-top {
@@ -341,14 +369,167 @@
         }
 
         @media (max-width: 640px) {
-            .library-page { padding-top: calc(var(--header-height) + 48px); }
-            .library-title { font-size: 2.3rem; }
-            .hero-panel { padding: var(--spacing-md); }
-            .hero-metrics { grid-template-columns: 1fr; }
-            .library-toolbar { position: static; }
+            .library-page {
+                padding-top: calc(var(--header-height) + 42px);
+                padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+            }
+
+            .library-hero {
+                gap: var(--spacing-md);
+                margin-bottom: var(--spacing-md);
+            }
+
+            .library-title {
+                font-size: 2.12rem;
+                line-height: 1.08;
+                margin-bottom: 12px;
+            }
+
+            .library-subtitle {
+                font-size: 0.96rem;
+                line-height: 1.65;
+            }
+
+            .hero-panel {
+                padding: 14px;
+                border-radius: 20px;
+            }
+
+            .hero-panel-title {
+                margin-bottom: 10px;
+                font-size: 0.98rem;
+            }
+
+            .hero-metrics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .metric {
+                padding: 10px 6px;
+                border-radius: 14px;
+            }
+
+            .metric strong { font-size: 1.28rem; }
+            .metric span { font-size: 0.76rem; }
+
+            .library-toolbar {
+                position: sticky;
+                top: calc(var(--header-height) + 18px);
+                gap: 10px;
+                margin: 0 -4px var(--spacing-md);
+                padding: 10px;
+                border-radius: 20px;
+                z-index: 30;
+            }
+
+            .search-box {
+                min-height: 46px;
+                padding: 0 8px 0 14px;
+                border-radius: 16px;
+            }
+
+            .search-box input {
+                font-size: 0.96rem;
+                min-width: 0;
+            }
+
+            .category-tabs {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 2px;
+                scrollbar-width: none;
+            }
+
+            .category-tabs::-webkit-scrollbar { display: none; }
+
+            .category-tab {
+                flex: 0 0 auto;
+                min-height: 44px;
+                padding: 0 14px;
+                scroll-snap-align: start;
+            }
+
+            .quick-lane {
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                margin: 0 calc(var(--spacing-sm) * -1) var(--spacing-md);
+                padding: 0 var(--spacing-sm) 6px;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .quick-lane::-webkit-scrollbar { display: none; }
+
+            .lane-intro,
+            .quick-card {
+                flex: 0 0 78%;
+                min-height: 132px;
+                padding: 16px;
+                border-radius: 20px;
+                scroll-snap-align: start;
+            }
+
+            .lane-intro h2 { font-size: 1.15rem; }
+            .lane-intro p,
+            .quick-card p { font-size: 0.9rem; }
+            .quick-card i { width: 40px; height: 40px; }
+
             .resource-grid { grid-template-columns: 1fr; }
-            .resource-card { min-height: 210px; }
-            .resource-section-header { align-items: flex-start; flex-direction: column; }
+
+            .resource-section-header {
+                align-items: center;
+                flex-direction: row;
+                margin: var(--spacing-lg) 0 var(--spacing-sm);
+            }
+
+            .resource-section-header h2 { font-size: 1.22rem; }
+            .resource-count { font-size: 0.84rem; }
+
+            .resource-card {
+                min-height: 0;
+                padding: 16px;
+                border-radius: 20px;
+                contain-intrinsic-size: 190px;
+            }
+
+            .resource-top { margin-bottom: 12px; }
+            .resource-icon { width: 40px; height: 40px; }
+            .resource-tag { min-height: 26px; font-size: 0.74rem; }
+            .resource-card h3 { font-size: 1.08rem; }
+            .resource-card p { font-size: 0.9rem; line-height: 1.55; }
+
+            .resource-meta {
+                padding-top: 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .lane-intro,
+            .quick-card { flex-basis: 86%; }
+
+            .library-title { font-size: 1.96rem; }
+            .resource-meta { align-items: flex-start; flex-direction: column; }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .quick-card:hover,
+            .resource-card:hover {
+                transform: none;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .quick-card:active,
+            .resource-card:active,
+            .category-tab:active,
+            .clear-search:active {
+                transform: scale(0.98);
+            }
         }
     </style>
 </head>
@@ -373,16 +554,17 @@
             </div>
 
             <div class="library-toolbar" aria-label="资源筛选">
-                <label class="search-box" for="resourceSearch">
+                <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input id="resourceSearch" type="search" placeholder="搜索：选课、宿舍、医保、校园网、打印..." autocomplete="off">
-                </label>
+                    <input id="resourceSearch" type="search" placeholder="搜索：选课、宿舍、医保、校园网、打印..." autocomplete="off" aria-label="搜索资源">
+                    <button class="clear-search" id="clearSearch" type="button" aria-label="清空搜索"><i class="fas fa-xmark"></i></button>
+                </div>
                 <div class="category-tabs" role="group" aria-label="分类筛选">
-                    <button class="category-tab active" data-filter="全部">全部</button>
-                    <button class="category-tab" data-filter="学习相关">学习</button>
-                    <button class="category-tab" data-filter="生活服务">生活</button>
-                    <button class="category-tab" data-filter="校园资讯">资讯</button>
-                    <button class="category-tab" data-filter="实用工具">工具</button>
+                    <button class="category-tab active" data-filter="全部" aria-pressed="true">全部</button>
+                    <button class="category-tab" data-filter="学习相关" aria-pressed="false">学习</button>
+                    <button class="category-tab" data-filter="生活服务" aria-pressed="false">生活</button>
+                    <button class="category-tab" data-filter="校园资讯" aria-pressed="false">资讯</button>
+                    <button class="category-tab" data-filter="实用工具" aria-pressed="false">工具</button>
                 </div>
             </div>
 
@@ -416,7 +598,7 @@
 
             <div class="resource-section-header">
                 <h2>全部资源</h2>
-                <div class="resource-count" id="resourceCount">显示 20 项</div>
+                <div class="resource-count" id="resourceCount" aria-live="polite">显示 20 项</div>
             </div>
 
             <div class="resource-grid" id="resourceGrid">
@@ -552,6 +734,7 @@
     <script src="shared.js"></script>
     <script>
         const searchInput = document.getElementById('resourceSearch');
+        const clearSearch = document.getElementById('clearSearch');
         const tabs = Array.from(document.querySelectorAll('.category-tab'));
         const cards = Array.from(document.querySelectorAll('.resource-card'));
         const count = document.getElementById('resourceCount');
@@ -578,15 +761,27 @@
 
             count.textContent = `显示 ${visible} 项`;
             empty.classList.toggle('show', visible === 0);
+            clearSearch.classList.toggle('show', query.length > 0);
         }
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                tabs.forEach(item => item.classList.remove('active'));
+                tabs.forEach(item => {
+                    item.classList.remove('active');
+                    item.setAttribute('aria-pressed', 'false');
+                });
                 tab.classList.add('active');
+                tab.setAttribute('aria-pressed', 'true');
                 activeFilter = tab.dataset.filter;
+                tab.scrollIntoView({ block: 'nearest', inline: 'center' });
                 applyFilters();
             });
+        });
+
+        clearSearch.addEventListener('click', () => {
+            searchInput.value = '';
+            applyFilters();
+            searchInput.focus();
         });
 
         searchInput.addEventListener('input', applyFilters);
