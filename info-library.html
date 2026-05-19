@@ -7,394 +7,590 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="shared.css">
     <style>
-        /* CSS 变量已移入 shared.css */
-        
-        
-        body { font-family: var(--font-family); background-color: var(--background-color); color: var(--text-primary); line-height: 1.5; overflow-x: hidden; min-height: 100vh; }
-        
-        header { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; height: var(--header-height); background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: var(--border-radius-xl); box-shadow: var(--shadow-md); z-index: 1000; transition: all var(--transition-normal) ease; border: 1px solid rgba(255, 255, 255, 0.3); }
-        header.scrolled { background: rgba(255, 255, 255, 0.35); box-shadow: var(--shadow-lg); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 var(--spacing-md); }
-        .logo { display: flex; align-items: center; gap: var(--spacing-sm); text-decoration: none; }
-        .logo-icon { font-family: var(--font-family); font-size: 1.8rem; font-weight: var(--font-weight-bold); letter-spacing: 4px; background: linear-gradient(135deg, #c62828 0%, #ff7043 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1); }
-        .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
-        .logo-main { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--text-primary); }
-        .logo-sub { font-size: 0.7rem; color: var(--text-secondary); }
-        .nav-links { display: flex; list-style: none; gap: var(--spacing-sm); }
-        .nav-link { text-decoration: none; color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: 0.9rem; transition: all var(--transition-normal) ease; position: relative; padding: var(--spacing-sm) var(--spacing-md); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: var(--border-radius-lg); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
-        .nav-link:hover { color: var(--cqu-blue); transform: translateY(-5px) scale(1.05); background: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); }
-        .content-section { padding: calc(var(--spacing-xxl) + var(--header-height)) 0 var(--spacing-xxl); min-height: var(--section-min-height); display: flex; align-items: center; }
-        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); text-align: center; }
-        .section-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto var(--spacing-xl); text-align: center; line-height: 1.6; }
-        .features-grid-container { width: 100%; margin-top: var(--spacing-xl); }
-        .columns-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-md); }
-        .column-header { padding: var(--spacing-md); text-align: center; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); font-size: 1.1rem; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: var(--border-radius-lg); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); transition: all var(--transition-normal) ease; }
-        .column-header:hover { transform: translateY(-5px) scale(1.02); background: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); }
-        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); }
-        .feature-card { background: rgba(255, 255, 255, 0.7); border-radius: var(--border-radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); min-height: 160px; justify-content: center; }
-        .feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); background: rgba(255, 255, 255, 0.9); }
-        .feature-icon { width: 50px; height: 50px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%); border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm); color: white; font-size: 1.3rem; }
-        .feature-title { font-size: 1rem; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm); color: var(--cqu-blue); }
-        .feature-description { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; }
-        .hero-cta { display: inline-block; padding: var(--spacing-sm) var(--spacing-lg); background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-light-blue) 100%); color: white; text-decoration: none; border-radius: var(--border-radius-lg); font-weight: var(--font-weight-medium); font-size: 1.1rem; transition: all var(--transition-normal) ease; position: relative; overflow: hidden; box-shadow: 0 4px 14px 0 rgba(30, 79, 161, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        .hero-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 20px 0 rgba(30, 79, 161, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        
-        /* 弹动动效类 */
-        .bounce-in { animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-        .bounce-out { animation: bounceOut 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-        
-        @keyframes bounceIn { 
-            0% { opacity: 0; transform: translateY(50px) scale(0.8); } 
-            70% { opacity: 1; transform: translateY(-10px) scale(1.05); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); } 
+        body {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(240,244,250,0.96) 42%, rgba(245,245,247,1) 100%),
+                linear-gradient(135deg, rgba(30,79,161,0.08), rgba(245,124,0,0.05));
         }
-        
-        @keyframes bounceOut { 
-            0% { transform: translateY(0) scale(1); } 
-            30% { transform: translateY(-15px) scale(1.05); } 
-            100% { transform: translateY(50px) scale(0.8); opacity: 0; } 
+
+        .library-page {
+            display: block;
+            min-height: auto;
+            padding: calc(var(--header-height) + 72px) 0 var(--spacing-xxl);
         }
-        
-        /* 移动端菜单 */
-        .mobile-menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 24px; height: 18px; cursor: pointer; z-index: 1001; }
-        .mobile-menu-toggle span { display: block; height: 2px; width: 100%; background-color: var(--text-primary); border-radius: 2px; transition: all var(--transition-normal) ease; }
-        .mobile-menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-        .mobile-menu-toggle.active span:nth-child(2) { opacity: 0; }
-        .mobile-menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
-        
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            /* 导航栏优化 */
-            header { width: 95%; top: 10px; height: 60px; }
-            .nav-container { padding: 0 var(--spacing-sm); }
-            .logo { gap: var(--spacing-xs); }
-            .logo-icon { font-size: 1.5rem; letter-spacing: 2px; }
-            .logo-text { line-height: 1.1; }
-            .logo-main { font-size: 0.9rem; }
-            .logo-sub { font-size: 0.6rem; }
-            
-            /* 移动端菜单 */
-            .mobile-menu-toggle { display: flex; }
-            .nav-links { 
-                display: none; 
-                position: fixed; 
-                top: 70px; 
-                left: 0; 
-                width: 100%; 
-                background: rgba(255,255,255,0.95); 
-                backdrop-filter: blur(20px); 
-                flex-direction: column; 
-                padding: var(--spacing-md); 
-                box-shadow: var(--shadow-lg); 
-                border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl); 
-                z-index: 999; 
-            }
-            .nav-links.active { display: flex; }
-            .nav-link { width: 100%; text-align: center; padding: var(--spacing-md); margin-bottom: var(--spacing-xs); font-size: 1rem; }
-            
-            /* 内容区域优化 */
-            .content-section { 
-                padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-xl); 
-                min-height: auto; 
-            }
-            .section-title { 
-                font-size: 1.8rem; 
-                margin-bottom: var(--spacing-md); 
-            }
-            .section-subtitle { 
-                font-size: 1rem; 
-                margin-bottom: var(--spacing-lg); 
-                line-height: 1.5;
-            }
-            
-            /* 网格布局优化 */
-            .columns-grid, .features-grid { 
-                grid-template-columns: 1fr; 
-                gap: var(--spacing-sm);
-            }
-            .column-header { 
-                padding: var(--spacing-sm); 
-                font-size: 1rem;
-                margin-bottom: var(--spacing-xs);
-            }
-            .feature-card { 
-                min-height: 120px; 
-                padding: var(--spacing-sm);
-                margin-bottom: var(--spacing-sm);
-            }
-            .feature-icon { 
-                width: 40px; 
-                height: 40px; 
-                font-size: 1.1rem;
-                margin-bottom: var(--spacing-xs);
-            }
-            .feature-title { 
-                font-size: 0.95rem; 
-                margin-bottom: var(--spacing-xs); 
-            }
-            .feature-description { 
-                font-size: 0.8rem; 
-                line-height: 1.3; 
-            }
-            
-            /* 按钮优化 */
-            .hero-cta {
-                font-size: 1rem;
-                padding: var(--spacing-sm) var(--spacing-md);
-                width: 100%;
-                max-width: 200px;
-            }
-            
-            /* 减少动效以提高性能 */
-            .column-header:hover, .feature-card:hover, .hero-cta:hover {
-                transform: none;
-            }
+
+        .library-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) 360px;
+            gap: var(--spacing-xl);
+            align-items: end;
+            margin-bottom: var(--spacing-xl);
         }
-        
-        /* 小屏手机优化 */
-        @media (max-width: 480px) {
-            .section-title { font-size: 1.6rem; }
-            .section-subtitle { font-size: 0.95rem; }
-            .feature-card { 
-                min-height: 110px; 
-                padding: var(--spacing-xs) var(--spacing-sm);
-            }
-            .feature-icon { 
-                width: 35px; 
-                height: 35px; 
-                font-size: 1rem;
-            }
-            .feature-title { font-size: 0.9rem; }
-            .feature-description { font-size: 0.75rem; }
+
+        .library-title {
+            font-size: clamp(2.3rem, 5vw, 4.4rem);
+            line-height: 1.04;
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
         }
-        
-        /* 平板优化 */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .columns-grid, .features-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            }
-            .feature-card { 
-                min-height: 140px; 
-            }
+
+        .library-subtitle {
+            max-width: 700px;
+            color: var(--text-secondary);
+            font-size: 1.12rem;
+            line-height: 1.75;
         }
-        
-        /* 触摸设备悬停状态优化 */
-        @media (hover: none) and (pointer: coarse) {
-            .nav-link:hover, .column-header:hover, .feature-card:hover, .hero-cta:hover { transform: none; }
-            .nav-link:active, .column-header:active, .feature-card:active, .hero-cta:active { transform: scale(0.98); }
-            .feature-card:active { background: rgba(255,255,255,0.9); }
+
+        .hero-panel {
+            background: rgba(255,255,255,0.76);
+            border: 1px solid rgba(255,255,255,0.72);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(18px);
+            padding: var(--spacing-lg);
         }
-        
-        /* 移动端滚动性能优化 */
-        @media (max-width: 768px) {
-            .bounce-in, .bounce-out {
-                animation: none;
-                opacity: 1;
-                transform: none;
-            }
+
+        .hero-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--cqu-blue);
+            font-weight: var(--font-weight-semibold);
+            font-size: 1.05rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .hero-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .metric {
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            background: rgba(255,255,255,0.68);
+            border: 1px solid rgba(30,79,161,0.1);
+            text-align: center;
+        }
+
+        .metric strong {
+            display: block;
+            color: var(--cqu-blue);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .metric span {
+            display: block;
+            margin-top: 6px;
+            color: var(--text-tertiary);
+            font-size: 0.82rem;
+        }
+
+        .library-toolbar {
+            position: sticky;
+            top: calc(var(--header-height) + 28px);
+            z-index: 20;
+            display: grid;
+            grid-template-columns: minmax(260px, 1fr) auto;
+            gap: var(--spacing-md);
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-xl);
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 0 var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.86);
+            border: 1px solid rgba(30,79,161,0.12);
+        }
+
+        .search-box i { color: var(--cqu-blue); }
+
+        .search-box input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--text-primary);
+            font: inherit;
+            font-size: 1rem;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .category-tab {
+            min-height: 40px;
+            border: 1px solid rgba(30,79,161,0.14);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.72);
+            color: var(--text-secondary);
+            padding: 0 var(--spacing-sm);
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-medium);
+            transition: all var(--transition-fast) ease;
+        }
+
+        .category-tab:hover,
+        .category-tab.active {
+            background: var(--cqu-blue);
+            color: #fff;
+            border-color: var(--cqu-blue);
+            transform: translateY(-1px);
+        }
+
+        .quick-lane {
+            display: grid;
+            grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .lane-intro,
+        .quick-card,
+        .resource-card {
+            border: 1px solid rgba(255,255,255,0.74);
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lane-intro {
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-lg);
+        }
+
+        .lane-intro h2 {
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .lane-intro p {
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .quick-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 150px;
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-md);
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-normal) ease;
+        }
+
+        .quick-card:hover,
+        .resource-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255,255,255,0.92);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quick-card i,
+        .resource-icon {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-md);
+            background: linear-gradient(135deg, var(--cqu-blue), var(--cqu-orange));
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .quick-card h3 {
+            margin: var(--spacing-sm) 0 6px;
+            color: var(--cqu-blue);
+            font-size: 1.08rem;
+        }
+
+        .quick-card p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 0.92rem;
+        }
+
+        .resource-section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0 var(--spacing-md);
+        }
+
+        .resource-section-header h2 {
+            font-size: 1.55rem;
+            color: var(--text-primary);
+        }
+
+        .resource-count {
+            color: var(--text-tertiary);
+            font-size: 0.92rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .resource-card {
+            min-height: 230px;
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-normal) ease;
+        }
+
+        .resource-top {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .resource-tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            background: rgba(30,79,161,0.08);
+            color: var(--cqu-blue);
+            font-size: 0.78rem;
+            font-weight: var(--font-weight-semibold);
+            white-space: nowrap;
+        }
+
+        .resource-card h3 {
+            font-size: 1.18rem;
+            line-height: 1.25;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .resource-card p {
+            color: var(--text-secondary);
+            line-height: 1.58;
+            font-size: 0.92rem;
+        }
+
+        .resource-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            margin-top: auto;
+            padding-top: var(--spacing-md);
+            color: var(--text-tertiary);
+            font-size: 0.84rem;
+            border-top: 1px solid rgba(30,79,161,0.08);
+        }
+
+        .resource-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .empty-state {
+            display: none;
+            padding: var(--spacing-xl);
+            text-align: center;
+            border-radius: var(--border-radius-xl);
+            background: rgba(255,255,255,0.72);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.74);
+        }
+
+        .empty-state.show { display: block; }
+
+        @media (max-width: 1024px) {
+            .library-hero,
+            .quick-lane { grid-template-columns: 1fr; }
+            .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .library-toolbar { grid-template-columns: 1fr; }
+            .category-tabs { justify-content: flex-start; }
+        }
+
+        @media (max-width: 640px) {
+            .library-page { padding-top: calc(var(--header-height) + 48px); }
+            .library-title { font-size: 2.3rem; }
+            .hero-panel { padding: var(--spacing-md); }
+            .hero-metrics { grid-template-columns: 1fr; }
+            .library-toolbar { position: static; }
+            .resource-grid { grid-template-columns: 1fr; }
+            .resource-card { min-height: 210px; }
+            .resource-section-header { align-items: flex-start; flex-direction: column; }
         }
     </style>
 </head>
 <body>
-        <!-- Header 由 shared.js 自动注入 -->
+    <!-- Header 由 shared.js 自动注入 -->
 
-    <section class="content-section">
+    <section class="library-page">
         <div class="container">
-            <h2 class="section-title">信息汇总库</h2>
-            <p class="section-subtitle">我们竭尽所能，将新生所需汇总在此，不想让你再受迷茫的痛苦</p>
-            
-            <div class="features-grid-container">
-                <div class="columns-grid">
-                    <div class="column-header">学习相关</div>
-                    <div class="column-header">生活服务</div>
-                    <div class="column-header">校园资讯</div>
-                    <div class="column-header">实用工具</div>
+            <div class="library-hero">
+                <div>
+                    <h1 class="library-title">信息汇总库</h1>
+                    <p class="library-subtitle">把新生最常碰到的学习、生活、校园资讯和工具问题做成可检索的行动指南。每个条目都可以进入详情页，直接看步骤、清单、提醒和下一步入口。</p>
                 </div>
-                
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-book"></i></div>
-                        <h3 class="feature-title">选课指南</h3>
-                        <p class="feature-description">全面了解选课流程与技巧</p>
+                <aside class="hero-panel" aria-label="信息库概览">
+                    <div class="hero-panel-title"><i class="fas fa-layer-group"></i> 新生资源进度</div>
+                    <div class="hero-metrics">
+                        <div class="metric"><strong>20</strong><span>实用主题</span></div>
+                        <div class="metric"><strong>4</strong><span>信息分类</span></div>
+                        <div class="metric"><strong>1</strong><span>搜索入口</span></div>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="feature-title">学业规划</h3>
-                        <p class="feature-description">制定个人学习发展计划</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-library"></i></div>
-                        <h3 class="feature-title">图书馆资源</h3>
-                        <p class="feature-description">掌握图书馆使用指南</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
-                        <h3 class="feature-title">在线学习</h3>
-                        <p class="feature-description">网络教学平台使用指南</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                        <h3 class="feature-title">教师联系</h3>
-                        <p class="feature-description">各学院教师联系方式</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-home"></i></div>
-                        <h3 class="feature-title">宿舍分配</h3>
-                        <p class="feature-description">查看宿舍信息与入住指南</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-utensils"></i></div>
-                        <h3 class="feature-title">食堂导航</h3>
-                        <p class="feature-description">各校区食堂分布与特色</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-bus"></i></div>
-                        <h3 class="feature-title">校园交通</h3>
-                        <p class="feature-description">校内交通路线与时刻表</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-shopping-cart"></i></div>
-                        <h3 class="feature-title">生活购物</h3>
-                        <p class="feature-description">周边商场与便利设施</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
-                        <h3 class="feature-title">医疗服务</h3>
-                        <p class="feature-description">校医院服务与医保信息</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
-                        <h3 class="feature-title">校历安排</h3>
-                        <p class="feature-description">学期重要日期与安排</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-newspaper"></i></div>
-                        <h3 class="feature-title">校园新闻</h3>
-                        <p class="feature-description">最新校园动态与通知</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-users"></i></div>
-                        <h3 class="feature-title">社团活动</h3>
-                        <p class="feature-description">学生社团与活动信息</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-trophy"></i></div>
-                        <h3 class="feature-title">竞赛信息</h3>
-                        <p class="feature-description">各类学术竞赛通知</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
-                        <h3 class="feature-title">重要通知</h3>
-                        <p class="feature-description">学校官方重要公告</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-id-card"></i></div>
-                        <h3 class="feature-title">证件办理</h3>
-                        <p class="feature-description">各类证件申请流程</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-wifi"></i></div>
-                        <h3 class="feature-title">网络服务</h3>
-                        <p class="feature-description">校园网络使用指南</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-print"></i></div>
-                        <h3 class="feature-title">打印服务</h3>
-                        <p class="feature-description">校内打印点位置与价格</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-key"></i></div>
-                        <h3 class="feature-title">账号管理</h3>
-                        <p class="feature-description">校园账号密码重置</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-question-circle"></i></div>
-                        <h3 class="feature-title">常见问题</h3>
-                        <p class="feature-description">新生常见问题解答</p>
-                    </div>
+                </aside>
+            </div>
+
+            <div class="library-toolbar" aria-label="资源筛选">
+                <label class="search-box" for="resourceSearch">
+                    <i class="fas fa-search"></i>
+                    <input id="resourceSearch" type="search" placeholder="搜索：选课、宿舍、医保、校园网、打印..." autocomplete="off">
+                </label>
+                <div class="category-tabs" role="group" aria-label="分类筛选">
+                    <button class="category-tab active" data-filter="全部">全部</button>
+                    <button class="category-tab" data-filter="学习相关">学习</button>
+                    <button class="category-tab" data-filter="生活服务">生活</button>
+                    <button class="category-tab" data-filter="校园资讯">资讯</button>
+                    <button class="category-tab" data-filter="实用工具">工具</button>
                 </div>
             </div>
-            
-            <div style="text-align: center; margin-top: var(--spacing-xl);">
-                <a href="index.html" class="hero-cta">返回首页</a>
+
+            <div class="quick-lane" aria-label="高频资源">
+                <div class="lane-intro">
+                    <h2>开学前优先看</h2>
+                    <p>下面三项最容易影响报到后的第一周体验：账号、宿舍和交通。先把入口、材料和时间点弄清楚，后面会轻松很多。</p>
+                </div>
+                <a class="quick-card" href="info-detail.html?topic=account-management">
+                    <i class="fas fa-key"></i>
+                    <div>
+                        <h3>账号管理</h3>
+                        <p>统一身份认证、密码找回、常用平台登录。</p>
+                    </div>
+                </a>
+                <a class="quick-card" href="info-detail.html?topic=dormitory-assignment">
+                    <i class="fas fa-house-user"></i>
+                    <div>
+                        <h3>宿舍分配</h3>
+                        <p>入住材料、到寝流程、常见物品准备。</p>
+                    </div>
+                </a>
+                <a class="quick-card" href="info-detail.html?topic=campus-transport">
+                    <i class="fas fa-route"></i>
+                    <div>
+                        <h3>校园交通</h3>
+                        <p>校区转换、报到路线、行李动线建议。</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="resource-section-header">
+                <h2>全部资源</h2>
+                <div class="resource-count" id="resourceCount">显示 20 项</div>
+            </div>
+
+            <div class="resource-grid" id="resourceGrid">
+                <a class="resource-card" href="info-detail.html?topic=course-selection" data-category="学习相关" data-keywords="选课 教务 课程 培养方案 学分">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-book-open"></i></span><span class="resource-tag">学习相关</span></div>
+                    <h3>选课指南</h3>
+                    <p>从培养方案、预选、正选到退补选，帮你避开时间点和学分坑。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 6 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=academic-planning" data-category="学习相关" data-keywords="学业规划 保研 绩点 竞赛 学分">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-graduation-cap"></i></span><span class="resource-tag">学习相关</span></div>
+                    <h3>学业规划</h3>
+                    <p>把绩点、课程、竞赛、科研和个人节奏拆成可执行的大学第一年计划。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=library-resources" data-category="学习相关" data-keywords="图书馆 借阅 数据库 自习 研讨间">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-book"></i></span><span class="resource-tag">学习相关</span></div>
+                    <h3>图书馆资源</h3>
+                    <p>借书、自习、数据库、研讨空间和论文检索的入门路径。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=online-learning" data-category="学习相关" data-keywords="在线学习 网络教学 慕课 课程平台 作业">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-laptop-code"></i></span><span class="resource-tag">学习相关</span></div>
+                    <h3>在线学习</h3>
+                    <p>课程平台、线上作业、通知同步和学习资料整理方式。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=teacher-contact" data-category="学习相关" data-keywords="教师联系 辅导员 导师 学院 办公室">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-chalkboard-teacher"></i></span><span class="resource-tag">学习相关</span></div>
+                    <h3>教师联系</h3>
+                    <p>什么时候找辅导员、任课老师、学院教务，如何写清楚诉求。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=dormitory-assignment" data-category="生活服务" data-keywords="宿舍 入住 寝室 床位 水电 门禁">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-home"></i></span><span class="resource-tag">生活服务</span></div>
+                    <h3>宿舍分配</h3>
+                    <p>查宿舍、到寝、检查设施、办理门禁和开学第一晚安排。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 6 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=canteen-guide" data-category="生活服务" data-keywords="食堂 餐饮 饭卡 校园卡 菜品">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-utensils"></i></span><span class="resource-tag">生活服务</span></div>
+                    <h3>食堂导航</h3>
+                    <p>各校区食堂使用方式、错峰吃饭、校园卡支付和饮食建议。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=campus-transport" data-category="生活服务" data-keywords="交通 校车 地铁 公交 报到路线 校区">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-bus"></i></span><span class="resource-tag">生活服务</span></div>
+                    <h3>校园交通</h3>
+                    <p>报到路线、跨校区出行、行李动线和夜间返校注意事项。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=living-shopping" data-category="生活服务" data-keywords="购物 快递 超市 生活用品 周边">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-shopping-cart"></i></span><span class="resource-tag">生活服务</span></div>
+                    <h3>生活购物</h3>
+                    <p>生活用品采购、快递收发、校内外便利设施和省钱技巧。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=medical-service" data-category="生活服务" data-keywords="医疗 校医院 医保 就诊 药品">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-heartbeat"></i></span><span class="resource-tag">生活服务</span></div>
+                    <h3>医疗服务</h3>
+                    <p>校医院就诊、医保信息、常备药准备和紧急情况处理。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=calendar" data-category="校园资讯" data-keywords="校历 学期 选课 考试 放假 时间">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-calendar-alt"></i></span><span class="resource-tag">校园资讯</span></div>
+                    <h3>校历安排</h3>
+                    <p>把注册、选课、考试、放假等关键时间做成自己的提醒表。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=campus-news" data-category="校园资讯" data-keywords="校园新闻 通知 官网 公众号 学院">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-newspaper"></i></span><span class="resource-tag">校园资讯</span></div>
+                    <h3>校园新闻</h3>
+                    <p>辨别官方消息来源，建立自己的通知订阅和信息核验流程。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=clubs" data-category="校园资讯" data-keywords="社团 学生组织 招新 活动 兴趣">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-users"></i></span><span class="resource-tag">校园资讯</span></div>
+                    <h3>社团活动</h3>
+                    <p>选择社团、控制投入、识别招新节奏，找到适合自己的活动圈。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=competitions" data-category="校园资讯" data-keywords="竞赛 创新创业 大创 比赛 科研">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-trophy"></i></span><span class="resource-tag">校园资讯</span></div>
+                    <h3>竞赛信息</h3>
+                    <p>从低门槛项目开始，整理组队、报名、备赛和成果沉淀路径。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=important-notices" data-category="校园资讯" data-keywords="重要通知 官方公告 学院通知 安全">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-bullhorn"></i></span><span class="resource-tag">校园资讯</span></div>
+                    <h3>重要通知</h3>
+                    <p>把学校、学院、班级通知分级处理，避免漏掉必须完成的事项。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=documents" data-category="实用工具" data-keywords="证件 学生证 在读证明 户口 档案">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-id-card"></i></span><span class="resource-tag">实用工具</span></div>
+                    <h3>证件办理</h3>
+                    <p>学生证、证明材料、档案户口相关事项的材料准备和流程提醒。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=network-service" data-category="实用工具" data-keywords="网络 校园网 WiFi VPN 统一认证">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-wifi"></i></span><span class="resource-tag">实用工具</span></div>
+                    <h3>网络服务</h3>
+                    <p>校园网、设备登录、常见断连问题和学习资源访问方式。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=printing" data-category="实用工具" data-keywords="打印 复印 扫描 文件 PDF">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-print"></i></span><span class="resource-tag">实用工具</span></div>
+                    <h3>打印服务</h3>
+                    <p>打印前检查、文件格式、常见点位选择和隐私文件处理。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 4 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=account-management" data-category="实用工具" data-keywords="账号 密码 统一身份认证 邮箱 教务">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-key"></i></span><span class="resource-tag">实用工具</span></div>
+                    <h3>账号管理</h3>
+                    <p>统一身份认证、校园邮箱、密码找回和常用平台入口整理。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 5 步</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+                <a class="resource-card" href="info-detail.html?topic=faq" data-category="实用工具" data-keywords="常见问题 新生 FAQ 求助 联系方式">
+                    <div class="resource-top"><span class="resource-icon"><i class="fas fa-circle-question"></i></span><span class="resource-tag">实用工具</span></div>
+                    <h3>常见问题</h3>
+                    <p>把新生最容易卡住的问题按优先级整理，附上求助路径。</p>
+                    <div class="resource-meta"><span><i class="fas fa-list-check"></i> 6 条</span><span>查看详情 <i class="fas fa-arrow-right"></i></span></div>
+                </a>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-magnifying-glass"></i>
+                <p>没有找到匹配资源，换一个关键词试试。</p>
             </div>
         </div>
     </section>
 
     <script src="shared.js"></script>
     <script>
-        // 移动端菜单功能
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-        
-        // 点击导航链接后关闭移动端菜单
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
+        const searchInput = document.getElementById('resourceSearch');
+        const tabs = Array.from(document.querySelectorAll('.category-tab'));
+        const cards = Array.from(document.querySelectorAll('.resource-card'));
+        const count = document.getElementById('resourceCount');
+        const empty = document.getElementById('emptyState');
+        let activeFilter = '全部';
+
+        function normalize(value) {
+            return String(value || '').trim().toLowerCase();
+        }
+
+        function applyFilters() {
+            const query = normalize(searchInput.value);
+            let visible = 0;
+
+            cards.forEach(card => {
+                const category = card.dataset.category;
+                const haystack = normalize(`${card.innerText} ${card.dataset.keywords}`);
+                const matchCategory = activeFilter === '全部' || category === activeFilter;
+                const matchSearch = !query || haystack.includes(query);
+                const show = matchCategory && matchSearch;
+                card.hidden = !show;
+                if (show) visible += 1;
+            });
+
+            count.textContent = `显示 ${visible} 项`;
+            empty.classList.toggle('show', visible === 0);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+                activeFilter = tab.dataset.filter;
+                applyFilters();
             });
         });
 
-        // 滚动效果
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-            
-            // 在移动端禁用复杂的弹动效果以提高性能
-            if (window.innerWidth > 768) {
-                // 添加滚动弹动效果
-                const elements = document.querySelectorAll('.section-title, .section-subtitle, .column-header, .feature-card, .hero-cta');
-                elements.forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-                    
-                    if (isVisible && !el.classList.contains('bounce-in')) {
-                        el.classList.remove('bounce-out');
-                        el.classList.add('bounce-in');
-                    } else if (!isVisible && el.classList.contains('bounce-in')) {
-                        el.classList.remove('bounce-in');
-                        el.classList.add('bounce-out');
-                    }
-                });
-            }
-        });
-        
-        // 初始加载时触发一次滚动检测
-        window.dispatchEvent(new Event('scroll'));
-        
-        // 在非移动端添加鼠标悬停效果
-        if (window.innerWidth > 768) {
-            document.querySelectorAll('.nav-link, .column-header, .feature-card, .hero-cta').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    el.style.transform = 'translateY(-8px) scale(1.05)';
-                });
-                
-                el.addEventListener('mouseleave', () => {
-                    el.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-        }
-        
-        // 窗口大小变化时重新初始化
-        window.addEventListener('resize', function() {
-            // 如果从移动端切换到桌面端，重新添加悬停效果
-            if (window.innerWidth > 768) {
-                document.querySelectorAll('.nav-link, .column-header, .feature-card, .hero-cta').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        el.style.transform = 'translateY(-8px) scale(1.05)';
-                    });
-                    
-                    el.addEventListener('mouseleave', () => {
-                        el.style.transform = 'translateY(0) scale(1)';
-                    });
-                });
-            }
-        });
+        searchInput.addEventListener('input', applyFilters);
+        applyFilters();
     </script>
 </body>
 </html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源详情 - 重庆大学新生服务融合中心平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        body {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(239,243,250,0.96) 46%, rgba(245,245,247,1) 100%),
+                linear-gradient(135deg, rgba(30,79,161,0.08), rgba(198,40,40,0.04));
+        }
+
+        .detail-page {
+            display: block;
+            min-height: auto;
+            padding: calc(var(--header-height) + 72px) 0 var(--spacing-xxl);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-tertiary);
+            font-size: 0.92rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .breadcrumb a {
+            color: var(--cqu-blue);
+            text-decoration: none;
+        }
+
+        .detail-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: var(--spacing-xl);
+            align-items: stretch;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .hero-copy,
+        .hero-side,
+        .content-card,
+        .side-card {
+            background: rgba(255,255,255,0.76);
+            border: 1px solid rgba(255,255,255,0.74);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+
+        .hero-copy {
+            padding: var(--spacing-xl);
+        }
+
+        .topic-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 34px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(30,79,161,0.08);
+            color: var(--cqu-blue);
+            font-size: 0.88rem;
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .topic-title {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            line-height: 1.06;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .topic-summary {
+            max-width: 760px;
+            color: var(--text-secondary);
+            font-size: 1.08rem;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .secondary-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 0 var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(30,79,161,0.14);
+            color: var(--cqu-blue);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            transition: all var(--transition-fast) ease;
+        }
+
+        .secondary-cta:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-side {
+            padding: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+        }
+
+        .side-icon {
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-lg);
+            background: linear-gradient(135deg, var(--cqu-blue), var(--cqu-orange));
+            color: #fff;
+            font-size: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-list {
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        .progress-panel {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(30,79,161,0.08);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .progress-track {
+            height: 8px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(30,79,161,0.1);
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--cqu-blue), var(--cqu-orange));
+            transition: width var(--transition-normal) ease;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid rgba(30,79,161,0.08);
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .info-row strong {
+            color: var(--text-primary);
+            font-weight: var(--font-weight-semibold);
+            text-align: right;
+        }
+
+        .detail-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: var(--spacing-lg);
+            align-items: start;
+        }
+
+        .main-stack,
+        .side-stack {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .content-card,
+        .side-card {
+            padding: var(--spacing-lg);
+        }
+
+        .content-card h2,
+        .side-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .content-card h2 i,
+        .side-card h2 i {
+            color: var(--cqu-blue);
+        }
+
+        .essentials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: var(--spacing-sm);
+        }
+
+        .essential {
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(30,79,161,0.09);
+        }
+
+        .essential span {
+            display: block;
+            color: var(--text-tertiary);
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+        }
+
+        .essential strong {
+            color: var(--cqu-blue);
+            line-height: 1.35;
+        }
+
+        .steps {
+            list-style: none;
+            counter-reset: step;
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .steps li {
+            counter-increment: step;
+            display: grid;
+            grid-template-columns: 42px minmax(0, 1fr);
+            gap: var(--spacing-md);
+            align-items: start;
+        }
+
+        .steps li::before {
+            content: counter(step);
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--cqu-blue);
+            color: #fff;
+            font-weight: var(--font-weight-bold);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-body h3 {
+            color: var(--text-primary);
+            font-size: 1.08rem;
+            margin-bottom: 6px;
+        }
+
+        .step-body p,
+        .notice-box p {
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .checklist {
+            display: grid;
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .check-item input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .check-box {
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+            border-radius: 7px;
+            border: 1px solid rgba(30,79,161,0.28);
+            background: rgba(255,255,255,0.82);
+            color: transparent;
+            transition: all var(--transition-fast) ease;
+        }
+
+        .check-item input:checked + .check-box {
+            border-color: var(--cqu-blue);
+            background: var(--cqu-blue);
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(30,79,161,0.18);
+        }
+
+        .check-item input:focus-visible + .check-box {
+            outline: 2px solid rgba(30,79,161,0.28);
+            outline-offset: 3px;
+        }
+
+        .check-item input:checked ~ span {
+            color: var(--text-tertiary);
+            text-decoration: line-through;
+        }
+
+        .faq-item {
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid rgba(30,79,161,0.08);
+        }
+
+        .faq-item:last-child { border-bottom: 0; }
+
+        .faq-item h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .faq-item p,
+        .related-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+
+        .notice-box {
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            background: rgba(245,124,0,0.09);
+            border: 1px solid rgba(245,124,0,0.18);
+        }
+
+        .notice-box strong {
+            display: block;
+            color: var(--cqu-orange);
+            margin-bottom: 6px;
+        }
+
+        .related-list {
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        .related-card {
+            display: block;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(30,79,161,0.09);
+            color: inherit;
+            text-decoration: none;
+            transition: all var(--transition-fast) ease;
+        }
+
+        .related-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .related-card h3 {
+            color: var(--cqu-blue);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .tool-actions {
+            display: grid;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .tool-btn {
+            min-height: 44px;
+            border: 1px solid rgba(30,79,161,0.14);
+            border-radius: var(--border-radius-lg);
+            background: rgba(255,255,255,0.78);
+            color: var(--cqu-blue);
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-medium);
+            transition: all var(--transition-fast) ease;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .copy-status {
+            min-height: 20px;
+            color: var(--text-tertiary);
+            font-size: 0.86rem;
+        }
+
+        .fallback {
+            text-align: center;
+            padding: var(--spacing-xxl);
+        }
+
+        @media (max-width: 1024px) {
+            .detail-hero,
+            .detail-layout { grid-template-columns: 1fr; }
+            .hero-side { min-height: 260px; }
+        }
+
+        @media (max-width: 720px) {
+            .detail-page { padding-top: calc(var(--header-height) + 48px); }
+            .hero-copy,
+            .content-card,
+            .side-card,
+            .hero-side { padding: var(--spacing-md); }
+            .hero-actions { flex-direction: column; }
+            .hero-cta,
+            .secondary-cta { width: 100%; justify-content: center; }
+            .essentials-grid { grid-template-columns: 1fr; }
+            .steps li { grid-template-columns: 36px minmax(0, 1fr); gap: var(--spacing-sm); }
+            .steps li::before { width: 36px; height: 36px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 由 shared.js 自动注入 -->
+
+    <section class="detail-page">
+        <div class="container" id="app"></div>
+    </section>
+
+    <script src="shared.js"></script>
+    <script>
+        const TOPICS = {
+            'course-selection': {
+                title: '选课指南',
+                category: '学习相关',
+                icon: 'fas fa-book-open',
+                summary: '把选课拆成培养方案、课程容量、时间冲突、学分结构和退补选五件事。先理解规则，再抢课，最后检查结果。',
+                updated: '开学前后重点关注',
+                time: '预选、正选、退补选阶段',
+                owner: '学院教务 / 任课教师',
+                essentials: [['先看', '培养方案和推荐课表'], ['必查', '课程时间、校区、容量'], ['留存', '最终课表截图']],
+                steps: [
+                    ['读培养方案', '先确认本专业本学期推荐课程、学分要求和通识/体育/实验课类别，不要只凭同学推荐选。'],
+                    ['列出备选课', '每门目标课准备 1-2 个备选，记录教师、时间、校区和是否限专业。'],
+                    ['检查冲突', '重点看跨校区通勤、午晚饭时间、连续大课和早八晚课组合。'],
+                    ['完成选课后复核', '选课成功不等于万无一失，退补选结束前再看一次课表和学分。'],
+                    ['保存凭证', '截图保存最终课表，后续教材、教室、请假和成绩核对都会用到。']
+                ],
+                checklist: ['培养方案已下载或收藏', '体育课、实验课、通识课单独检查', '选课结果已截图', '退补选截止日期已设提醒'],
+                notice: '不要在不确定培养方案的情况下盲目“凑满课表”。疑似漏课时优先问学院教务或辅导员。',
+                faq: [['抢不到课怎么办？', '先确认是否还有退补选、扩容或候补安排；如果是培养方案必修课，及时向学院教务说明。'], ['通识课越多越好吗？', '不一定。第一学期优先稳住必修和作息，通识课可以分学期安排。']],
+                related: ['academic-planning', 'calendar', 'teacher-contact']
+            },
+            'academic-planning': {
+                title: '学业规划',
+                category: '学习相关',
+                icon: 'fas fa-graduation-cap',
+                summary: '大学规划不是把四年写满，而是把第一学期的学习节奏、绩点底线、探索方向和反馈机制搭起来。',
+                updated: '入学第一月启动',
+                time: '每学期初和期末复盘',
+                owner: '本人 / 辅导员 / 学业导师',
+                essentials: [['核心', '课程、绩点、能力三条线'], ['节奏', '每两周做一次复盘'], ['成果', '保留作品和证明']],
+                steps: [
+                    ['建立课程表之外的学习表', '为每门课记录作业、实验、测验和考试占比，提前知道哪门课最容易拖后腿。'],
+                    ['设定学期底线', '不要只写“我要优秀”，给自己设最低可接受绩点、挂科红线和每日学习时段。'],
+                    ['留出探索窗口', '每周固定 2-4 小时用于社团、竞赛、科研或技能体验，不要把所有时间塞给课程。'],
+                    ['找反馈对象', '遇到方向问题找学长学姐，遇到规则问题找老师或学院，不把小问题拖成大问题。'],
+                    ['期末复盘', '记录哪种学习方法有效、哪些课低估了难度，下学期选课和安排据此调整。']
+                ],
+                checklist: ['每门课成绩构成已记录', '有一份学期目标表', '有固定复盘时间', '已收藏学院培养方案'],
+                notice: '第一学期最重要的是建立稳定节奏。不要同时开启太多高强度目标。',
+                faq: [['刚入学要不要立刻卷竞赛？', '可以了解，但建议先稳定课程和作息，再选择一个低门槛项目试水。'], ['绩点和兴趣冲突怎么办？', '短期先保底，长期靠选课、项目和导师沟通逐渐靠近兴趣方向。']],
+                related: ['course-selection', 'competitions', 'teacher-contact']
+            },
+            'library-resources': {
+                title: '图书馆资源',
+                category: '学习相关',
+                icon: 'fas fa-book',
+                summary: '图书馆不只是自习室。借阅、数据库、研讨空间和文献检索会在作业、竞赛和科研中反复用到。',
+                updated: '开学第一周可完成',
+                time: '日常学习 / 论文检索',
+                owner: '图书馆 / 学院资料室',
+                essentials: [['先学', '检索和续借'], ['常用', '数据库、电子书'], ['注意', '闭馆和预约规则']],
+                steps: [
+                    ['熟悉入口', '从学校图书馆官网或官方公众号进入，了解馆藏检索、借阅、续借和预约入口。'],
+                    ['确认借阅权限', '使用统一身份认证或校园卡相关方式登录，查清借阅数量、期限和逾期规则。'],
+                    ['学会数据库检索', '先用关键词、作者、主题词检索，再学会导出引用和保存文献。'],
+                    ['安排自习空间', '考试周座位紧张，提前了解各校区图书馆和教学楼自习区。'],
+                    ['保存常用资源', '把图书馆入口、数据库帮助页、文献管理工具放到浏览器书签。']
+                ],
+                checklist: ['知道最近图书馆位置', '能独立检索一本书', '会续借或查看借阅状态', '收藏数据库入口'],
+                notice: '数据库入口以学校官方入口为准，避免从陌生网页输入统一身份认证账号。',
+                faq: [['不会查论文怎么办？', '先从课程老师给的关键词或参考文献开始，再逐步扩展主题词。'], ['可以只用网上资料吗？', '课程作业和研究性任务最好结合图书馆数据库，资料质量更稳定。']],
+                related: ['online-learning', 'academic-planning', 'printing']
+            },
+            'online-learning': {
+                title: '在线学习',
+                category: '学习相关',
+                icon: 'fas fa-laptop-code',
+                summary: '线上平台承载课程通知、课件、作业、测验和回放。关键是减少漏看通知和错过截止。',
+                updated: '开课后持续使用',
+                time: '每周固定检查',
+                owner: '任课教师 / 平台管理员',
+                essentials: [['入口', '从官方渠道进入'], ['习惯', '固定检查待办'], ['备份', '下载关键课件']],
+                steps: [
+                    ['统一整理入口', '把教学平台、课程群、邮箱和学院通知入口放在同一处。'],
+                    ['开课第一周逐门确认', '确认每门课使用哪个平台、作业交到哪里、通知发在哪。'],
+                    ['设置提醒', '把作业、测试、实验报告截止时间同步到日历或待办。'],
+                    ['资料本地化', '重要课件、实验说明、评分标准及时保存，防止临近考试找不到。'],
+                    ['提交后复核', '线上作业提交后看状态、文件名和时间戳，不只相信“点过上传”。']
+                ],
+                checklist: ['每门课平台已确认', '作业截止已设提醒', '课件有本地备份', '课程群命名清晰'],
+                notice: '同一门课可能同时使用平台、微信群/QQ群和邮箱，第一周务必向老师确认主入口。',
+                faq: [['线上作业传错文件怎么办？', '先看平台是否允许重新提交；不能时尽快联系任课老师说明。'], ['通知太多怎么办？', '按“必须完成、需要阅读、可稍后看”三类处理。']],
+                related: ['course-selection', 'calendar', 'account-management']
+            },
+            'teacher-contact': {
+                title: '教师联系',
+                category: '学习相关',
+                icon: 'fas fa-chalkboard-teacher',
+                summary: '不同问题找不同对象：课程内容找任课老师，规则流程找学院教务，生活适应找辅导员。',
+                updated: '遇到问题时使用',
+                time: '工作日优先',
+                owner: '辅导员 / 任课教师 / 学院办公室',
+                essentials: [['先分流', '课程、规则、生活'], ['写清楚', '身份、问题、诉求'], ['留痕', '重要沟通保存记录']],
+                steps: [
+                    ['判断问题归属', '课程知识、成绩核对、请假、培养方案、宿舍生活分别对应不同老师或部门。'],
+                    ['准备基本信息', '姓名、学号、学院专业、课程名、班级和具体问题一次写清楚。'],
+                    ['礼貌表达诉求', '说明已经尝试过什么，需要老师确认什么，不发只有“在吗”的消息。'],
+                    ['重要事项留记录', '涉及成绩、请假、选课、证明材料的沟通保留截图或邮件。']
+                ],
+                checklist: ['知道辅导员联系方式', '知道学院教务入口', '邮件主题写清楚', '重要沟通已留存'],
+                notice: '紧急安全和身体健康问题优先电话联系辅导员、宿舍管理员或校内应急渠道。',
+                faq: [['老师不回复怎么办？', '工作日等待合理时间后再礼貌补充；紧急规则问题可同时咨询学院教务或辅导员。'], ['可以找学长学姐代问吗？', '经验问题可以问，涉及个人学籍和成绩的问题应由本人联系官方渠道。']],
+                related: ['academic-planning', 'course-selection', 'important-notices']
+            },
+            'dormitory-assignment': {
+                title: '宿舍分配',
+                category: '生活服务',
+                icon: 'fas fa-home',
+                summary: '入住的重点是查清宿舍、带齐证件、检查设施、处理网络水电门禁，并和室友建立基本约定。',
+                updated: '报到前后重点关注',
+                time: '报到日前后一周',
+                owner: '宿管 / 辅导员 / 后勤部门',
+                essentials: [['必带', '证件、录取材料、生活用品'], ['先查', '校区、楼栋、床位'], ['入住后', '检查设施并拍照']],
+                steps: [
+                    ['确认宿舍信息', '以学校或学院官方发布为准，确认校区、楼栋、寝室号、床位和报到时间。'],
+                    ['准备入住材料', '身份证、录取通知书、报到材料、校园卡或临时凭证放在随身包。'],
+                    ['到寝检查设施', '检查门锁、床板、桌椅、空调、水电、网络口，如有问题及时报修并拍照。'],
+                    ['建立寝室约定', '和室友讨论作息、卫生、公共物品、访客和费用分摊。'],
+                    ['处理生活服务', '了解热水、电费、洗衣、快递、垃圾投放和门禁时间。'],
+                    ['补齐用品', '先买必须用品，非刚需物品住一周后再补，避免重复购买。']
+                ],
+                checklist: ['宿舍地址已截图', '证件放入随身包', '床品尺寸已确认', '设施问题已拍照或报修'],
+                notice: '不要轻信非官方“宿舍调整”“代办缴费”消息；涉及缴费和调寝先核验来源。',
+                faq: [['宿舍设施坏了怎么办？', '拍照记录，按楼栋宿管或学校后勤报修流程处理。'], ['和室友作息冲突怎么办？', '先定具体规则，如熄灯、外放、卫生轮值；无法协调时再找辅导员。']],
+                related: ['living-shopping', 'network-service', 'medical-service']
+            },
+            'canteen-guide': {
+                title: '食堂导航',
+                category: '生活服务',
+                icon: 'fas fa-utensils',
+                summary: '吃饭这件事靠信息差省时间。先知道食堂位置、支付方式、错峰时段和饮食替代方案。',
+                updated: '开学第一周建立习惯',
+                time: '每日三餐',
+                owner: '后勤餐饮 / 校园卡服务',
+                essentials: [['必查', '离寝室最近食堂'], ['支付', '校园卡或移动支付'], ['策略', '错峰和备选窗口']],
+                steps: [
+                    ['标记常用食堂', '根据宿舍、教学楼和图书馆位置，找到早饭、午饭、晚饭三条路线。'],
+                    ['确认支付方式', '了解校园卡、移动支付和临时支付是否可用，避免高峰期卡住队伍。'],
+                    ['错峰尝试窗口', '第一周尝试不同窗口，记录排队时间、价格、口味和分量。'],
+                    ['准备替代方案', '赶课日提前准备面包、牛奶或便利店方案，不空腹硬扛。']
+                ],
+                checklist: ['知道最近早餐点', '校园卡或支付方式可用', '收藏至少两个备选食堂', '了解高峰排队时间'],
+                notice: '军训或大课集中时段食堂会拥挤，提前 15 分钟行动体验会差很多。',
+                faq: [['校园卡不能用怎么办？', '先确认是否激活或充值成功，再咨询校园卡服务点。'], ['不适应口味怎么办？', '先多试几天不同窗口，也可以和同学交换推荐。']],
+                related: ['campus-transport', 'living-shopping', 'account-management']
+            },
+            'campus-transport': {
+                title: '校园交通',
+                category: '生活服务',
+                icon: 'fas fa-bus',
+                summary: '重庆地形和多校区通勤都需要提前规划。先确认校区，再安排地铁、公交通勤和行李动线。',
+                updated: '报到和跨校区前查看',
+                time: '报到日 / 跨校区课程',
+                owner: '学校通知 / 公共交通信息',
+                essentials: [['先确认', '目标校区和入口'], ['再规划', '人和行李分开看'], ['留余量', '至少多留 20 分钟']],
+                steps: [
+                    ['确认目标校区', '不要只看“重庆大学”，先看 A/B/C/虎溪等具体校区、校门和楼栋。'],
+                    ['拆分路线', '人走哪条路、行李怎么进宿舍、家长车在哪里停，分别规划。'],
+                    ['预留坡路时间', '山城路程不要只看地图距离，上坡、楼梯和转乘都会增加耗时。'],
+                    ['跨校区提前出发', '有跨校区课程或活动时，按高峰期预留时间，不踩点。'],
+                    ['保存离线信息', '把宿舍、教学楼、校门和紧急联系人截图，网络不好时也能用。']
+                ],
+                checklist: ['目标校区已确认', '报到校门已确认', '行李路线已规划', '地图截图已保存'],
+                notice: '校区、校门和楼栋名称容易混淆，出发前用官方通知和地图双重确认。',
+                faq: [['导航显示很近为什么走很久？', '重庆地形复杂，步行距离不等于实际耗时，尤其带行李时。'], ['跨校区课程怎么办？', '尽量提前查路线，课表有明显冲突时及时咨询学院。']],
+                related: ['map', 'dormitory-assignment', 'calendar']
+            },
+            'living-shopping': {
+                title: '生活购物',
+                category: '生活服务',
+                icon: 'fas fa-shopping-cart',
+                summary: '开学采购不追求一次买全，先解决睡觉、洗漱、上课、充电和收纳五类刚需。',
+                updated: '报到前后使用',
+                time: '入住前三天',
+                owner: '本人 / 室友协商',
+                essentials: [['优先', '床品、洗漱、插排'], ['延后', '装饰和大件'], ['协商', '公共物品']],
+                steps: [
+                    ['列刚需清单', '先准备证件、床品、洗漱、衣架、充电、雨具、常用药。'],
+                    ['公共物品先协商', '扫把、拖把、垃圾桶、路由器等先和室友沟通，避免重复。'],
+                    ['大件先观察', '台灯、收纳架、小桌板等住几天后再决定尺寸和位置。'],
+                    ['快递分批到校', '避免同一天堆太多快递，尤其报到日人多且取件压力大。'],
+                    ['保留票据', '电器和大件保留购买记录，方便退换或保修。']
+                ],
+                checklist: ['刚需清单已完成', '公共物品已和室友沟通', '快递地址写清校区楼栋', '大件购买已确认尺寸'],
+                notice: '宿舍用电和电器功率规则以学校要求为准，不确定的电器不要先买。',
+                faq: [['需要从家里带很多东西吗？', '重物和易买物品可以到校后补，证件和个人常用物品优先随身。'], ['快递地址怎么写？', '以学校或学院提供的校区、楼栋、驿站信息为准。']],
+                related: ['dormitory-assignment', 'campus-transport', 'printing']
+            },
+            'medical-service': {
+                title: '医疗服务',
+                category: '生活服务',
+                icon: 'fas fa-heartbeat',
+                summary: '先知道校医院和紧急求助路径，再准备个人常备药和医保材料。身体问题不要硬扛。',
+                updated: '入学前后准备',
+                time: '生病、体检、医保办理时',
+                owner: '校医院 / 辅导员',
+                essentials: [['常备', '个人药品和过敏信息'], ['就诊', '证件和医保信息'], ['紧急', '先求助再补流程']],
+                steps: [
+                    ['记录个人健康信息', '过敏史、慢性病、常用药、紧急联系人写在手机备忘录。'],
+                    ['准备常备药', '按个人情况准备感冒、肠胃、创可贴等基础用品，不随意分享处方药。'],
+                    ['了解就诊路径', '查清校医院位置、服务时间和医保/报销材料要求。'],
+                    ['军训和运动注意', '身体不适及时报告，不把低血糖、中暑、扭伤硬拖。'],
+                    ['紧急情况优先求助', '联系辅导员、宿管、同学或当地急救渠道，后续再补材料。']
+                ],
+                checklist: ['常备药已准备', '过敏信息已记录', '校医院位置已收藏', '紧急联系人已设置'],
+                notice: '医疗和医保政策可能调整，具体办理要求以学校和当地医保部门最新通知为准。',
+                faq: [['小病要不要去校医院？', '持续不适、发热、严重疼痛或影响训练学习时不要硬扛。'], ['医保材料不清楚怎么办？', '先看学校官方通知，再咨询辅导员或校医院相关窗口。']],
+                related: ['important-notices', 'dormitory-assignment', 'faq']
+            },
+            'calendar': {
+                title: '校历安排',
+                category: '校园资讯',
+                icon: 'fas fa-calendar-alt',
+                summary: '校历的价值在于提醒。把注册、选课、考试、放假、缴费和重要活动转成自己的日历。',
+                updated: '每学期初更新',
+                time: '学期初 / 考试周前',
+                owner: '学校官方通知 / 学院通知',
+                essentials: [['必录', '注册、选课、考试'], ['提醒', '提前 1 天和 1 周'], ['复核', '学院特殊安排']],
+                steps: [
+                    ['获取官方校历', '从学校或学院官方渠道确认本学期时间安排。'],
+                    ['转成个人日历', '注册、选课、退补选、四六级、考试周、放假返校都设提醒。'],
+                    ['标记课程节点', '每门课大作业、实验报告、期中期末安排单独加入。'],
+                    ['关注学院差异', '学院实习、实验、集中实践可能和公共校历不同。']
+                ],
+                checklist: ['官方校历已保存', '关键日期已入日历', '考试周已提前预留复习时间', '学院特殊安排已确认'],
+                notice: '不要只依赖群消息记时间，重要截止日期一定要进自己的提醒系统。',
+                faq: [['放假时间一定准确吗？', '以学校后续正式通知为准，提前订票前最好二次确认。'], ['课程考试时间哪里看？', '公共考试、课程考试和学院安排可能分开发布。']],
+                related: ['course-selection', 'important-notices', 'online-learning']
+            },
+            'campus-news': {
+                title: '校园新闻',
+                category: '校园资讯',
+                icon: 'fas fa-newspaper',
+                summary: '建立可信信息源：学校官网、学院通知、辅导员消息、课程平台。先核验来源，再行动。',
+                updated: '持续关注',
+                time: '每周整理',
+                owner: '学校 / 学院 / 班级',
+                essentials: [['来源', '官方优先'], ['分类', '必须做和可了解分开'], ['保存', '重要通知截图']],
+                steps: [
+                    ['整理信息源', '把学校官网、学院官网、官方公众号、班级群和课程平台分清楚。'],
+                    ['识别通知类型', '报名缴费、考试注册、材料提交属于必须处理；活动新闻可按兴趣阅读。'],
+                    ['定期清理消息', '每周固定时间整理未读通知，转成待办或归档。'],
+                    ['核验异常消息', '涉及钱、账号、证件、个人信息时，必须回到官方入口确认。']
+                ],
+                checklist: ['官方入口已收藏', '班级群已置顶', '重要通知有截图', '可疑链接不直接登录'],
+                notice: '任何要求输入账号密码、缴费或上传证件的链接，都先核验域名和来源。',
+                faq: [['通知太多看不过来怎么办？', '先处理有截止日期和影响学籍/考试/缴费的消息。'], ['同学转发可信吗？', '可以作为提醒，但最终以官方原文为准。']],
+                related: ['important-notices', 'calendar', 'account-management']
+            },
+            'clubs': {
+                title: '社团活动',
+                category: '校园资讯',
+                icon: 'fas fa-users',
+                summary: '社团是探索兴趣和认识朋友的好方式，但第一学期要控制投入，避免影响课程和休息。',
+                updated: '招新季重点关注',
+                time: '开学后 1-2 个月',
+                owner: '学生组织 / 社团负责人',
+                essentials: [['先看', '时间成本'], ['再试', '参加体验活动'], ['保底', '不影响课程']],
+                steps: [
+                    ['列兴趣范围', '先按兴趣、能力、社交、履历四类想清楚自己为什么加入。'],
+                    ['参加体验活动', '不要只看宣传，尽量参加一次例会或体验活动。'],
+                    ['询问真实投入', '问清固定会议、训练、值班、比赛或活动筹备频率。'],
+                    ['控制数量', '第一学期建议少而精，优先选择能长期坚持的一两个。'],
+                    ['及时调整', '发现不适合时礼貌退出，不用为了面子硬撑。']
+                ],
+                checklist: ['知道招新时间', '问清固定投入', '和课程表不冲突', '已试参加一次活动'],
+                notice: '不要把社团当成唯一社交来源。宿舍、班级、课程小组同样重要。',
+                faq: [['加入越多越好吗？', '不是。时间分散会让每个都体验不好。'], ['没有特长能进社团吗？', '很多社团欢迎新手，关键是稳定参与和愿意学习。']],
+                related: ['competitions', 'academic-planning', 'campus-news']
+            },
+            'competitions': {
+                title: '竞赛信息',
+                category: '校园资讯',
+                icon: 'fas fa-trophy',
+                summary: '竞赛从低门槛开始试水。重点不只是获奖，而是组队、项目管理、文档和作品沉淀。',
+                updated: '每学期筛选',
+                time: '赛季前 1-2 个月',
+                owner: '学院 / 指导教师 / 竞赛组委会',
+                essentials: [['先选', '和专业或兴趣相关'], ['组队', '分工明确'], ['沉淀', '作品、文档、复盘']],
+                steps: [
+                    ['建立竞赛清单', '按专业相关、创新创业、编程建模、文体活动等分类。'],
+                    ['评估门槛', '看报名条件、时间周期、是否需要指导老师和前置技能。'],
+                    ['组队前谈清分工', '明确队长、技术、文档、展示、时间投入和退出机制。'],
+                    ['保留过程材料', '方案、代码、报告、海报、答辩稿都要归档。'],
+                    ['复盘迁移能力', '无论获奖与否，总结能写进简历或后续项目的内容。']
+                ],
+                checklist: ['候选竞赛已列出', '报名截止已提醒', '队友分工已确认', '过程文件已归档'],
+                notice: '不要为凑履历参加完全无兴趣且高耗时的项目，第一年更应重视学习成本。',
+                faq: [['大一适合参加什么？', '低门槛、学习型、周期短的项目更合适。'], ['没有队友怎么办？', '从课程同学、社团、学院通知群和老师推荐渠道寻找。']],
+                related: ['academic-planning', 'clubs', 'teacher-contact']
+            },
+            'important-notices': {
+                title: '重要通知',
+                category: '校园资讯',
+                icon: 'fas fa-bullhorn',
+                summary: '重要通知的处理方法是分级：马上做、设提醒、归档备查。不要让通知停留在聊天记录里。',
+                updated: '持续关注',
+                time: '每天快速检查',
+                owner: '学校 / 学院 / 辅导员',
+                essentials: [['马上做', '缴费、注册、材料'], ['提醒', '有截止日期'], ['归档', '截图和文件']],
+                steps: [
+                    ['判断影响范围', '涉及学籍、考试、缴费、安全、材料提交的通知优先级最高。'],
+                    ['拆成待办', '把“阅读通知”变成“完成某项操作”，并写清截止时间。'],
+                    ['保存原文', '重要通知截图或收藏原文，避免后续找不到要求。'],
+                    ['完成后标记', '提交表单或材料后保存凭证，避免重复询问。']
+                ],
+                checklist: ['班级群和学院通知已置顶', '重要截止已设提醒', '原文已收藏', '提交凭证已保存'],
+                notice: '涉及付款、账号和证件的通知务必核验来源，不通过陌生二维码随意提交。',
+                faq: [['错过通知怎么办？', '立刻联系辅导员或相关部门说明情况，越早处理越好。'], ['怎么判断是不是必须做？', '看是否影响注册、考试、学籍、住宿、缴费或安全。']],
+                related: ['campus-news', 'calendar', 'teacher-contact']
+            },
+            'documents': {
+                title: '证件办理',
+                category: '实用工具',
+                icon: 'fas fa-id-card',
+                summary: '证明材料、学生证、在读证明、档案户口等事项，核心是先确认用途和办理部门。',
+                updated: '需要前提前查看',
+                time: '提交材料前',
+                owner: '学院 / 学校相关窗口',
+                essentials: [['先问', '用途和格式'], ['准备', '身份证明和申请材料'], ['留存', '办理回执']],
+                steps: [
+                    ['明确材料用途', '不同用途可能要求盖章、英文版、纸质版或电子版。'],
+                    ['确认办理部门', '学院、教务、学生工作、档案或户籍窗口职责不同。'],
+                    ['准备个人信息', '学号、身份证、学院专业、申请理由、接收单位要求。'],
+                    ['预留时间', '盖章、审核、邮寄都可能需要时间，不要卡截止日。'],
+                    ['保存电子版', '扫描或拍照保存已办材料和回执。']
+                ],
+                checklist: ['用途和格式已确认', '办理部门已确认', '证件照/身份证明已准备', '截止时间已预留余量'],
+                notice: '对外提交材料前确认是否需要原件、鲜章或有效期，避免反复办理。',
+                faq: [['学生证丢了怎么办？', '尽快按学校补办流程处理，并注意是否影响乘车优惠等权益。'], ['证明能不能让同学代办？', '看具体窗口要求，涉及身份材料通常需本人确认或授权。']],
+                related: ['account-management', 'teacher-contact', 'important-notices']
+            },
+            'network-service': {
+                title: '网络服务',
+                category: '实用工具',
+                icon: 'fas fa-wifi',
+                summary: '网络问题先分清账号、设备、信号、欠费、平台限制。不要在陌生页面输入统一认证密码。',
+                updated: '入住后立即配置',
+                time: '上网、学习资源访问时',
+                owner: '信息化服务 / 校园网服务',
+                essentials: [['账号', '统一身份认证'], ['设备', '手机、电脑分别测试'], ['安全', '只用官方入口']],
+                steps: [
+                    ['确认官方入口', '从学校信息化服务官方渠道进入校园网、邮箱、VPN 或相关服务。'],
+                    ['逐项排查', '遇到断连时分别检查账号状态、设备网络、信号强度和浏览器认证页。'],
+                    ['记录报错', '报修前截图错误提示、设备型号、发生时间和所在楼栋。'],
+                    ['保护账号', '不要把统一身份认证密码告诉他人，不在陌生链接登录。'],
+                    ['准备备用方案', '考试、提交作业前不要只依赖临时网络，提前测试。']
+                ],
+                checklist: ['校园网入口已收藏', '电脑和手机都测试过', '密码没有保存在陌生设备', '报修信息模板已准备'],
+                notice: '统一身份认证账号几乎连接所有校园系统，密码安全优先级很高。',
+                faq: [['连上 WiFi 但打不开网页怎么办？', '尝试访问认证页或切换浏览器，仍失败则记录错误并咨询网络服务。'], ['VPN 一定要用吗？', '看资源访问要求，数据库或校内系统可能需要特定入口。']],
+                related: ['account-management', 'online-learning', 'library-resources']
+            },
+            'printing': {
+                title: '打印服务',
+                category: '实用工具',
+                icon: 'fas fa-print',
+                summary: '打印前先统一格式，检查页码、单双面、黑白彩色和隐私内容，避免排队后才发现文件错了。',
+                updated: '作业提交前使用',
+                time: '材料、报告、证件复印时',
+                owner: '校内打印点 / 自助设备',
+                essentials: [['格式', '优先 PDF'], ['检查', '页码和颜色'], ['隐私', '及时删除文件']],
+                steps: [
+                    ['转成 PDF', '重要文档尽量导出 PDF，避免字体、分页和图片位置变化。'],
+                    ['检查打印设置', '单双面、纸张大小、黑白彩色、份数、页码范围都要确认。'],
+                    ['避开高峰', '考试周、材料截止日前打印点会排队，提前处理。'],
+                    ['保护隐私文件', '身份证、成绩单、证明材料打印后及时删除上传文件或退出账号。']
+                ],
+                checklist: ['文件已导出 PDF', '页码和份数已检查', '证件材料无误', '打印后已退出账号'],
+                notice: '需要盖章或正式提交的材料，先确认是否接受黑白、复印件或电子版。',
+                faq: [['Word 打印错版怎么办？', '优先导出 PDF 再打印。'], ['证件可以随便复印吗？', '复印件用途要明确，必要时标注用途防滥用。']],
+                related: ['documents', 'library-resources', 'calendar']
+            },
+            'account-management': {
+                title: '账号管理',
+                category: '实用工具',
+                icon: 'fas fa-key',
+                summary: '统一身份认证是教务、课程平台、校园网、邮箱等服务的钥匙。先激活、再绑定、最后做好密码管理。',
+                updated: '报到前后优先完成',
+                time: '首次登录所有系统前',
+                owner: '信息化服务 / 学院',
+                essentials: [['优先', '统一身份认证'], ['绑定', '手机号/邮箱'], ['安全', '强密码和找回方式']],
+                steps: [
+                    ['确认账号来源', '只从学校或学院官方通知获取账号激活方式。'],
+                    ['完成首次登录', '按要求修改初始密码，绑定可用手机号或邮箱。'],
+                    ['逐个测试系统', '教务、课程平台、校园网、邮箱等常用系统都测试一次。'],
+                    ['建立密码管理', '使用不重复的强密码，保存找回方式，不把密码发给他人。'],
+                    ['遇到问题留证据', '记录系统名、报错截图、时间和账号状态，方便咨询。']
+                ],
+                checklist: ['统一身份认证已可登录', '找回方式已绑定', '常用系统已测试', '密码未和其他网站重复'],
+                notice: '任何“代激活、代登录、代缴费”都要谨慎，账号密码不要交给他人。',
+                faq: [['初始密码不知道怎么办？', '以学校或学院官方通知为准，无法登录时联系信息化服务或辅导员。'], ['多个系统密码一样吗？', '多数系统会关联统一身份认证，但具体以学校系统为准。']],
+                related: ['network-service', 'online-learning', 'documents']
+            },
+            'faq': {
+                title: '常见问题',
+                category: '实用工具',
+                icon: 'fas fa-circle-question',
+                summary: '新生问题通常不是一个人独有。先按“紧急程度”和“归属部门”判断，再选择同学、老师或官方窗口求助。',
+                updated: '遇到问题时查看',
+                time: '任何不确定时',
+                owner: '本人 / 辅导员 / 学院',
+                essentials: [['先判断', '是否紧急'], ['再分流', '生活、学习、规则'], ['最后留痕', '重要事项截图']],
+                steps: [
+                    ['安全健康优先', '身体、财产、人身安全问题先找人求助，不纠结流程。'],
+                    ['规则问题找官方', '学籍、成绩、缴费、证件、住宿等问题优先问辅导员或相关窗口。'],
+                    ['经验问题找同伴', '吃饭、路线、课程体验、社团选择可以问同学和学长学姐。'],
+                    ['保留关键信息', '通知截图、报错信息、提交凭证、沟通记录都可能帮你解决问题。'],
+                    ['避免信息过载', '每次只解决一个具体问题，不在多个群重复发散。']
+                ],
+                checklist: ['知道辅导员联系方式', '知道班级通知入口', '重要材料已保存', '可疑链接会先核验'],
+                notice: '遇到诈骗、威胁、严重身体不适或紧急安全事件，优先联系身边同学、老师和当地应急渠道。',
+                faq: [['不知道问谁怎么办？', '先问辅导员或班委，他们通常能帮你分流到正确部门。'], ['同学说法和通知不一样怎么办？', '以官方通知原文为准。']],
+                related: ['important-notices', 'teacher-contact', 'medical-service']
+            }
+        };
+
+        TOPICS.map = {
+            title: '校园地图',
+            category: '生活服务',
+            icon: 'fas fa-map-marked-alt',
+            summary: '跳转到站内地图查看校区、建筑和地标。',
+            external: 'map.html'
+        };
+
+        function esc(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function topicUrl(id) {
+            const topic = TOPICS[id];
+            return topic && topic.external ? topic.external : `info-detail.html?topic=${encodeURIComponent(id)}`;
+        }
+
+        function getTopicId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('topic') || 'course-selection';
+        }
+
+        function renderTopic(topicId) {
+            const topic = TOPICS[topicId];
+            const app = document.getElementById('app');
+
+            if (!topic) {
+                app.innerHTML = `
+                    <div class="fallback hero-copy">
+                        <h1 class="topic-title">没有找到这个资源</h1>
+                        <p class="topic-summary">可能是链接已经更新。返回信息汇总库重新选择一个主题。</p>
+                        <div class="hero-actions">
+                            <a class="hero-cta" href="info-library.html">返回信息汇总库</a>
+                        </div>
+                    </div>`;
+                document.title = '资源未找到 - 重庆大学新生服务融合中心平台';
+                return;
+            }
+
+            if (topic.external && !topic.steps) {
+                window.location.href = topic.external;
+                return;
+            }
+
+            document.title = `${topic.title} - 信息汇总库`;
+            app.innerHTML = `
+                <nav class="breadcrumb" aria-label="面包屑">
+                    <a href="info-library.html">信息汇总库</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>${esc(topic.title)}</span>
+                </nav>
+
+                <div class="detail-hero">
+                    <div class="hero-copy">
+                        <div class="topic-kicker"><i class="${topic.icon}"></i>${esc(topic.category)}</div>
+                        <h1 class="topic-title">${esc(topic.title)}</h1>
+                        <p class="topic-summary">${esc(topic.summary)}</p>
+                        <div class="hero-actions">
+                            <a class="hero-cta" href="#steps">查看办理步骤</a>
+                            <a class="secondary-cta" href="info-library.html"><i class="fas fa-arrow-left"></i> 返回资源库</a>
+                        </div>
+                    </div>
+                    <aside class="hero-side" aria-label="资源概要">
+                        <div class="side-icon"><i class="${topic.icon}"></i></div>
+                        <div class="info-list">
+                            <div class="info-row"><span>适用时间</span><strong>${esc(topic.time)}</strong></div>
+                            <div class="info-row"><span>主要对象</span><strong>${esc(topic.owner)}</strong></div>
+                            <div class="info-row"><span>更新提示</span><strong>${esc(topic.updated)}</strong></div>
+                        </div>
+                        <div class="progress-panel">
+                            <div class="progress-label">
+                                <span>清单完成度</span>
+                                <strong id="progressText">0%</strong>
+                            </div>
+                            <div class="progress-track" aria-hidden="true">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="detail-layout">
+                    <main class="main-stack">
+                        <article class="content-card">
+                            <h2><i class="fas fa-thumbtack"></i> 先抓三件事</h2>
+                            <div class="essentials-grid">
+                                ${topic.essentials.map(item => `
+                                    <div class="essential">
+                                        <span>${esc(item[0])}</span>
+                                        <strong>${esc(item[1])}</strong>
+                                    </div>`).join('')}
+                            </div>
+                        </article>
+
+                        <article class="content-card" id="steps">
+                            <h2><i class="fas fa-route"></i> 行动步骤</h2>
+                            <ol class="steps">
+                                ${topic.steps.map(step => `
+                                    <li>
+                                        <div class="step-body">
+                                            <h3>${esc(step[0])}</h3>
+                                            <p>${esc(step[1])}</p>
+                                        </div>
+                                    </li>`).join('')}
+                            </ol>
+                        </article>
+
+                        <article class="content-card">
+                            <h2><i class="fas fa-circle-question"></i> 常见问题</h2>
+                            ${topic.faq.map(item => `
+                                <div class="faq-item">
+                                    <h3>${esc(item[0])}</h3>
+                                    <p>${esc(item[1])}</p>
+                                </div>`).join('')}
+                        </article>
+                    </main>
+
+                    <aside class="side-stack">
+                        <div class="side-card">
+                            <h2><i class="fas fa-list-check"></i> 完成清单</h2>
+                            <div class="checklist">
+                                ${topic.checklist.map((item, index) => `
+                                    <label class="check-item">
+                                        <input type="checkbox" data-check-index="${index}">
+                                        <span class="check-box"><i class="fas fa-check"></i></span>
+                                        <span>${esc(item)}</span>
+                                    </label>`).join('')}
+                            </div>
+                            <div class="tool-actions">
+                                <button class="tool-btn" type="button" id="copyChecklistBtn">
+                                    <i class="fas fa-copy"></i> 复制清单
+                                </button>
+                                <button class="tool-btn" type="button" id="resetChecklistBtn">
+                                    <i class="fas fa-rotate-left"></i> 重置进度
+                                </button>
+                                <div class="copy-status" id="copyStatus" aria-live="polite"></div>
+                            </div>
+                        </div>
+
+                        <div class="side-card">
+                            <h2><i class="fas fa-triangle-exclamation"></i> 避坑提醒</h2>
+                            <div class="notice-box">
+                                <strong>先核验，再行动</strong>
+                                <p>${esc(topic.notice)}</p>
+                            </div>
+                        </div>
+
+                        <div class="side-card">
+                            <h2><i class="fas fa-link"></i> 相关资源</h2>
+                            <div class="related-list">
+                                ${topic.related.map(id => {
+                                    const related = TOPICS[id];
+                                    if (!related) return '';
+                                    return `
+                                        <a class="related-card" href="${topicUrl(id)}">
+                                            <h3>${esc(related.title)}</h3>
+                                            <p>${esc(related.category)} · 继续查看</p>
+                                        </a>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            `;
+
+            initChecklistTools(topicId, topic);
+        }
+
+        function initChecklistTools(topicId, topic) {
+            const storageKey = `cqufic-info-progress:${topicId}`;
+            const checks = Array.from(document.querySelectorAll('[data-check-index]'));
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+            const copyStatus = document.getElementById('copyStatus');
+
+            function readSaved() {
+                try {
+                    return JSON.parse(localStorage.getItem(storageKey) || '[]');
+                } catch {
+                    return [];
+                }
+            }
+
+            function writeSaved(values) {
+                localStorage.setItem(storageKey, JSON.stringify(values));
+            }
+
+            function updateProgress() {
+                const completed = checks.filter(item => item.checked).length;
+                const percent = checks.length ? Math.round((completed / checks.length) * 100) : 0;
+                progressText.textContent = `${percent}%`;
+                progressFill.style.width = `${percent}%`;
+                writeSaved(checks.map(item => item.checked));
+            }
+
+            readSaved().forEach((checked, index) => {
+                if (checks[index]) checks[index].checked = Boolean(checked);
+            });
+
+            checks.forEach(item => item.addEventListener('change', updateProgress));
+            updateProgress();
+
+            document.getElementById('resetChecklistBtn').addEventListener('click', () => {
+                checks.forEach(item => { item.checked = false; });
+                updateProgress();
+                copyStatus.textContent = '进度已重置。';
+            });
+
+            document.getElementById('copyChecklistBtn').addEventListener('click', async () => {
+                const text = [
+                    `${topic.title}完成清单`,
+                    ...topic.checklist.map((item, index) => `${checks[index].checked ? '☑' : '☐'} ${item}`)
+                ].join('\n');
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    copyStatus.textContent = '清单已复制到剪贴板。';
+                } catch {
+                    copyStatus.textContent = text;
+                }
+            });
+        }
+
+        renderTopic(getTopicId());
+    </script>
+</body>
+</html>
