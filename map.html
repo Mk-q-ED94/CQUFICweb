@@ -403,11 +403,13 @@
                 width: 44px; height: 44px; border-radius: 22px;
                 flex-shrink: 0; font-size: 20px;
             }
-            /* 弹出菜单精确对齐到按钮下方 */
+            /* 弹出菜单精确对齐到按钮下方，fixed 脱离 top-bar 层叠上下文 */
             .campus-menu {
+                position: fixed;
                 top: calc(max(10px, env(safe-area-inset-top, 10px)) + 102px);
                 right: 12px; left: auto;
                 min-width: 152px; border-radius: 16px;
+                z-index: 200;
             }
             .menu-item { padding: 11px 14px; font-size: 14px; }
 
@@ -454,7 +456,9 @@
             #search-input { font-size: 15px; }
             .campus-btn { width: 40px; height: 40px; font-size: 18px; }
             .campus-menu {
+                position: fixed;
                 top: calc(max(10px, env(safe-area-inset-top, 10px)) + 94px);
+                z-index: 200;
             }
             .filter-chip { height: 32px; padding: 0 12px; font-size: 12px; }
             .place-card { min-width: 126px; height: 86px; padding: 10px; }
