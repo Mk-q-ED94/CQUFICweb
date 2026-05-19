@@ -259,36 +259,103 @@
 
         /* ── 移动端竖屏适配 ─────────────────────────── */
         @media (max-width: 768px) {
+            /* 返回首页按钮独占左上角 */
             .home-btn {
                 top: max(10px, env(safe-area-inset-top, 10px));
-                left: 12px; height: 32px; border-radius: 16px;
-                padding: 0 12px 0 8px; font-size: 12px; gap: 5px;
+                left: 12px;
+                height: 36px; border-radius: 18px;
+                padding: 0 14px 0 10px;
+                font-size: 13px; gap: 6px;
+                z-index: 60;
             }
+
+            /* 顶部主行：[定位] [搜索框] [校区] */
             .top-bar {
-                padding: calc(max(12px, env(safe-area-inset-top, 12px)) + 52px) 12px 8px;
-                gap: 10px;
+                padding: calc(max(10px, env(safe-area-inset-top, 10px)) + 50px) 12px 8px;
+                gap: 8px;
+                align-items: center;
             }
-            .search-wrapper { max-width: none; flex: 1; }
-            .search-box { height: 44px; border-radius: 22px; }
-            #search-input { font-size: 16px; }
-            .campus-btn {
+
+            /* 定位按钮回归 flex 流，不再悬浮压在搜索框上 */
+            .locate-btn {
+                position: static;
+                top: auto; left: auto;
                 width: 44px; height: 44px; border-radius: 22px;
-                flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px;
+                flex-shrink: 0;
             }
-            .campus-menu { top: calc(44px + 8px); right: 0; left: auto; min-width: 148px; border-radius: 18px; }
-            .menu-item { padding: 12px 16px; font-size: 14px; }
-            .search-results { max-height: 52vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-            .bottom-area { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
-            .filter-scroll { gap: 8px; padding: 10px 14px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
-            .filter-chip { height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; white-space: nowrap; flex-shrink: 0; scroll-snap-align: start; }
-            .cards-scroll { padding: 0 14px; gap: 12px; -webkit-overflow-scrolling: touch; }
-            .place-card { min-width: 128px; height: 98px; border-radius: 18px; padding: 12px; cursor: pointer; }
+            .locate-btn:active { transform: scale(0.92); }
+
+            /* 搜索框填满中间空间 */
+            .search-wrapper { max-width: none; flex: 1; min-width: 0; }
+            .search-box { height: 44px; border-radius: 22px; padding: 0 14px; }
+            .icon-search { font-size: 16px; margin-right: 8px; }
+            #search-input { font-size: 16px; }
+            .search-results {
+                max-height: 52vh; overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 16px;
+            }
+            .result-item { padding: 10px 14px; border-radius: 12px; }
+            .res-name { font-size: 14px; }
+            .res-campus { font-size: 10px; padding: 3px 7px; }
+
+            /* 校区切换按钮回归 flex 流 */
+            .campus-btn {
+                position: static;
+                right: auto; top: auto;
+                width: 44px; height: 44px; border-radius: 22px;
+                flex-shrink: 0; font-size: 20px;
+            }
+            /* 弹出菜单精确对齐到按钮下方 */
+            .campus-menu {
+                top: calc(max(10px, env(safe-area-inset-top, 10px)) + 102px);
+                right: 12px; left: auto;
+                min-width: 152px; border-radius: 16px;
+            }
+            .menu-item { padding: 11px 14px; font-size: 14px; }
+
+            /* 底部控件区紧凑化 */
+            .bottom-area { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+            .filter-scroll {
+                gap: 8px; padding: 8px 12px 10px;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+            }
+            .filter-chip {
+                height: 34px; padding: 0 14px; border-radius: 17px;
+                font-size: 13px; white-space: nowrap;
+                flex-shrink: 0; scroll-snap-align: start;
+            }
+            /* 卡片 snap 对齐，滑动结束停在卡片边缘 */
+            .cards-scroll {
+                padding: 0 12px; gap: 10px;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                scroll-padding-left: 12px;
+            }
+            .place-card {
+                min-width: 142px; height: 96px; border-radius: 18px; padding: 12px;
+                cursor: pointer;
+                scroll-snap-align: start;
+            }
             .place-card:hover { transform: none; }
-            .place-card:active { transform: scale(0.97); transition: transform .1s; }
+            .place-card:active { transform: scale(0.96); transition: transform .1s; }
         }
+
+        /* 小屏手机紧凑布局 (iPhone SE / Mini 等) */
         @media (max-width: 390px) {
-            .place-card { min-width: 112px; height: 90px; }
+            .top-bar { padding-left: 10px; padding-right: 10px; gap: 6px; }
+            .home-btn { padding: 0 10px 0 8px; font-size: 12px; height: 32px; }
+            .locate-btn { width: 40px; height: 40px; }
+            .search-box { height: 42px; padding: 0 12px; }
+            .icon-search { font-size: 15px; margin-right: 6px; }
+            #search-input { font-size: 15px; }
+            .campus-btn { width: 40px; height: 40px; font-size: 18px; }
+            .campus-menu {
+                top: calc(max(10px, env(safe-area-inset-top, 10px)) + 94px);
+            }
             .filter-chip { height: 32px; padding: 0 12px; font-size: 12px; }
+            .place-card { min-width: 126px; height: 86px; padding: 10px; }
         }
 
         /* ── 定位按钮 ──────────────────────────────────────── */
@@ -561,7 +628,9 @@
         function selectSearchResult(locName, targetCampusKey) {
             const targetLoc = CAMPUS_DATA[targetCampusKey].locations.find(l => l.name === locName);
             document.getElementById('search-results').classList.remove('show');
-            document.getElementById('search-input').value = targetLoc.name;
+            const input = document.getElementById('search-input');
+            input.value = targetLoc.name;
+            input.blur();   // 移动端选中结果后收起软键盘
 
             if (activeCampus !== targetCampusKey) {
                 map.setMaxBounds(null);
@@ -611,7 +680,11 @@
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'place-card liquid-glass';
-                card.onclick = () => flyTo(item);
+                card.onclick = () => {
+                    container.querySelectorAll('.place-card.selected').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    flyTo(item);
+                };
                 card.innerHTML = `
                     <div class="card-icon ${item.class}">${item.icon}</div>
                     <div>
@@ -651,6 +724,19 @@
         map.on('click', () => {
             document.getElementById('search-results').classList.remove('show');
             document.getElementById('campusMenu').classList.remove('open');
+        });
+
+        // 点击搜索 / 校区菜单以外的区域时自动关闭浮层
+        document.addEventListener('click', (e) => {
+            const searchWrapper = document.querySelector('.search-wrapper');
+            const campusBtn = document.querySelector('.campus-btn');
+            const campusMenu = document.getElementById('campusMenu');
+            if (searchWrapper && !searchWrapper.contains(e.target)) {
+                document.getElementById('search-results').classList.remove('show');
+            }
+            if (campusBtn && campusMenu && !campusBtn.contains(e.target) && !campusMenu.contains(e.target)) {
+                campusMenu.classList.remove('open');
+            }
         });
 
 
