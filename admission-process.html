@@ -190,18 +190,17 @@
             // 设置圆形尺寸
             liquidCircle.style.width = `${circleSize}px`;
             liquidCircle.style.height = `${circleSize}px`;
-            
+
+            // 以容器实际宽度中心为原点，保证四个方向节点对称显示
+            const centerX = circleContainer.offsetWidth / 2;
+            const centerY = circleRadius;
+            const pointRadius = circleRadius - 15;
+
             timelineData.forEach((point, index) => {
                 const angleInRadians = (point.angle * Math.PI) / 180;
-                
-                // 计算点的位置 - 左侧两个记录点向左移动一个圆形半径距离
-                let x = circleRadius + (circleRadius - 15) * Math.cos(angleInRadians);
-                let y = circleRadius + (circleRadius - 15) * Math.sin(angleInRadians);
-                
-                // 左侧记录点向左移动一个圆形半径距离
-                if (point.angle === 135 || point.angle === 225) {
-                    x = circleRadius - circleRadius + (circleRadius - 15) * Math.cos(angleInRadians);
-                }
+
+                const x = centerX + pointRadius * Math.cos(angleInRadians);
+                const y = centerY + pointRadius * Math.sin(angleInRadians);
                 
                 const pointElement = document.createElement('div');
                 pointElement.className = 'timeline-point';
