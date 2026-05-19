@@ -59,7 +59,6 @@
 
         /* 移动端 */
         @media (max-width: 768px) {
-            .content-section { padding: calc(var(--spacing-xl) + 60px) 0 var(--spacing-xl); min-height: auto; }
             .content-section { padding: calc(var(--spacing-md) + 60px) 0 var(--spacing-md); min-height: auto; display: block; }
             .circle-container { height: 280px; margin: var(--spacing-md) 0; }
             .liquid-circle { width: 280px; height: 280px; }
@@ -182,10 +181,11 @@
             const liquidCircle = document.getElementById('liquidCircle');
             const badgeContainer = document.querySelector('.badge-container');
             
-            // 根据屏幕大小动态调整半径
+            // 根据屏幕大小动态调整半径（与 CSS 断点保持一致）
+            const is480 = window.innerWidth <= 480;
             const isMobile = window.innerWidth <= 768;
-            const circleRadius = isMobile ? 150 : 250;
-            const circleSize = isMobile ? 300 : 500;
+            const circleSize = is480 ? 240 : (isMobile ? 280 : 500);
+            const circleRadius = circleSize / 2;
             
             // 设置圆形尺寸
             liquidCircle.style.width = `${circleSize}px`;
