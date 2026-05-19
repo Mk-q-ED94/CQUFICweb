@@ -144,7 +144,12 @@
     .bubbles-background {
         display: none; /* 在移动端隐藏气泡背景以提高性能 */
     }
-    
+
+    /* 移动端隐藏 1929 彩蛋气泡（fixed 定位会盖住主内容） */
+    #specialBubblesContainer {
+        display: none;
+    }
+
     .liquid-circle::before,
     .liquid-circle::after,
     .special-bubble::before {
@@ -204,8 +209,8 @@ function initPage(){
     // 在移动端减少气泡数量以提高性能
     if (window.innerWidth > 768) {
         createBubbles();
+        createSpecialBubbles();
     }
-    createSpecialBubbles();
     setupHoverEffects();
     simulateProgress();
 }
@@ -337,15 +342,15 @@ function simulateProgress(){
 
 // 窗口大小变化时重新初始化
 window.addEventListener('resize', function() {
-    // 移除现有特殊气泡
     const specialBubblesContainer = document.getElementById('specialBubblesContainer');
     specialBubblesContainer.innerHTML = '';
     specialBubbles = [];
-    
-    // 重新创建特殊气泡
-    createSpecialBubbles();
-    
-    // 重新设置悬停效果
+
+    // 仅桌面端才重新创建彩蛋气泡
+    if (window.innerWidth > 768) {
+        createSpecialBubbles();
+    }
+
     setupHoverEffects();
 });
 
