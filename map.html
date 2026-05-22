@@ -852,6 +852,7 @@
         let locateWatchId      = null;  // watchPosition ID
         let lastKnownPos       = null;  // 最近一次有效坐标 {lng, lat}
         let initialLocateDone  = false; // 首次定位是否完成
+        let lastGpsCampus      = null;  // 上一次 GPS 检测到的校区（和 activeCampus 无关）
 
         const CAMPUS_LABELS = {
             'A': '老校区 A区', 'B': '老校区 B区', 'C': '老校区 C区',
@@ -904,12 +905,13 @@
             document.getElementById('toastIcon').textContent = icon;
             document.getElementById('toastMsg').textContent  = msg;
             clearTimeout(_toastTimer);
-            toast.classList.remove('hide');
+            // 先清除所有状态类再 reflow，确保每次都能重新触发入场动画
+            toast.classList.remove('show', 'hide');
             void toast.offsetHeight;
             toast.classList.add('show');
             _toastTimer = setTimeout(() => {
-                toast.classList.add('hide');
-                setTimeout(() => toast.classList.remove('show', 'hide'), 300);
+                toast.classList.replace('show', 'hide');
+                setTimeout(() => toast.classList.remove('hide'), 350);
             }, duration);
         }
 
@@ -945,6 +947,7 @@
                 if (!initialLocateDone) {
                     // 首次定位：自动切换校区 + 飞行
                     initialLocateDone = true;
+                    lastGpsCampus = campus;
                     const accText = acc < 30 ? `精度 ${Math.round(acc)}m` : `精度约 ${Math.round(acc)}m`;
 
                     if (activeCampus !== campus) {
@@ -953,8 +956,9 @@
                     }
                     map.flyTo({ center: [lng, lat], zoom: 17.5, pitch: 55, speed: 1.4 });
                     showToast('📍', `已定位至${CAMPUS_LABELS[campus]} · ${accText}`);
-                } else if (activeCampus !== campus) {
-                    // 后续更新：跨校区提示
+                } else if (campus !== lastGpsCampus) {
+                    // 用户物理移动到了另一个校区（GPS 实际变化），而非手动切换
+                    lastGpsCampus = campus;
                     showToast('🚶', `您移动到了${CAMPUS_LABELS[campus]}`);
                 }
             } else {
