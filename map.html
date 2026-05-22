@@ -244,6 +244,7 @@
             box-shadow: 0 10px 20px rgba(0, 122, 255, 0.4);
             border: 3px solid rgba(255,255,255,0.8);
             animation: pin-bounce 0.8s ease-out;
+            z-index: 10;
         }
         .marker-pin::after {
             content: ''; width: 20px; height: 20px; margin: 7px 0 0 7px;
@@ -255,6 +256,45 @@
             80% { transform: translateY(-5px) rotate(-45deg); }
             100% { transform: translateY(0) rotate(-45deg); opacity: 1; }
         }
+
+        /* --- 常驻小标记点 --- */
+        .loc-marker {
+            display: flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 2.5px solid rgba(255,255,255,0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.06);
+            cursor: pointer; font-size: 13px; line-height: 1;
+            transition: transform 0.18s cubic-bezier(0.25,0.8,0.25,1),
+                        box-shadow 0.18s ease;
+            user-select: none;
+        }
+        .loc-marker:hover {
+            transform: scale(1.4) translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+            z-index: 5;
+        }
+        .loc-marker.t-landmark { background: linear-gradient(135deg,#FF3B30,#FF9500); }
+        .loc-marker.t-library  { background: linear-gradient(135deg,#1e4fa1,#2a65c7); }
+        .loc-marker.t-gate     { background: linear-gradient(135deg,#8E8E93,#636366); }
+        .loc-marker.t-teach    { background: linear-gradient(135deg,#FFCC00,#FF9500); }
+        .loc-marker.t-lab      { background: linear-gradient(135deg,#BF5AF2,#007AFF); }
+        .loc-marker.t-college  { background: linear-gradient(135deg,#00C7BE,#30D158); }
+        .loc-marker.t-food     { background: linear-gradient(135deg,#30D158,#00C7BE); }
+        .loc-marker.t-sport    { background: linear-gradient(135deg,#00C7BE,#007AFF); }
+        .loc-marker.t-life     { background: linear-gradient(135deg,#BF5AF2,#5E5CE6); }
+
+        /* Mapbox popup 样式覆盖 */
+        .mapboxgl-popup-content {
+            padding: 8px 12px !important; border-radius: 12px !important;
+            font-family: "SF Pro Display",-apple-system,BlinkMacSystemFont,sans-serif !important;
+            font-size: 13px !important; font-weight: 600 !important;
+            color: #1d1d1f !important; box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+            background: rgba(255,255,255,0.92) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+        }
+        .mapboxgl-popup-tip { display: none !important; }
+        .mapboxgl-popup-close-button { display: none !important; }
 
 
         /* ── 定位按钮 ──────────────────────────────────────── */
@@ -548,6 +588,49 @@
 
                 let activeCampus = 'A';
         let currentMarker = null;
+        let locationMarkers = [];   // 所有常驻标记
+        let activeFilter = 'all';   // 当前分类过滤
+
+        function clearLocationMarkers() {
+            locationMarkers.forEach(m => m.remove());
+            locationMarkers = [];
+        }
+
+        function renderAllMarkers(filterType) {
+            clearLocationMarkers();
+            const locations = CAMPUS_DATA[activeCampus].locations || [];
+            const filtered = filterType === 'all' ? locations : locations.filter(i => i.type === filterType);
+            filtered.forEach(item => {
+                const el = document.createElement('div');
+                el.className = `loc-marker t-${item.type}`;
+                el.textContent = item.icon;
+                el.title = item.name;
+                const popup = new mapboxgl.Popup({
+                    offset: 18, closeButton: false, closeOnClick: false,
+                    anchor: 'bottom', maxWidth: '180px'
+                }).setText(item.name);
+                el.addEventListener('mouseenter', () => popup.addTo(map));
+                el.addEventListener('mouseleave', () => popup.remove());
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    flyTo(item);
+                    // 同步高亮底部卡片
+                    const cards = document.querySelectorAll('#cards-container .place-card');
+                    const allLocs = CAMPUS_DATA[activeCampus].locations;
+                    const filteredLocs = activeFilter === 'all' ? allLocs : allLocs.filter(l => l.type === activeFilter);
+                    const idx = filteredLocs.findIndex(l => l.name === item.name && l.lng === item.lng);
+                    cards.forEach(c => c.classList.remove('selected'));
+                    if (idx >= 0 && cards[idx]) {
+                        cards[idx].classList.add('selected');
+                        cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                });
+                const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
+                    .setLngLat([item.lng, item.lat])
+                    .addTo(map);
+                locationMarkers.push(marker);
+            });
+        }
 
         function calculateGeoInfo(points) {
             let minLng = 180, maxLng = -180, minLat = 90, maxLat = -90, cLng = 0, cLat = 0;
@@ -602,6 +685,9 @@
             map.addSource('campus-boundary', { 'type': 'geojson', 'data': initData.sourceData });
             map.addLayer({ 'id': 'boundary-line', 'type': 'line', 'source': 'campus-boundary', 'paint': { 'line-color': '#007AFF', 'line-width': 4, 'line-blur': 2, 'line-opacity': 0.6 }});
             map.addLayer({ 'id': 'boundary-fill', 'type': 'fill', 'source': 'campus-boundary', 'paint': { 'fill-color': '#007AFF', 'fill-opacity': 0.05 }}, 'boundary-line');
+
+            // 渲染当前校区所有地标标记
+            renderAllMarkers('all');
         });
 
         // --- 逻辑函数 ---
@@ -653,7 +739,9 @@
                 map.getSource('campus-boundary').setData(geoInfo.sourceData);
                 map.once('moveend', () => {
                     map.setMaxBounds(geoInfo.bounds);
+                    activeFilter = 'all';
                     renderCards('all');
+                    renderAllMarkers('all');
                 });
                 addMarker(targetLoc);
             } else {
@@ -679,7 +767,9 @@
             map.flyTo({ center: geoInfo.center, zoom: 16, bearing: -20, pitch: 50, speed: 1.6 });
             map.once('moveend', () => {
                 map.setMaxBounds(geoInfo.bounds);
+                activeFilter = 'all';
                 renderCards('all');
+                renderAllMarkers('all');
             });
         }
 
@@ -711,7 +801,9 @@
         function filterCategory(type, element) {
             document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
+            activeFilter = type;
             renderCards(type);
+            if (map.loaded()) renderAllMarkers(type);
         }
 
         function flyTo(item) {
