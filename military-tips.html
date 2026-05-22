@@ -15,6 +15,36 @@
             font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
             transition: all var(--transition-fast) ease; }
         .nav-back:hover { transform: translateX(-4px); }
+
+        /* 概况卡片 */
+        .overview-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xxl); }
+        .ov-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4);
+            border-radius: var(--border-radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center; }
+        .ov-icon { font-size: 1.8rem; color: var(--cqu-blue); margin-bottom: 6px; }
+        .ov-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .ov-val { font-size: 1.2rem; font-weight: var(--font-weight-bold); color: var(--cqu-blue); }
+
+        /* 训练科目卡片 */
+        .subject-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-xxl); }
+        .subject-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md) var(--spacing-sm); box-shadow: var(--shadow-sm);
+            text-align: center; transition: all var(--transition-normal) ease; }
+        .subject-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .subject-icon { font-size: 1.8rem; color: var(--cqu-blue); margin-bottom: 6px; }
+        .subject-name { font-size: 0.9rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .subject-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* 作息表 */
+        .schedule-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-xl); }
+        .schedule-row { display: flex; align-items: flex-start; gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .schedule-row:last-child { border-bottom: none; }
+        .schedule-time { min-width: 80px; font-size: 0.9rem; font-weight: var(--font-weight-semibold); color: var(--cqu-orange); }
+        .schedule-event { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+
+        /* 贴士卡片 */
         .tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
         .tip-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
@@ -25,14 +55,18 @@
         .tip-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
         .tip-desc ul { padding-left: 16px; margin-top: 6px; }
         .tip-desc li { margin-bottom: 4px; }
-        .schedule-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-xl); }
-        .schedule-row { display: flex; align-items: flex-start; gap: var(--spacing-md);
-            padding: var(--spacing-sm) 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
-        .schedule-row:last-child { border-bottom: none; }
-        .schedule-time { min-width: 80px; font-size: 0.9rem; font-weight: var(--font-weight-semibold); color: var(--cqu-orange); }
-        .schedule-event { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+
+        /* 内务整理 */
+        .dorm-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xxl); }
+        .dorm-step { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-md);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center; }
+        .dorm-num { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            color: white; font-size: 1rem; font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); }
+        .dorm-step-title { font-size: 0.9rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .dorm-step-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* 心态篇 */
         .mindset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
         .mindset-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
@@ -42,15 +76,40 @@
         .mindset-emoji { font-size: 2.5rem; margin-bottom: 8px; }
         .mindset-title { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
         .mindset-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+
+        /* 警告框 */
         .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
             border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
         .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
         .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+
+        /* 结训汇演 */
+        .finale-card { background: rgba(30,79,161,0.06); border: 1px solid rgba(30,79,161,0.2);
+            border-radius: var(--border-radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); }
+        .finale-card .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .finale-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cqu-blue) 0%, var(--cqu-orange) 100%);
+            border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .finale-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .finale-card p, .finale-card li { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
+        .finale-card ul { padding-left: var(--spacing-md); margin-top: 6px; }
+        .finale-card li { margin-bottom: 4px; }
+
         @media (max-width: 768px) {
             .page-hero { padding: calc(var(--spacing-lg) + 56px) 0 var(--spacing-sm); }
             .page-hero .hero-icon { font-size: 2.5rem; margin-bottom: var(--spacing-sm); }
             .content-section { padding: var(--spacing-md) 0 var(--spacing-lg); }
             .nav-back { font-size: .9rem; margin-bottom: var(--spacing-md); }
+            .overview-strip { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: var(--spacing-md); }
+            .ov-card { padding: 10px 8px; }
+            .ov-icon { font-size: 1.4rem; margin-bottom: 4px; }
+            .ov-label { font-size: .72rem; }
+            .ov-val { font-size: 1rem; }
+            .subject-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .subject-card { padding: 12px 8px; }
+            .subject-icon { font-size: 1.4rem; }
+            .subject-name { font-size: .82rem; }
+            .subject-desc { font-size: .72rem; }
             .schedule-card { padding: 14px; }
             .schedule-row { gap: 12px; padding: 6px 0; }
             .schedule-time { min-width: 60px; font-size: .82rem; }
@@ -61,6 +120,11 @@
             .tip-title { font-size: 1.02rem; }
             .tip-desc { font-size: .85rem; line-height: 1.55; }
             .tip-desc ul { padding-left: 14px; }
+            .dorm-steps { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .dorm-step { padding: 12px 8px; }
+            .dorm-num { width: 30px; height: 30px; font-size: .9rem; margin-bottom: 8px; }
+            .dorm-step-title { font-size: .82rem; }
+            .dorm-step-desc { font-size: .74rem; }
             .mindset-grid { grid-template-columns: 1fr; gap: 10px; }
             .mindset-card { padding: 12px; }
             .mindset-emoji { font-size: 2rem; }
@@ -68,6 +132,11 @@
             .mindset-desc { font-size: .8rem; }
             .warn-box { padding: 12px; }
             .warn-box p { font-size: .88rem; }
+            .finale-card { padding: 14px; }
+            .finale-card .card-header { gap: 10px; margin-bottom: 10px; }
+            .finale-icon { width: 38px; height: 38px; font-size: 1rem; }
+            .finale-title { font-size: 1.05rem; }
+            .finale-card p, .finale-card li { font-size: .88rem; line-height: 1.55; }
             h2.section-title { font-size: 1.3rem !important; margin-bottom: var(--spacing-sm) !important; }
         }
     </style>
@@ -87,40 +156,112 @@
         <div class="container">
             <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
 
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">重大军训概况</h2>
+            <div class="overview-strip">
+                <div class="ov-card">
+                    <div class="ov-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="ov-label">动员大会</div>
+                    <div class="ov-val">9月14日</div>
+                </div>
+                <div class="ov-card">
+                    <div class="ov-icon"><i class="fas fa-clock"></i></div>
+                    <div class="ov-label">训练时长</div>
+                    <div class="ov-val">约 2–3 周</div>
+                </div>
+                <div class="ov-card">
+                    <div class="ov-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="ov-label">训练场地</div>
+                    <div class="ov-val">虎溪风雨操场</div>
+                </div>
+                <div class="ov-card">
+                    <div class="ov-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="ov-label">考核科目</div>
+                    <div class="ov-val">7 项</div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">七大训练科目</h2>
+            <div class="subject-grid">
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-walking"></i></div>
+                    <div class="subject-name">队列训练</div>
+                    <div class="subject-desc">站军姿、齐步走、正步、转体、报数，是军训占比最大的日常科目</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-crosshairs"></i></div>
+                    <div class="subject-name">轻武器射击</div>
+                    <div class="subject-desc">模拟枪/激光射击训练，体验实弹射击基础姿势和瞄准要领</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-chess-knight"></i></div>
+                    <div class="subject-name">战术基础动作</div>
+                    <div class="subject-desc">匍匐前进、低姿运动、疏散队形，体能考验最大的科目之一</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-fist-raised"></i></div>
+                    <div class="subject-name">格斗技能</div>
+                    <div class="subject-desc">捕俘拳、军体拳，在结训汇演方阵中展示，是拍照最帅的科目</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-first-aid"></i></div>
+                    <div class="subject-name">战场医疗救护</div>
+                    <div class="subject-desc">包扎、止血、骨折固定、搬运伤员，学完对真实急救也有帮助</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-biohazard"></i></div>
+                    <div class="subject-name">核生化防护</div>
+                    <div class="subject-desc">防护服穿戴、简易检测，国防教育的重要组成</div>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon"><i class="fas fa-music"></i></div>
+                    <div class="subject-name">军歌演唱</div>
+                    <div class="subject-desc">以连为单位的合唱比赛，是结训汇演的五大环节之一，声音响亮赢得彩头</div>
+                </div>
+                <div class="subject-card" style="background: rgba(245,124,0,0.06); border-color: rgba(245,124,0,0.2);">
+                    <div class="subject-icon" style="color: var(--cqu-orange);"><i class="fas fa-drum"></i></div>
+                    <div class="subject-name">军乐连（特色）</div>
+                    <div class="subject-desc">自愿报名，有器乐基础者可加入，结束后可留任艺术团管乐队，参与重大演出</div>
+                </div>
+            </div>
+
             <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-sm);">典型作息时间</h2>
             <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--spacing-lg);">以下为参考，具体以教官安排为准，每年略有差异。</p>
             <div class="schedule-card" style="margin-bottom: var(--spacing-xxl);">
                 <div class="schedule-row">
                     <div class="schedule-time">06:00</div>
-                    <div class="schedule-event">起床号，紧急集合出早操，注意着装整齐</div>
+                    <div class="schedule-event">起床号，紧急集合出早操，着装要整齐（迷彩服、军帽、腰带），提前准备好免得手忙脚乱</div>
                 </div>
                 <div class="schedule-row">
-                    <div class="schedule-time">07:00</div>
-                    <div class="schedule-event">早餐（食堂），注意不要吃得过饱，容易晕</div>
+                    <div class="schedule-time">06:30</div>
+                    <div class="schedule-event">早操：跑步约2–3公里，强度不大但要跟上节奏</div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-time">07:10</div>
+                    <div class="schedule-event">早餐（食堂），不要吃得过饱，容易训练时难受；带上水杯出发</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">08:00</div>
-                    <div class="schedule-event">上午训练：队列、正步、站军姿等，持续约2–3小时</div>
+                    <div class="schedule-event">上午训练：队列、正步、站军姿为主，持续约2–3小时。防晒出发前30分钟涂好</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">11:30</div>
-                    <div class="schedule-event">午餐，午休（约1小时，利用这段时间补充睡眠）</div>
+                    <div class="schedule-event">午餐，午休约1小时——充分利用，哪怕只是平躺闭眼，下午状态差异巨大</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">14:30</div>
-                    <div class="schedule-event">下午训练，通常包含国防教育讲座、急救知识等</div>
+                    <div class="schedule-event">下午训练：战术、格斗、射击模拟等专项科目，或国防教育讲座、急救知识课</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">17:30</div>
-                    <div class="schedule-event">晚餐，自由活动（洗漱、休息、和室友聊天）</div>
+                    <div class="schedule-event">晚餐，自由活动：洗漱、补觉、给家人报平安、和室友聊天（这段时光很珍贵）</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">20:00</div>
-                    <div class="schedule-event">班务会 / 内务检查，交流当天心得</div>
+                    <div class="schedule-event">班务会：总结当天表现，布置次日安排，教官会做内务检查（被褥、洗漱用品摆放）</div>
                 </div>
                 <div class="schedule-row">
                     <div class="schedule-time">22:30</div>
-                    <div class="schedule-event">熄灯，准时就寝（睡前把明天的物品准备好）</div>
+                    <div class="schedule-event">熄灯就寝。睡前把明天的衣物、水杯、防晒霜全备好，晨练时不用找东西</div>
                 </div>
             </div>
 
@@ -130,26 +271,29 @@
                     <div class="tip-icon">☀️</div>
                     <div class="tip-title">防晒要认真做</div>
                     <div class="tip-desc">
-                        重庆9月高温烈日，防晒是头等大事。
+                        重庆9月高温烈日——2024年9月9日气象局发布高温中暑三级预警，军训期间日最高气温可达37–39℃。防晒是头等大事。
                         <ul>
-                            <li>出训前15分钟涂SPF50+ PA++++防晒霜</li>
-                            <li>脖子、耳朵、手背都要涂，容易忽略</li>
-                            <li>军帽起到一定防护，但侧脸和颈后仍暴露</li>
-                            <li>晒后用芦荟胶或修复喷雾舒缓</li>
-                            <li>黑了不要焦虑，军训结束会慢慢恢复</li>
+                            <li><strong>出训前30分钟</strong>涂好防晒，选 SPF50+ PA++++ 且防水防汗款</li>
+                            <li>脖子、耳根、手背极易忽略，专门补一遍</li>
+                            <li>训练间隙（约每2小时）用迷你喷雾补涂一次</li>
+                            <li>晚上用芦荟胶或含马齿苋成分的修复乳舒缓晒红</li>
+                            <li>黑了不要焦虑，军训结束后皮肤会慢慢恢复</li>
+                            <li>男生同样需要涂，晒伤起皮会影响状态</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
                     <div class="tip-icon">💧</div>
-                    <div class="tip-title">补水是关键</div>
+                    <div class="tip-title">补水 + 防中暑</div>
                     <div class="tip-desc">
                         出汗量大，水分流失快，中暑多数是因为没喝够水。
                         <ul>
-                            <li>随身带大容量水杯（800ml以上），多次少量补水</li>
-                            <li>喝温水优于冰水，避免胃部不适</li>
-                            <li>训练间隙教官会给休息时间，抓紧喝水</li>
-                            <li>感觉头晕、恶心，立即举手告知教官</li>
+                            <li>随身带 800ml 以上大容量水杯，多次少量补水</li>
+                            <li>喝温水优于冰水，避免胃部痉挛</li>
+                            <li>备好<strong>藿香正气水、仁丹、风油精、清凉油</strong></li>
+                            <li>感觉头晕、恶心、耳鸣，立即举手告知教官</li>
+                            <li>轻症中暑：迅速转移阴凉处，补盐糖水，平躺抬腿</li>
+                            <li>热射病（意识模糊、体温>40℃）是急症，立即送医</li>
                         </ul>
                     </div>
                 </div>
@@ -159,10 +303,11 @@
                     <div class="tip-desc">
                         长时间站立和行走，脚是最容易受伤的部位。
                         <ul>
-                            <li>穿好跑步鞋，避免穿解放鞋训练（易磨脚）</li>
-                            <li>多备几双袜子，每天更换，保持脚部干燥</li>
-                            <li>出现水泡用水泡贴处理，不要强行挑破</li>
-                            <li>晚上可以泡脚放松，减轻疲劳</li>
+                            <li>解放鞋非常磨脚——自备厚实运动鞋垫套在里面</li>
+                            <li>备3–4双袜子，每天换洗，保持脚部干燥</li>
+                            <li>出水泡用<strong>水泡贴</strong>（医用减压贴）处理，不要强行挑破</li>
+                            <li>晚上用热水泡脚，减轻疲劳、舒缓酸痛</li>
+                            <li>有脚汗多的同学可带爽脚粉或防臭喷雾</li>
                         </ul>
                     </div>
                 </div>
@@ -170,12 +315,13 @@
                     <div class="tip-icon">😴</div>
                     <div class="tip-title">睡眠质量决定状态</div>
                     <div class="tip-desc">
-                        军训期间睡眠不足会让一切都变难受。
+                        军训期间睡眠不足会让一切都变难受，体力和情绪会同时崩。
                         <ul>
                             <li>熄灯后立即休息，不要熬夜刷手机</li>
-                            <li>午休时间充分利用，哪怕只是闭目养神</li>
-                            <li>睡前把第二天的衣物和物品准备好，早晨不手忙脚乱</li>
+                            <li>午休时间充分利用，哪怕只是平躺闭眼20分钟</li>
+                            <li>睡前把第二天的衣物和物品全准备好，早晨不手忙脚乱</li>
                             <li>耳塞可以帮助入睡（宿舍可能有人打鼾）</li>
+                            <li>睡前做几组拉伸，缓解肌肉酸痛</li>
                         </ul>
                     </div>
                 </div>
@@ -187,49 +333,126 @@
                             <li>早餐一定要吃，但不宜过饱，容易训练时难受</li>
                             <li>多吃蛋白质（鸡蛋、肉类），补充体力消耗</li>
                             <li>少吃辛辣油腻，肠胃不适会让训练更痛苦</li>
-                            <li>备好藿香正气水、仁丹等防暑药品</li>
-                            <li>可以带些能量棒，训练间隙快速补充能量</li>
+                            <li>备好<strong>肠胃药、创可贴、碘伏棉签</strong>等常用药</li>
+                            <li>带几条能量棒或糖果，训练间隙快速补充能量；容易低血糖的同学随身必备</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
                     <div class="tip-icon">🤝</div>
-                    <div class="tip-title">团队协作很关键</div>
+                    <div class="tip-title">团队协作 + 与教官相处</div>
                     <div class="tip-desc">
                         军训是集体行动，一个人的状态影响整个班。
                         <ul>
                             <li>主动帮助状态不好的同学，互相关照</li>
-                            <li>有人晕倒或不适，立即告知教官，不要拖延</li>
-                            <li>和室友约好互相叫早，避免迟到</li>
-                            <li>班长和教官是可以求助的人，不要因为面子硬撑</li>
+                            <li>有人不适，立即告知教官，不要为面子硬撑</li>
+                            <li>和室友约好互相叫早，避免迟到受罚</li>
+                            <li>教官严肃但通情达理——认真配合、不偷懒，他们对你印象会好很多</li>
+                            <li>有身体状况提前说明，教官一般会酌情照顾</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🎵</div>
+                    <div class="tip-title">军歌提前学</div>
+                    <div class="tip-desc">
+                        军歌比赛是结训汇演的重要环节，连队成绩和你的声音大小直接相关。
+                        <ul>
+                            <li>常见军训军歌：《团结就是力量》《我和我的祖国》《强军战歌》《当那一天来临》</li>
+                            <li>军训前可以在网易云/QQ音乐提前熟悉旋律和歌词</li>
+                            <li>唱歌不好听没关系，<strong>声音够响亮</strong>才是关键</li>
+                            <li>学校校歌《嘉陵江上》在汇演结束时全体合唱，建议也提前练一练</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <div class="tip-title">物资准备清单</div>
+                    <div class="tip-desc">
+                        军训用品（约123元）学校统一配发，以下是需要自备的：
+                        <ul>
+                            <li>防晒霜（SPF50+，防水防汗，建议备2支）</li>
+                            <li>大容量水杯（800ml+）、迷你防晒喷雾</li>
+                            <li>水泡贴、创可贴、藿香正气水、碘伏棉签</li>
+                            <li>厚运动鞋垫（套在解放鞋内）、多双吸汗袜</li>
+                            <li>芦荟胶 / 晒后修复乳、保湿乳液</li>
+                            <li>能量棒、独立包装糖果（训练间隙补能）</li>
+                            <li>充电宝（晚上自由时间有限，手机电量宝贵）</li>
+                            <li>耳塞（可选，助眠）、折叠小马扎（部分科目需要）</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div style="margin-top: var(--spacing-xxl);">
-                <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">心态篇</h2>
-                <div class="mindset-grid">
-                    <div class="mindset-card">
-                        <div class="mindset-emoji">😤</div>
-                        <div class="mindset-title">累是正常的</div>
-                        <div class="mindset-desc">每个人都一样，你不是最惨的那个。咬牙坚持，两三周后你会发现自己比想象中强多了。</div>
-                    </div>
-                    <div class="mindset-card">
-                        <div class="mindset-emoji">📸</div>
-                        <div class="mindset-title">这是值得记录的经历</div>
-                        <div class="mindset-desc">多拍照，和战友留合影。军训结束后这段记忆会变成大学里很特别的一部分。</div>
-                    </div>
-                    <div class="mindset-card">
-                        <div class="mindset-emoji">🌱</div>
-                        <div class="mindset-title">收获不止于体能</div>
-                        <div class="mindset-desc">认识了一群患难与共的朋友，学会了服从和纪律——这些是你在大学其他阶段很难获得的。</div>
-                    </div>
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">内务整理：叠出"豆腐块"</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--spacing-lg);">内务检查是军训日常考核之一，被褥需叠成棱角分明的"豆腐块"。</p>
+            <div class="dorm-steps">
+                <div class="dorm-step">
+                    <div class="dorm-num">1</div>
+                    <div class="dorm-step-title">铺平展开</div>
+                    <div class="dorm-step-desc">被子展开后先用手掌从中间向两侧推平，消除所有褶皱</div>
+                </div>
+                <div class="dorm-step">
+                    <div class="dorm-num">2</div>
+                    <div class="dorm-step-title">三折叠厚</div>
+                    <div class="dorm-step-desc">先将被子对折一次，再三折，叠成长条状，宽度约等于床宽的1/3</div>
+                </div>
+                <div class="dorm-step">
+                    <div class="dorm-num">3</div>
+                    <div class="dorm-step-title">再次对折压实</div>
+                    <div class="dorm-step-desc">将长条沿中线再对折，用手掌用力压实，确保四个角方正</div>
+                </div>
+                <div class="dorm-step">
+                    <div class="dorm-num">4</div>
+                    <div class="dorm-step-title">修边抠角</div>
+                    <div class="dorm-step-desc">用手指沿四条边轻轻抠出直线，角部要90°方正——"豆腐块"的灵魂</div>
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-xxl);">
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin: 0;">
+                    <i class="fas fa-lightbulb" style="color: var(--cqu-orange); margin-right: 6px;"></i>
+                    <strong>小技巧：</strong>被单里套一块硬纸板（或用空纸箱剪出），叠好后取出，四角会更加挺括。洗漱用品、脸盆等要按统一位置摆放，整齐一致比干净更重要——教官检查时首先看的是整体统一感。
+                </p>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">结训汇演：那是属于你们的高光时刻</h2>
+            <div class="finale-card">
+                <div class="card-header">
+                    <div class="finale-icon"><i class="fas fa-flag"></i></div>
+                    <div class="finale-title">汇演五大环节</div>
+                </div>
+                <p>军训结束时在虎溪校区风雨操场举行结训汇演暨总结表彰大会，历届均有6000余名本科新生参与。汇演包含：</p>
+                <ul>
+                    <li><strong>军歌比赛</strong>：各连队依次演唱，评出优秀连队</li>
+                    <li><strong>训练科目比武竞赛</strong>：队列操、捕俘拳/军体拳、战术表演等</li>
+                    <li><strong>训练成果展示</strong>：方队行进、班战术表演、军乐连乐曲演奏</li>
+                    <li><strong>比武竞赛结果公布</strong>：优秀个人、先进连队授奖</li>
+                    <li><strong>全体齐唱校歌</strong>《嘉陵江上》，意味着新生正式迈入重大校园</li>
+                </ul>
+                <p style="margin-top: var(--spacing-sm);">建议军训时拍好照、认真对待每一次训练——汇演时回看那段视频，会是大学里最有成就感的时刻之一。</p>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">心态篇</h2>
+            <div class="mindset-grid">
+                <div class="mindset-card">
+                    <div class="mindset-emoji">😤</div>
+                    <div class="mindset-title">累是正常的</div>
+                    <div class="mindset-desc">每个人都一样，你不是最惨的那个。咬牙坚持，两三周后你会发现自己比想象中强多了。</div>
+                </div>
+                <div class="mindset-card">
+                    <div class="mindset-emoji">📸</div>
+                    <div class="mindset-title">这是值得记录的经历</div>
+                    <div class="mindset-desc">多拍照，和战友留合影，记录最真实的疲惫与快乐。军训结束后这段记忆会变成大学里很特别的一页。</div>
+                </div>
+                <div class="mindset-card">
+                    <div class="mindset-emoji">🌱</div>
+                    <div class="mindset-title">收获不止于体能</div>
+                    <div class="mindset-desc">认识了一群患难与共的朋友，学会了服从和纪律——这些是你在大学其他阶段很难获得的。</div>
                 </div>
             </div>
 
             <div class="warn-box">
-                <p><i class="fas fa-exclamation-triangle"></i><strong>重要提醒：</strong>身体出现严重不适（持续头晕、呕吐、高烧、昏厥）务必立即报告教官，不要为了"不拖累集体"而隐忍。中暑如果处理不及时可能引发热射病，是严重的医疗紧急情况。你的健康永远比集体荣誉重要。</p>
+                <p><i class="fas fa-exclamation-triangle"></i><strong>重要提醒：</strong>身体出现严重不适（持续头晕、呕吐、高烧、意识模糊）务必立即报告教官，不要为了"不拖累集体"而隐忍。中暑处理不及时可能引发热射病（体温超过40℃、意识障碍），是严重医疗紧急情况。你的健康永远比集体荣誉重要。</p>
             </div>
         </div>
     </section>
