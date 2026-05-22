@@ -377,4 +377,20 @@
         init();
     }
 
+// Service Worker registration — runs on every page that loads shared.js
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+}
+
+// Make og:image absolute so WeChat/QQ crawlers resolve it correctly
+(function () {
+    const m = document.querySelector('meta[property="og:image"]');
+    if (m && m.content && !m.content.startsWith('http')) {
+        const base = location.pathname.replace(/[^/]*$/, '');
+        m.content = location.origin + base + m.content;
+    }
+}());
+
 })();

@@ -36,12 +36,12 @@ const MAP_ASSETS = [
   'assets/maps/liangjiang-1920.webp'
 ];
 
-const PRECACHE_ASSETS = [...CORE_ASSETS, ...MAP_ASSETS];
-
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_ASSETS))
+      .then(cache => cache.addAll(CORE_ASSETS))
+      .then(() => caches.open(CACHE_NAME))
+      .then(cache => Promise.allSettled(MAP_ASSETS.map(url => cache.add(url))))
       .then(() => self.skipWaiting())
   );
 });
@@ -78,10 +78,14 @@ async function cacheFirst(request) {
   const cached = await caches.match(request);
   if (cached) return cached;
 
-  const response = await fetch(request);
-  const cache = await caches.open(CACHE_NAME);
-  cache.put(request, response.clone());
-  return response;
+  try {
+    const response = await fetch(request);
+    const cache = await caches.open(CACHE_NAME);
+    cache.put(request, response.clone());
+    return response;
+  } catch {
+    return new Response('', { status: 503, statusText: 'Offline' });
+  }
 }
 
 async function networkFirst(request) {

@@ -219,13 +219,6 @@
 
     <script src="shared.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(() => {});
-            });
-        }
-    </script>
-    <script>
         (function () {
             const colors = ['#1e4fa1', '#2a65c7', '#1e88e5', '#64b5f6', '#90caf9'];
             const container = document.getElementById('sandBackground');
