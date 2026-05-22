@@ -361,3 +361,36 @@ header.scrolled {
 section[style*="background"] {
   background: transparent !important;
 }
+
+
+/* ═══════════════════════════════════════════════════
+   Reduced motion / lower-cost glass
+═══════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --lg-filter-sm: blur(12px) saturate(150%) brightness(1.02);
+    --lg-filter-md: blur(12px) saturate(150%) brightness(1.02);
+    --lg-filter-lg: blur(12px) saturate(150%) brightness(1.02);
+
+    --lg-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    --lg-shadow-hover: 0 3px 14px rgba(0, 0, 0, 0.14);
+    --lg-blue-shadow: 0 2px 12px rgba(30, 79, 161, 0.18);
+    --lg-blue-shadow-hover: 0 3px 14px rgba(30, 79, 161, 0.22);
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .nav-link::after,
+  .hero-cta::after,
+  .submit-btn::after,
+  .place-card::after {
+    display: none !important;
+  }
+}

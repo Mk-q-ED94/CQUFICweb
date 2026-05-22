@@ -39,6 +39,28 @@ body {
    1. Hero Section — 使用 dvh 避免地址栏抖动
 ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
+  .nav-link,
+  .dropdown-item,
+  .mobile-menu-toggle,
+  .hero-cta,
+  .secondary-cta,
+  .feature-card,
+  .info-card,
+  .link-card,
+  .category-tab,
+  .tab-btn,
+  .tool-btn,
+  .filter-chip,
+  .result-item,
+  .menu-item,
+  .place-card,
+  .home-btn,
+  .campus-btn,
+  .locate-btn {
+    min-height: 44px !important;
+    touch-action: manipulation;
+  }
+
   /* 100dvh = 动态视口高度，随浏览器工具栏变化 */
   .hero,
   .feedback-hero {
@@ -79,7 +101,16 @@ body {
       inset 0 1.5px 0 rgba(255,255,255,0.80) !important;
     border-radius: 20px !important;
     left: 12px !important;
+    transform: none !important;
     width: calc(100% - 24px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 768px) {
+  .nav-links {
+    backdrop-filter: blur(12px) saturate(150%) brightness(1.02) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(150%) brightness(1.02) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
   }
 }
 

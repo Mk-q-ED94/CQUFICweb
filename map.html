@@ -2,10 +2,22 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="重庆大学校园 3D 地图，支持校区切换、地点搜索、分类筛选和移动端导航辅助。">
+    <meta name="theme-color" content="#1e4fa1">
+    <meta property="og:title" content="CQU 3D 导航 - 液态版">
+    <meta property="og:description" content="重庆大学校园 3D 地图，支持校区切换、地点搜索、分类筛选和移动端导航辅助。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="重庆大学新生服务融合中心平台">
+    <meta property="og:image" content="assets/icons/icon-512.png">
+    <meta name="apple-mobile-web-app-title" content="CQUFIC">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>CQU 3D 导航 - 液态版</title>
+    <link rel="manifest" href="manifest.json">
     
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script>window.__mapboxScriptError = false;</script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js' onerror="window.__mapboxScriptError=true;document.documentElement.classList.add('mapbox-failed');"></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
 
     <style>
@@ -16,7 +28,45 @@
             overflow: hidden; 
             background-color: #000; /* 深色底更能衬托玻璃感 */
         }
-        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index: 0; }
+
+        .static-map-fallback {
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            background: #eef3f8;
+        }
+        .static-map-fallback.show,
+        .mapbox-failed .static-map-fallback {
+            display: block;
+        }
+        .static-map-fallback picture,
+        .static-map-fallback img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .static-map-fallback img {
+            object-fit: cover;
+            object-position: center;
+            filter: saturate(1.05) contrast(0.98);
+        }
+        .static-map-caption {
+            position: absolute;
+            right: 20px;
+            bottom: calc(182px + env(safe-area-inset-bottom, 0px));
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 14px;
+            border-radius: 18px;
+            color: #1d1d1f;
+            font-size: 13px;
+            font-weight: 700;
+            pointer-events: none;
+        }
 
         /* --- 1. 液态玻璃核心材质 (Magic Material) --- */
         :root {
@@ -504,6 +554,70 @@
             .place-card { min-width: 126px; height: 86px; padding: 10px; }
         }
 
+        @media (max-width: 900px) and (orientation: landscape) {
+            .top-bar {
+                padding-top: max(8px, env(safe-area-inset-top, 8px));
+                padding-bottom: 6px;
+            }
+            .home-btn {
+                top: max(8px, env(safe-area-inset-top, 8px));
+                height: 34px;
+            }
+            .bottom-area {
+                max-height: calc(44svh + env(safe-area-inset-bottom, 0px));
+                padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+                overflow: hidden;
+            }
+            .filter-scroll {
+                padding-top: 6px;
+                padding-bottom: 8px;
+            }
+            .cards-scroll {
+                max-height: 100px;
+                align-items: stretch;
+            }
+            .place-card {
+                min-width: 132px;
+                height: 82px;
+                border-radius: 16px;
+                padding: 10px;
+            }
+            .card-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 12px;
+            }
+            .static-map-caption {
+                bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            :root {
+                --blur: blur(12px) saturate(140%);
+                --ease-elastic: ease;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.001ms !important;
+            }
+            .liquid-glass {
+                box-shadow: 0 4px 14px rgba(0,0,0,0.12) !important;
+            }
+            .place-card::after {
+                display: none;
+            }
+            .user-dot-pulse {
+                animation: none !important;
+                opacity: 0.35;
+                transform: scale(1.25);
+            }
+        }
+
     </style>
     <link rel="stylesheet" href="glass.css">
     <link rel="stylesheet" href="mobile.css">
@@ -517,6 +631,13 @@
     </div>
 
     <div id='map'></div>
+    <div class="static-map-fallback" id="staticMapFallback" aria-hidden="true">
+        <picture id="campusStaticPicture">
+            <source type="image/webp" srcset="assets/maps/a-960.webp 960w, assets/maps/a-1920.webp 1920w" sizes="100vw">
+            <img id="campusStaticImage" src="assets/maps/a-1920.webp" alt="重庆大学老校区 A区平面图" decoding="async">
+        </picture>
+        <div class="static-map-caption liquid-glass" id="campusStaticCaption">老校区 A区平面图</div>
+    </div>
 
     <div class="ui-overlay">
         <!-- 顶部 -->
@@ -581,25 +702,273 @@
     <script src="map-data.js"></script>
 
     <script>
+        const STATIC_MAPS = {
+            A: { label: '老校区 A区', file: 'a' },
+            B: { label: '老校区 B区', file: 'b' },
+            C: { label: '老校区 C区', file: 'c' },
+            HUXI: { label: '虎溪校区', file: 'huxi' },
+            LIANGJIANG: { label: '两江校区', file: 'liangjiang' }
+        };
+
+        function renderStaticMap(campusKey = 'A') {
+            const info = STATIC_MAPS[campusKey] || STATIC_MAPS.A;
+            const picture = document.getElementById('campusStaticPicture');
+            const caption = document.getElementById('campusStaticCaption');
+            if (!picture || !caption) return;
+            picture.innerHTML = `
+                <source type="image/webp" srcset="assets/maps/${info.file}-960.webp 960w, assets/maps/${info.file}-1920.webp 1920w" sizes="100vw">
+                <img id="campusStaticImage" src="assets/maps/${info.file}-1920.webp" alt="重庆大学${info.label}平面图" decoding="async">
+            `;
+            caption.textContent = `${info.label}平面图`;
+        }
+
+        function showStaticMapFallback(campusKey = 'A') {
+            renderStaticMap(campusKey);
+            document.documentElement.classList.add('mapbox-failed');
+            const fallback = document.getElementById('staticMapFallback');
+            if (fallback) fallback.classList.add('show');
+        }
+
+        if (window.__mapboxScriptError || typeof mapboxgl === 'undefined') {
+            showStaticMapFallback('A');
+            window.handleSearch = function () {};
+            window.requestLocation = function () {};
+            window.toggleMenu = function () {
+                document.getElementById('campusMenu').classList.toggle('open');
+            };
+            window.switchCampus = function (campusKey, btn) {
+                renderStaticMap(campusKey);
+                document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+                document.getElementById('campusMenu').classList.remove('open');
+            };
+        } else {
         mapboxgl.accessToken = 'pk.eyJ1IjoibWdocmYiLCJhIjoiY21pZThvazNwMDA0ejNnczkxbzF0dzVybCJ9.dxPH2yWFupIW9Sjyfz44Jw';
 
         // ── 数据由 map-data.js 提供（RAW_BOUNDARIES / CAMPUS_DATA）──
         // 修改地标、添加校区请编辑 map-data.js，无需改动本文件。
 
-                let activeCampus = 'A';
+        let activeCampus = 'A';
         let currentMarker = null;
         let locationMarkers = [];   // 所有常驻标记
         let activeFilter = 'all';   // 当前分类过滤
+        let clusterHandlersAttached = false;
+
+        const prefersReducedMotion = window.matchMedia
+            ? window.matchMedia('(prefers-reduced-motion: reduce)')
+            : { matches: false };
+
+        const CLUSTER_SOURCE_ID = 'huxi-cluster-locations';
+        const CLUSTER_LAYERS = ['huxi-clusters', 'huxi-cluster-count', 'huxi-unclustered-point', 'huxi-unclustered-icon'];
+
+        function cameraOptions(options) {
+            if (!prefersReducedMotion.matches) return options;
+            return {
+                ...options,
+                pitch: Math.min(options.pitch || 45, 42),
+                bearing: options.bearing || 0,
+                duration: 0,
+                curve: 1,
+                essential: false
+            };
+        }
+
+        function moveMap(options) {
+            map.flyTo(cameraOptions(options));
+        }
 
         function clearLocationMarkers() {
             locationMarkers.forEach(m => m.remove());
             locationMarkers = [];
         }
 
+        function removeClusterSource() {
+            if (!map || !map.getStyle()) return;
+            CLUSTER_LAYERS.forEach(layerId => {
+                if (map.getLayer(layerId)) map.removeLayer(layerId);
+            });
+            if (map.getSource(CLUSTER_SOURCE_ID)) map.removeSource(CLUSTER_SOURCE_ID);
+        }
+
+        function selectCardForItem(item) {
+            const cards = document.querySelectorAll('#cards-container .place-card');
+            const allLocs = CAMPUS_DATA[activeCampus].locations;
+            const filteredLocs = activeFilter === 'all' ? allLocs : allLocs.filter(l => l.type === activeFilter);
+            const idx = filteredLocs.findIndex(l => l.name === item.name && l.lng === item.lng);
+            cards.forEach(c => c.classList.remove('selected'));
+            if (idx >= 0 && cards[idx]) {
+                cards[idx].classList.add('selected');
+                cards[idx].scrollIntoView({
+                    behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+
+        function clusterData(locations) {
+            const allLocations = CAMPUS_DATA[activeCampus].locations || [];
+            return {
+                type: 'FeatureCollection',
+                features: locations.map(item => ({
+                    type: 'Feature',
+                    properties: {
+                        index: allLocations.indexOf(item),
+                        name: item.name,
+                        type: item.type,
+                        icon: item.icon
+                    },
+                    geometry: { type: 'Point', coordinates: [item.lng, item.lat] }
+                }))
+            };
+        }
+
+        function attachClusterHandlers() {
+            if (clusterHandlersAttached) return;
+            clusterHandlersAttached = true;
+
+            map.on('click', 'huxi-clusters', e => {
+                const features = map.queryRenderedFeatures(e.point, { layers: ['huxi-clusters'] });
+                const clusterId = features[0].properties.cluster_id;
+                map.getSource(CLUSTER_SOURCE_ID).getClusterExpansionZoom(clusterId, (err, zoom) => {
+                    if (err) return;
+                    moveMap({
+                        center: features[0].geometry.coordinates,
+                        zoom,
+                        pitch: 42,
+                        bearing: -12,
+                        speed: 1.25
+                    });
+                });
+            });
+
+            map.on('click', 'huxi-unclustered-point', e => {
+                const index = Number(e.features[0].properties.index);
+                const item = (CAMPUS_DATA[activeCampus].locations || [])[index];
+                if (!item) return;
+                flyTo(item);
+                selectCardForItem(item);
+            });
+
+            ['huxi-clusters', 'huxi-unclustered-point', 'huxi-unclustered-icon'].forEach(layerId => {
+                map.on('mouseenter', layerId, () => { map.getCanvas().style.cursor = 'pointer'; });
+                map.on('mouseleave', layerId, () => { map.getCanvas().style.cursor = ''; });
+            });
+        }
+
+        function renderClusterMarkers(locations) {
+            clearLocationMarkers();
+            removeClusterSource();
+
+            map.addSource(CLUSTER_SOURCE_ID, {
+                type: 'geojson',
+                data: clusterData(locations),
+                cluster: true,
+                clusterMaxZoom: 17,
+                clusterRadius: 44
+            });
+
+            map.addLayer({
+                id: 'huxi-clusters',
+                type: 'circle',
+                source: CLUSTER_SOURCE_ID,
+                filter: ['has', 'point_count'],
+                paint: {
+                    'circle-color': ['step', ['get', 'point_count'], '#2a65c7', 24, '#f57c00', 48, '#c62828'],
+                    'circle-radius': ['step', ['get', 'point_count'], 18, 24, 23, 48, 28],
+                    'circle-stroke-width': 3,
+                    'circle-stroke-color': 'rgba(255,255,255,0.92)',
+                    'circle-opacity': 0.92
+                }
+            });
+
+            map.addLayer({
+                id: 'huxi-cluster-count',
+                type: 'symbol',
+                source: CLUSTER_SOURCE_ID,
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': ['get', 'point_count_abbreviated'],
+                    'text-size': 12
+                },
+                paint: { 'text-color': '#ffffff' }
+            });
+
+            map.addLayer({
+                id: 'huxi-unclustered-point',
+                type: 'circle',
+                source: CLUSTER_SOURCE_ID,
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': [
+                        'match', ['get', 'type'],
+                        'landmark', '#ff7a2f',
+                        'library', '#1e4fa1',
+                        'gate', '#636366',
+                        'teach', '#f57c00',
+                        'lab', '#7d5fff',
+                        'college', '#0aa37f',
+                        'food', '#22a85a',
+                        'sport', '#007aff',
+                        'life', '#af52de',
+                        '#2a65c7'
+                    ],
+                    'circle-radius': 14,
+                    'circle-stroke-width': 2.5,
+                    'circle-stroke-color': 'rgba(255,255,255,0.94)'
+                }
+            });
+
+            map.addLayer({
+                id: 'huxi-unclustered-icon',
+                type: 'symbol',
+                source: CLUSTER_SOURCE_ID,
+                filter: ['!', ['has', 'point_count']],
+                layout: {
+                    'text-field': ['get', 'icon'],
+                    'text-size': 12,
+                    'text-allow-overlap': true
+                }
+            });
+
+            attachClusterHandlers();
+        }
+
+        function setBoundaryData(geoInfo) {
+            if (map.isStyleLoaded && !map.isStyleLoaded()) {
+                map.once('load', () => setBoundaryData(geoInfo));
+                return;
+            }
+
+            if (map.getSource('campus-boundary')) {
+                map.getSource('campus-boundary').setData(geoInfo.sourceData);
+                return;
+            }
+
+            map.addSource('campus-boundary', { type: 'geojson', data: geoInfo.sourceData });
+            map.addLayer({
+                id: 'boundary-line',
+                type: 'line',
+                source: 'campus-boundary',
+                paint: { 'line-color': '#007AFF', 'line-width': 4, 'line-blur': 2, 'line-opacity': 0.6 }
+            });
+            map.addLayer({
+                id: 'boundary-fill',
+                type: 'fill',
+                source: 'campus-boundary',
+                paint: { 'fill-color': '#007AFF', 'fill-opacity': 0.05 }
+            }, 'boundary-line');
+        }
+
         function renderAllMarkers(filterType) {
             clearLocationMarkers();
+            removeClusterSource();
             const locations = CAMPUS_DATA[activeCampus].locations || [];
             const filtered = filterType === 'all' ? locations : locations.filter(i => i.type === filterType);
+            if (activeCampus === 'HUXI' && filtered.length > 24) {
+                renderClusterMarkers(filtered);
+                return;
+            }
             filtered.forEach(item => {
                 const el = document.createElement('div');
                 el.className = `loc-marker t-${item.type}`;
@@ -614,16 +983,7 @@
                 el.addEventListener('click', (e) => {
                     e.stopPropagation();
                     flyTo(item);
-                    // 同步高亮底部卡片
-                    const cards = document.querySelectorAll('#cards-container .place-card');
-                    const allLocs = CAMPUS_DATA[activeCampus].locations;
-                    const filteredLocs = activeFilter === 'all' ? allLocs : allLocs.filter(l => l.type === activeFilter);
-                    const idx = filteredLocs.findIndex(l => l.name === item.name && l.lng === item.lng);
-                    cards.forEach(c => c.classList.remove('selected'));
-                    if (idx >= 0 && cards[idx]) {
-                        cards[idx].classList.add('selected');
-                        cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                    }
+                    selectCardForItem(item);
                 });
                 const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
                     .setLngLat([item.lng, item.lat])
@@ -662,7 +1022,19 @@
             maxBounds: initData.bounds
         });
 
+        const mapLoadFallbackTimer = window.setTimeout(() => {
+            if (!map.loaded()) showStaticMapFallback(activeCampus);
+        }, 8000);
+
+        map.on('error', event => {
+            const message = String(event && event.error && event.error.message || '');
+            if (/style|access token|unauthorized|forbidden/i.test(message)) {
+                showStaticMapFallback(activeCampus);
+            }
+        });
+
         map.on('load', () => {
+            window.clearTimeout(mapLoadFallbackTimer);
             // 设置环境光，让建筑看起来更像陶瓷
             map.setLight({ anchor: 'viewport', color: '#fff', intensity: 0.6 });
 
@@ -682,9 +1054,7 @@
             }, labelLayerId);
 
             // 边界 - 极光蓝
-            map.addSource('campus-boundary', { 'type': 'geojson', 'data': initData.sourceData });
-            map.addLayer({ 'id': 'boundary-line', 'type': 'line', 'source': 'campus-boundary', 'paint': { 'line-color': '#007AFF', 'line-width': 4, 'line-blur': 2, 'line-opacity': 0.6 }});
-            map.addLayer({ 'id': 'boundary-fill', 'type': 'fill', 'source': 'campus-boundary', 'paint': { 'fill-color': '#007AFF', 'fill-opacity': 0.05 }}, 'boundary-line');
+            setBoundaryData(initData);
 
             // 渲染当前校区所有地标标记
             renderAllMarkers('all');
@@ -733,10 +1103,11 @@
             if (activeCampus !== targetCampusKey) {
                 map.setMaxBounds(null);
                 activeCampus = targetCampusKey;
+                renderStaticMap(targetCampusKey);
                 const geoInfo = calculateGeoInfo(RAW_BOUNDARIES[targetCampusKey]);
                 document.getElementById('search-input').placeholder = `Search ${CAMPUS_DATA[activeCampus].name}...`;
-                map.flyTo({ center: [targetLoc.lng, targetLoc.lat], zoom: 17.5, pitch: 60, speed: 1.8, curve: 1 });
-                map.getSource('campus-boundary').setData(geoInfo.sourceData);
+                moveMap({ center: [targetLoc.lng, targetLoc.lat], zoom: 17.5, pitch: 60, speed: 1.8, curve: 1 });
+                setBoundaryData(geoInfo);
                 map.once('moveend', () => {
                     map.setMaxBounds(geoInfo.bounds);
                     activeFilter = 'all';
@@ -758,13 +1129,14 @@
                 btn.classList.add('active');
             }
             toggleMenu();
+            renderStaticMap(campusKey);
             document.getElementById('search-input').value = '';
             document.getElementById('search-input').placeholder = `Search ${CAMPUS_DATA[activeCampus].name}...`;
 
             const geoInfo = calculateGeoInfo(RAW_BOUNDARIES[campusKey]);
             map.setMaxBounds(null);
-            map.getSource('campus-boundary').setData(geoInfo.sourceData);
-            map.flyTo({ center: geoInfo.center, zoom: 16, bearing: -20, pitch: 50, speed: 1.6 });
+            setBoundaryData(geoInfo);
+            moveMap({ center: geoInfo.center, zoom: 16, bearing: -20, pitch: 50, speed: 1.6 });
             map.once('moveend', () => {
                 map.setMaxBounds(geoInfo.bounds);
                 activeFilter = 'all';
@@ -807,7 +1179,7 @@
         }
 
         function flyTo(item) {
-            map.flyTo({ center: [item.lng, item.lat], zoom: 18, pitch: 65, bearing: 0, speed: 1.2 });
+            moveMap({ center: [item.lng, item.lat], zoom: 18, pitch: 65, bearing: 0, speed: 1.2 });
             addMarker(item);
         }
 
@@ -954,7 +1326,7 @@
                         const menuItem = document.querySelector(`.menu-item[onclick*="'${campus}'"]`);
                         switchCampus(campus, menuItem);
                     }
-                    map.flyTo({ center: [lng, lat], zoom: 17.5, pitch: 55, speed: 1.4 });
+                    moveMap({ center: [lng, lat], zoom: 17.5, pitch: 55, speed: 1.4 });
                     showToast('📍', `已定位至${CAMPUS_LABELS[campus]} · ${accText}`);
                 } else if (campus !== lastGpsCampus) {
                     // 用户物理移动到了另一个校区（GPS 实际变化），而非手动切换
@@ -1020,7 +1392,7 @@
         function requestLocation() {
             if (lastKnownPos && userLocationMarker) {
                 // 已有位置，直接飞过去
-                map.flyTo({ center: [lastKnownPos.lng, lastKnownPos.lat], zoom: 17.5, pitch: 55, speed: 1.4 });
+                moveMap({ center: [lastKnownPos.lng, lastKnownPos.lat], zoom: 17.5, pitch: 55, speed: 1.4 });
                 const campus = detectCampus(lastKnownPos.lng, lastKnownPos.lat);
                 if (campus) showToast('📍', `您在${CAMPUS_LABELS[campus]}`);
             } else {
@@ -1100,6 +1472,14 @@
             }
         })();
 
+        window.handleSearch = handleSearch;
+        window.selectSearchResult = selectSearchResult;
+        window.switchCampus = switchCampus;
+        window.filterCategory = filterCategory;
+        window.requestLocation = requestLocation;
+        window.toggleMenu = toggleMenu;
+
+        }
     </script>
 </body>
 </html>

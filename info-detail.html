@@ -2,10 +2,22 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="重庆大学新生信息汇总库详情页，提供可执行步骤、完成清单、避坑提醒和相关资源。">
+    <meta name="theme-color" content="#1e4fa1">
+    <meta property="og:title" content="资源详情 - 重庆大学新生服务融合中心平台">
+    <meta property="og:description" content="重庆大学新生信息汇总库详情页，提供可执行步骤、完成清单、避坑提醒和相关资源。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="重庆大学新生服务融合中心平台">
+    <meta property="og:image" content="assets/icons/icon-512.png">
+    <meta name="apple-mobile-web-app-title" content="CQUFIC">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>资源详情 - 重庆大学新生服务融合中心平台</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="mobile.css">
     <style>
         body {
             background:
@@ -300,6 +312,53 @@
             line-height: 1.65;
         }
 
+        .step-disclosure,
+        .faq-item {
+            overflow: hidden;
+        }
+
+        .step-disclosure summary,
+        .faq-item summary {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            list-style: none;
+            touch-action: manipulation;
+        }
+
+        .step-disclosure summary::-webkit-details-marker,
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .step-disclosure summary h3,
+        .faq-item summary h3 {
+            margin-bottom: 0;
+        }
+
+        .step-disclosure summary::after,
+        .faq-item summary::after {
+            content: '+';
+            width: 28px;
+            height: 28px;
+            flex: 0 0 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(30,79,161,0.08);
+            color: var(--cqu-blue);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .step-disclosure[open] summary::after,
+        .faq-item[open] summary::after {
+            content: '-';
+        }
+
         .checklist {
             display: grid;
             gap: 10px;
@@ -363,7 +422,7 @@
         .faq-item h3 {
             font-size: 1rem;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            margin-bottom: 0;
         }
 
         .faq-item p,
@@ -371,6 +430,10 @@
             color: var(--text-secondary);
             line-height: 1.6;
             font-size: 0.94rem;
+        }
+
+        .faq-item p {
+            margin-top: 6px;
         }
 
         .notice-box {
@@ -609,6 +672,20 @@
             .notice-box p {
                 font-size: 0.92rem;
                 line-height: 1.65;
+            }
+
+            .step-disclosure p,
+            .faq-item p {
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .step-disclosure[open] p,
+            .faq-item[open] p {
+                display: block;
+                overflow: visible;
             }
 
             .checklist { gap: 8px; }
@@ -1204,23 +1281,23 @@
                         <article class="content-card steps-card" id="steps">
                             <h2><i class="fas fa-route"></i> 行动步骤</h2>
                             <ol class="steps">
-                                ${topic.steps.map(step => `
+                                ${topic.steps.map((step, index) => `
                                     <li>
-                                        <div class="step-body">
-                                            <h3>${esc(step[0])}</h3>
+                                        <details class="step-body step-disclosure" data-mobile-collapse data-collapse-group="steps" ${index === 0 ? 'open' : ''}>
+                                            <summary><h3>${esc(step[0])}</h3></summary>
                                             <p>${esc(step[1])}</p>
-                                        </div>
+                                        </details>
                                     </li>`).join('')}
                             </ol>
                         </article>
 
                         <article class="content-card faq-card">
                             <h2><i class="fas fa-circle-question"></i> 常见问题</h2>
-                            ${topic.faq.map(item => `
-                                <div class="faq-item">
-                                    <h3>${esc(item[0])}</h3>
+                            ${topic.faq.map((item, index) => `
+                                <details class="faq-item" data-mobile-collapse data-collapse-group="faq" ${index === 0 ? 'open' : ''}>
+                                    <summary><h3>${esc(item[0])}</h3></summary>
                                     <p>${esc(item[1])}</p>
-                                </div>`).join('')}
+                                </details>`).join('')}
                         </article>
                     </main>
 
@@ -1273,6 +1350,32 @@
             `;
 
             initChecklistTools(topicId, topic);
+            initMobileCollapse();
+        }
+
+        function initMobileCollapse() {
+            const details = Array.from(document.querySelectorAll('[data-mobile-collapse]'));
+            const mq = window.matchMedia('(max-width: 720px)');
+
+            function sync() {
+                const seen = new Set();
+                details.forEach(item => {
+                    const group = item.dataset.collapseGroup || 'default';
+                    if (!mq.matches) {
+                        item.open = true;
+                        return;
+                    }
+                    item.open = !seen.has(group);
+                    seen.add(group);
+                });
+            }
+
+            sync();
+            if (mq.addEventListener) {
+                mq.addEventListener('change', sync);
+            } else {
+                mq.addListener(sync);
+            }
         }
 
         function initChecklistTools(topicId, topic) {

@@ -2,10 +2,22 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="重庆大学新生服务融合中心平台，整合入学流程、信息汇总、校园地图、反馈社区等新生常用服务。">
+    <meta name="theme-color" content="#1e4fa1">
+    <meta property="og:title" content="重庆大学新生服务融合中心平台">
+    <meta property="og:description" content="重庆大学新生服务融合中心平台，整合入学流程、信息汇总、校园地图、反馈社区等新生常用服务。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="重庆大学新生服务融合中心平台">
+    <meta property="og:image" content="assets/icons/icon-512.png">
+    <meta name="apple-mobile-web-app-title" content="CQUFIC">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>重庆大学新生服务融合中心平台</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="mobile.css">
     <style>
         /* 流沙背景 */
         .sand-background {
@@ -206,6 +218,13 @@
     </section>
 
     <script src="shared.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
+    </script>
     <script>
         (function () {
             const colors = ['#1e4fa1', '#2a65c7', '#1e88e5', '#64b5f6', '#90caf9'];

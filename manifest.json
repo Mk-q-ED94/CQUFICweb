@@ -1,0 +1,25 @@
+{
+  "name": "重庆大学新生服务融合中心平台",
+  "short_name": "CQUFIC",
+  "description": "整合重庆大学新生入学流程、信息汇总库、校园地图和反馈交流服务。",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#1e4fa1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
