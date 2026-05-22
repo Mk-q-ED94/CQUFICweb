@@ -15,6 +15,8 @@
             font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg); font-size: 0.95rem;
             transition: all var(--transition-fast) ease; }
         .nav-back:hover { transform: translateX(-4px); }
+
+        /* ── 校区概况卡片 ── */
         .dorm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
         .dorm-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
@@ -31,6 +33,31 @@
         .tag { display: inline-block; padding: 3px 10px; background: rgba(30,79,161,0.1);
             color: var(--cqu-blue); border-radius: 20px; font-size: 0.8rem; }
         .tag.orange { background: rgba(245,124,0,0.1); color: var(--cqu-orange); }
+        .tag.green { background: rgba(34,139,34,0.1); color: #228B22; }
+
+        /* ── 园区详情 ── */
+        .garden-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .garden-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md) var(--spacing-lg); box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal) ease; }
+        .garden-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .garden-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .garden-badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .badge-mei { background: rgba(255,105,135,0.15); }
+        .badge-zhu { background: rgba(101,187,137,0.18); }
+        .badge-song { background: rgba(100,160,230,0.18); }
+        .badge-lan { background: rgba(180,130,220,0.18); }
+        .badge-ju  { background: rgba(255,185,0,0.18); }
+        .garden-name { font-size: 1.1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
+        .garden-meta { font-size: 0.78rem; color: var(--text-secondary); }
+        .garden-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+        .garden-pros { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+        .pro-tag { padding: 2px 9px; border-radius: 12px; font-size: 0.78rem; background: rgba(34,139,34,0.1); color: #228B22; }
+        .con-tag { padding: 2px 9px; border-radius: 12px; font-size: 0.78rem; background: rgba(245,124,0,0.1); color: var(--cqu-orange); }
+
+        /* ── 设施卡片 ── */
         .checklist-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
             padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-md); }
@@ -45,6 +72,8 @@
             border-bottom: 1px solid rgba(0,0,0,0.04); color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
         .checklist li:last-child { border-bottom: none; }
         .checklist li i { color: var(--cqu-blue); margin-top: 3px; flex-shrink: 0; }
+
+        /* ── 设施格栅 ── */
         .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
         .rule-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
@@ -54,10 +83,26 @@
         .rule-icon { font-size: 2rem; margin-bottom: 8px; }
         .rule-title { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
         .rule-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; }
+
+        /* ── 提示框 ── */
         .warn-box { background: rgba(245,124,0,0.08); border: 1px solid rgba(245,124,0,0.25);
             border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-top: var(--spacing-lg); }
-        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .warn-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin: 0 0 8px; }
+        .warn-box p:last-child { margin-bottom: 0; }
         .warn-box i { color: var(--cqu-orange); margin-right: 6px; }
+        .info-box { background: rgba(30,79,161,0.06); border: 1px solid rgba(30,79,161,0.2);
+            border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-lg); }
+        .info-box p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin: 0; }
+        .info-box i { color: var(--cqu-blue); margin-right: 6px; }
+
+        /* ── 费用表格 ── */
+        .fee-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: var(--spacing-md); }
+        .fee-table th { background: rgba(30,79,161,0.08); color: var(--cqu-blue); font-weight: var(--font-weight-semibold);
+            padding: 10px 14px; text-align: left; border-bottom: 2px solid rgba(30,79,161,0.15); }
+        .fee-table td { padding: 9px 14px; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-secondary); }
+        .fee-table tr:last-child td { border-bottom: none; }
+        .fee-table tr:hover td { background: rgba(255,255,255,0.5); }
+
         @media (max-width: 768px) {
             .page-hero { padding: calc(var(--spacing-lg) + 56px) 0 var(--spacing-sm); }
             .page-hero .hero-icon { font-size: 2.5rem; margin-bottom: var(--spacing-sm); }
@@ -70,6 +115,10 @@
             .dorm-campus { font-size: .75rem; }
             .dorm-desc { font-size: .85rem; line-height: 1.55; }
             .tag { font-size: .72rem; padding: 2px 8px; }
+            .garden-grid { grid-template-columns: 1fr; gap: 10px; }
+            .garden-card { padding: 12px 14px; }
+            .garden-name { font-size: 1rem; }
+            .garden-desc { font-size: .82rem; }
             .rules-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .rule-card { padding: 12px; }
             .rule-icon { font-size: 1.6rem; }
@@ -82,7 +131,10 @@
             .checklist li { font-size: .85rem; padding: 5px 0; }
             .warn-box { padding: 12px; }
             .warn-box p { font-size: .88rem; }
+            .info-box p { font-size: .85rem; }
             h2.section-title { font-size: 1.3rem !important; margin-bottom: var(--spacing-sm) !important; }
+            .fee-table { font-size: .82rem; }
+            .fee-table th, .fee-table td { padding: 7px 10px; }
         }
     </style>
 </head>
@@ -101,6 +153,7 @@
         <div class="container">
             <a href="admission-process.html" class="nav-back"><i class="fas fa-arrow-left"></i> 返回入学流程</a>
 
+            <!-- ════ 各校区概况 ════ -->
             <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">各校区宿舍概况</h2>
             <div class="dorm-grid">
                 <div class="dorm-card">
@@ -108,15 +161,18 @@
                         <div class="dorm-icon"><i class="fas fa-building"></i></div>
                         <div>
                             <div class="dorm-name">虎溪校区宿舍</div>
-                            <div class="dorm-campus">大多数新生所在校区</div>
+                            <div class="dorm-campus">大多数本科新生所在校区（大学城）</div>
                         </div>
                     </div>
-                    <p class="dorm-desc">虎溪校区为新校区，宿舍楼较新，设施完善。一般为4人间或6人间，配备独立卫生间、空调、宽带接口。部分楼栋已安装热水器，洗澡方便。</p>
+                    <p class="dorm-desc">虎溪为新建校区，宿舍楼条件优越。标准<strong>4人间，上床下桌</strong>，床位尺寸 1.9m × 0.9m，每间使用面积约17㎡。全部配有独立卫浴和外阳台，天然气热水器24小时供热水，无需去公共浴室。共有梅园、竹园、松园、兰园、菊园五个宿舍组团，30幢楼，容纳约2万学生。</p>
                     <div class="dorm-tags">
-                        <span class="tag">4人间 / 6人间</span>
-                        <span class="tag">独卫</span>
+                        <span class="tag">4人间</span>
+                        <span class="tag">上床下桌</span>
+                        <span class="tag green">独卫 / 外阳台</span>
                         <span class="tag">空调</span>
-                        <span class="tag">宽带接口</span>
+                        <span class="tag green">24h热水</span>
+                        <span class="tag">饮水机</span>
+                        <span class="tag">有线+CQUNET</span>
                     </div>
                 </div>
                 <div class="dorm-card">
@@ -124,14 +180,16 @@
                         <div class="dorm-icon"><i class="fas fa-university"></i></div>
                         <div>
                             <div class="dorm-name">A / B 区宿舍</div>
-                            <div class="dorm-campus">沙坪坝老校区</div>
+                            <div class="dorm-campus">沙坪坝老校区（部分学院）</div>
                         </div>
                     </div>
-                    <p class="dorm-desc">A/B区为老校区，部分宿舍楼年代较早，条件相对简单，但地理位置好（靠近主城区），距地铁站、商场较近。部分高年级专业在此就读。</p>
+                    <p class="dorm-desc"><strong>建筑学院、博雅学院、美视电影学院</strong>的本科生大一起即住 A/B 区；其他学院部分专业大二后会搬至此校区。A区宿舍条件参差不齐：6舍条件最好（4人间独卫，空调），1/2/3舍为4人间但无独卫，12舍为2人间。B区宿舍4人间，上床下桌，带独卫和内阳台，共7层楼但无电梯。</p>
                     <div class="dorm-tags">
-                        <span class="tag">4人间 / 8人间</span>
-                        <span class="tag">公共浴室</span>
+                        <span class="tag">4人间</span>
+                        <span class="tag">上床下桌</span>
                         <span class="tag orange">部分无独卫</span>
+                        <span class="tag orange">B区无电梯</span>
+                        <span class="tag">空调</span>
                     </div>
                 </div>
                 <div class="dorm-card">
@@ -139,14 +197,15 @@
                         <div class="dorm-icon"><i class="fas fa-star"></i></div>
                         <div>
                             <div class="dorm-name">C 区宿舍</div>
-                            <div class="dorm-campus">FIC 校区</div>
+                            <div class="dorm-campus">沙坪坝渝碚路 / 特定项目学生</div>
                         </div>
                     </div>
-                    <p class="dorm-desc">C区校区宿舍为近年新建，条件较好。部分联合办学项目或特定学院的学生在此居住，宿舍间数少，氛围安静。</p>
+                    <p class="dorm-desc">C区（渝碚路131号）主要承接部分联合办学项目及特定学院学生，宿舍间数较少，环境安静。搜索到的资料显示条件相对不错，但具体分配由学院决定，以官方通知为准。</p>
                     <div class="dorm-tags">
                         <span class="tag">4人间</span>
                         <span class="tag">独卫</span>
                         <span class="tag">空调</span>
+                        <span class="tag orange">仅特定学院</span>
                     </div>
                 </div>
                 <div class="dorm-card">
@@ -157,47 +216,173 @@
                             <div class="dorm-campus">最终分配由学院决定</div>
                         </div>
                     </div>
-                    <p class="dorm-desc">具体宿舍楼号和房间号在报到当天领取报到手册后才会确定，部分学院会在新生群提前公布。入住后如有问题可找宿舍管理员或学院辅导员协调。</p>
+                    <p class="dorm-desc">具体宿舍楼号和房间号一般在报到当天领取报到手册后才会确定；部分学院会在新生群提前公布，研究生可通过<strong>网上选房系统</strong>（wsxf.cqu.edu.cn）提前选择床位。入住后如有设施问题可找宿管或学院辅导员协调。</p>
                     <div class="dorm-tags">
-                        <span class="tag orange">以通知为准</span>
+                        <span class="tag orange">以官方通知为准</span>
+                        <span class="tag">研究生可网上选房</span>
                     </div>
                 </div>
             </div>
 
+            <!-- ════ 虎溪各园区详解 ════ -->
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-sm);">虎溪各园区详解</h2>
+            <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:var(--spacing-lg);">梅园、竹园、松园为本科生宿舍区，兰园、菊园以研究生为主，具体分配以学院通知为准。</p>
+            <div class="garden-grid">
+                <div class="garden-card">
+                    <div class="garden-head">
+                        <div class="garden-badge badge-mei">🌸</div>
+                        <div>
+                            <div class="garden-name">梅园（7幢楼）</div>
+                            <div class="garden-meta">本科生 · 北大门核心区</div>
+                        </div>
+                    </div>
+                    <p class="garden-desc">位于北大门旁，地理位置最核心：右边是第一食堂，左边是体育场，正对面是教学楼，背后就是熙街商业街，出门即购物。4幢旁边是校医院，3幢下面有便利店，6幢下面有书店。出行极便利，但人流量大，周边相对热闹。</p>
+                    <div class="garden-pros">
+                        <span class="pro-tag">距一食堂最近</span>
+                        <span class="pro-tag">紧邻熙街</span>
+                        <span class="pro-tag">校医院在旁</span>
+                        <span class="con-tag">人流较多</span>
+                    </div>
+                </div>
+                <div class="garden-card">
+                    <div class="garden-head">
+                        <div class="garden-badge badge-zhu">🎋</div>
+                        <div>
+                            <div class="garden-name">竹园（6幢楼）</div>
+                            <div class="garden-meta">本科生 · 中心夹心区</div>
+                        </div>
+                    </div>
+                    <p class="garden-desc">被第一食堂和第二食堂夹在中间，是公认位置最居中、最均衡的园区。楼下有快递驿站和书屋，日常取件步行即可。两个食堂都在步行范围内，无论去哪里上课都不算远。</p>
+                    <div class="garden-pros">
+                        <span class="pro-tag">两食堂均近</span>
+                        <span class="pro-tag">快递驿站近</span>
+                        <span class="pro-tag">整体位置均衡</span>
+                    </div>
+                </div>
+                <div class="garden-card">
+                    <div class="garden-head">
+                        <div class="garden-badge badge-song">🌲</div>
+                        <div>
+                            <div class="garden-name">松园（7幢楼）</div>
+                            <div class="garden-meta">本科生 · 西大门区</div>
+                        </div>
+                    </div>
+                    <p class="garden-desc">紧邻第二食堂，西侧是西大门，附近有便利超市，购买日用品方便。相对其他园区稍偏西侧，去图书馆和理科楼路程略远，但食堂和生活配套齐全。</p>
+                    <div class="garden-pros">
+                        <span class="pro-tag">近二食堂</span>
+                        <span class="pro-tag">附近有超市</span>
+                        <span class="con-tag">离图书馆较远</span>
+                    </div>
+                </div>
+                <div class="garden-card">
+                    <div class="garden-head">
+                        <div class="garden-badge badge-lan">🌿</div>
+                        <div>
+                            <div class="garden-name">兰园（8幢楼）</div>
+                            <div class="garden-meta">研究生为主 · 南区学术区</div>
+                        </div>
+                    </div>
+                    <p class="garden-desc">位于校区南边，对面是学生活动中心，东侧临第三食堂和网球馆，西侧有运动场，距图书馆和理科大楼最近——对需要频繁去图书馆、实验室的同学非常友好。三食堂旁有电动小白车停靠点，跨区通勤方便。</p>
+                    <div class="garden-pros">
+                        <span class="pro-tag">近图书馆</span>
+                        <span class="pro-tag">近三食堂</span>
+                        <span class="pro-tag">近理科楼</span>
+                        <span class="con-tag">距北大门较远</span>
+                    </div>
+                </div>
+                <div class="garden-card">
+                    <div class="garden-head">
+                        <div class="garden-badge badge-ju">🌼</div>
+                        <div>
+                            <div class="garden-name">菊园</div>
+                            <div class="garden-meta">研究生为主</div>
+                        </div>
+                    </div>
+                    <p class="garden-desc">以研究生住宿为主，环境相对安静。具体楼栋数量和设施配置与其他园区基本一致（4人间，独卫，空调，热水）。具体位置及分配情况以学院通知为准。</p>
+                    <div class="garden-pros">
+                        <span class="pro-tag">环境安静</span>
+                        <span class="pro-tag">研究生为主</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ 注意事项提示 ════ -->
+            <div class="info-box" style="margin-bottom:var(--spacing-xl);">
+                <p><i class="fas fa-exclamation-circle"></i><strong>采光注意：</strong>部分宿舍楼因地势原因，1–2层（双数号房间）处于半地下状态，白天采光较差。入住前可在新生群询问或报到时及时和宿管沟通调换。</p>
+            </div>
+
+            <!-- ════ 宿舍费用 ════ -->
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">住宿费用参考</h2>
+            <div class="checklist-card" style="margin-bottom: var(--spacing-xl);">
+                <table class="fee-table">
+                    <thead>
+                        <tr><th>项目</th><th>虎溪校区</th><th>A/B区</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>住宿费</td><td>约 1,200 元 / 年（4人间独卫）</td><td>约 1,200 元 / 年（独卫）；无独卫档位更低</td></tr>
+                        <tr><td>电费</td><td>学校每学期有定额补贴，超出部分按国家电价自付；充值在校园卡 App 或圈存机操作</td><td>同左</td></tr>
+                        <tr><td>热水</td><td>天然气热水器，按气量计费（校每学期补贴约60立方），24小时免费洗澡</td><td>部分楼有公共浴室（刷卡），部分楼有热水器</td></tr>
+                        <tr><td>宽带网络</td><td>三大运营商套餐可选，按年/学期缴费；无线 CQUNET 连接后网页认证登录</td><td>同左（无线名称 cqu_net）</td></tr>
+                        <tr><td>洗衣</td><td>每层楼有公共洗衣机，App 预约 + 支付，约 2–3 元 / 次</td><td>按楼栋设施情况各异</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.82rem;color:var(--text-secondary);margin:8px 0 0;"><i class="fas fa-info-circle" style="color:var(--cqu-blue)"></i> 以上费用为综合多方来源的参考数据，实际以学校当年公示为准。</p>
+            </div>
+
+            <!-- ════ 宿舍常见设施 ════ -->
             <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">宿舍常见设施</h2>
             <div class="rules-grid" style="margin-bottom: var(--spacing-xxl);">
                 <div class="rule-card">
                     <div class="rule-icon">❄️</div>
                     <div class="rule-title">空调</div>
-                    <div class="rule-desc">大多数宿舍有挂式空调，使用电费从宿舍电费账户扣除，充值在校园卡App操作</div>
+                    <div class="rule-desc">每间宿舍配挂式空调，电费从宿舍账户扣除。学校有定额补贴，夏天开空调不用太担心费用。</div>
                 </div>
                 <div class="rule-card">
                     <div class="rule-icon">🚿</div>
                     <div class="rule-title">热水 / 洗澡</div>
-                    <div class="rule-desc">虎溪部分楼有独立热水器，部分需去集中浴室，需校园卡计费（约0.5–1元/分钟）</div>
+                    <div class="rule-desc">虎溪宿舍室内配天然气热水器，24小时供热水，直接在独立卫生间洗澡，无需去公共浴室。</div>
                 </div>
                 <div class="rule-card">
                     <div class="rule-icon">🌐</div>
                     <div class="rule-title">宽带网络</div>
-                    <div class="rule-desc">每个床位配一个有线网络接口，月度流量套餐制，超出限速；Wi-Fi覆盖走廊</div>
+                    <div class="rule-desc">每床位1个有线接口；无线连接 CQUNET（虎溪），打开后弹出网页认证，用学号密码登录。三大运营商套餐可选。</div>
                 </div>
                 <div class="rule-card">
                     <div class="rule-icon">👕</div>
                     <div class="rule-title">洗衣</div>
-                    <div class="rule-desc">每层或每栋楼设有共享洗衣机（手机App预约 + 支付，约2–3元/次）</div>
+                    <div class="rule-desc">每层楼设有共享洗衣机，手机 App 扫码预约 + 支付（约 2–3 元/次）；楼下另设集中洗衣房。</div>
                 </div>
                 <div class="rule-card">
                     <div class="rule-icon">🔋</div>
                     <div class="rule-title">电费充值</div>
-                    <div class="rule-desc">宿舍电费独立核算，可在校园卡App或校内充值机充值，余量不足会断电</div>
+                    <div class="rule-desc">宿舍电费独立核算，可在校园卡 App 或宿舍楼下圈存机充值（松园6幢旁设有充值服务点），余量不足时会断电提醒。</div>
                 </div>
                 <div class="rule-card">
                     <div class="rule-icon">📦</div>
                     <div class="rule-title">快递收取</div>
-                    <div class="rule-desc">菜鸟驿站 / 快递柜分布在各宿舍楼附近，收到短信/App通知后自取</div>
+                    <div class="rule-desc">菜鸟驿站主要在梅园北大门附近和后门旁，收到短信 / App 通知后凭取件码自取；部分楼下也有快递柜。</div>
                 </div>
             </div>
 
+            <!-- ════ 周边生活配套 ════ -->
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">虎溪周边生活配套</h2>
+            <div class="checklist-card" style="margin-bottom: var(--spacing-xl);">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-map-signs"></i></div>
+                    <div class="card-title">出门能找到什么</div>
+                </div>
+                <ul class="checklist">
+                    <li><i class="fas fa-utensils"></i><span><strong>校内食堂（共4个）：</strong>一食堂、二食堂体量最大，三食堂在图书馆后面，四食堂为清真食堂。饭菜价格约6–15元/顿，早6:30–9:00，午11:00–13:30，晚17:00–19:30。</span></li>
+                    <li><i class="fas fa-shopping-bag"></i><span><strong>熙街商业街：</strong>北门出去过马路即到，有餐饮、奶茶、服饰、超市，步行3–5分钟，满足日常消费。</span></li>
+                    <li><i class="fas fa-store"></i><span><strong>龙湖U城天街：</strong>大学城最大商业综合体，从北门步行或乘电动小白车可达，有大型超市、品牌餐饮、电影院。</span></li>
+                    <li><i class="fas fa-bus"></i><span><strong>校内穿梭小车（电动小白车）：</strong>定时运行于各园区、食堂、图书馆之间，虎溪校区面积大时是省腿神器；共享单车（哈啰、美团）也覆盖校内。</span></li>
+                    <li><i class="fas fa-hospital"></i><span><strong>重庆大学医院虎溪院区：</strong>位于北大门旁（梅园4幢附近），急诊电话 65678120，处理常见病，是重庆市医保定点医院。</span></li>
+                    <li><i class="fas fa-hospital-alt"></i><span><strong>校外综合医院：</strong>重庆医科大学附属大学城医院（三级综合，1500床），打车约10分钟。</span></li>
+                    <li><i class="fas fa-subway"></i><span><strong>对外交通：</strong>地铁1号线大学城站（北门外步行或公交可达），换乘公交240/241路到达地铁站；进出重庆主城方便。</span></li>
+                </ul>
+            </div>
+
+            <!-- ════ 行李打包清单 ════ -->
             <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">行李打包清单</h2>
             <div class="checklist-card">
                 <div class="card-header">
@@ -206,28 +391,30 @@
                 </div>
                 <div class="two-col-list">
                     <ul class="checklist">
-                        <li><i class="fas fa-check-circle"></i>床上四件套（枕套/被套/床单）</li>
-                        <li><i class="fas fa-check-circle"></i>枕头、被子（或网购寄到校）</li>
-                        <li><i class="fas fa-check-circle"></i>洗漱用品（牙刷、牙膏、洗发水）</li>
-                        <li><i class="fas fa-check-circle"></i>毛巾、浴巾</li>
-                        <li><i class="fas fa-check-circle"></i>拖鞋（宿舍用 + 公共浴室用）</li>
-                        <li><i class="fas fa-check-circle"></i>水杯（保温杯）</li>
+                        <li><i class="fas fa-check-circle"></i>床上四件套（枕套/被套/床单，建议先查床尺寸 1.9m×0.9m）</li>
+                        <li><i class="fas fa-check-circle"></i>枕头、被子（也可网购到校，直接寄到菜鸟驿站）</li>
+                        <li><i class="fas fa-check-circle"></i>洗漱用品（牙刷牙膏、洗发水、沐浴露）</li>
+                        <li><i class="fas fa-check-circle"></i>毛巾、浴巾（虎溪有独卫，拖鞋用浴室拖鞋即可）</li>
+                        <li><i class="fas fa-check-circle"></i>拖鞋（室内用和浴室用各一双）</li>
+                        <li><i class="fas fa-check-circle"></i>水杯（保温杯，宿舍有饮水机）</li>
                         <li><i class="fas fa-check-circle"></i>台灯（宿舍熄灯后学习用）</li>
                     </ul>
                     <ul class="checklist">
-                        <li><i class="fas fa-check-circle"></i>充电器、数据线、插线板</li>
-                        <li><i class="fas fa-check-circle"></i>网线（部分宿舍需要）</li>
-                        <li><i class="fas fa-check-circle"></i>衣架（宿舍晾衣用）</li>
-                        <li><i class="fas fa-check-circle"></i>洗衣液/洗衣凝珠</li>
-                        <li><i class="fas fa-check-circle"></i>常用药品（感冒药、肠胃药等）</li>
-                        <li><i class="fas fa-check-circle"></i>雨伞</li>
+                        <li><i class="fas fa-check-circle"></i>充电器、数据线、插线板（建议带USB多口款）</li>
+                        <li><i class="fas fa-check-circle"></i>网线（有线接口需要网线，建议带一根）</li>
+                        <li><i class="fas fa-check-circle"></i>衣架（宿舍有阳台可晾晒）</li>
+                        <li><i class="fas fa-check-circle"></i>洗衣液 / 洗衣凝珠（楼层有洗衣机）</li>
+                        <li><i class="fas fa-check-circle"></i>常用药品（感冒药、肠胃药、创可贴等）</li>
+                        <li><i class="fas fa-check-circle"></i>雨伞（重庆夏秋多雨）</li>
                         <li><i class="fas fa-check-circle"></i>存储设备（U盘/移动硬盘）</li>
                     </ul>
                 </div>
             </div>
 
             <div class="warn-box">
-                <p><i class="fas fa-exclamation-triangle"></i><strong>安全提示：</strong>宿舍严禁使用大功率电器（热得快、电磁炉、电热锅等），违规轻则没收重则处分。洗漱间禁止存放充电宝充电过夜。离开宿舍记得关窗、锁门、关闭空调，保管好宿舍钥匙。</p>
+                <p><i class="fas fa-exclamation-triangle"></i><strong>安全规定：</strong>宿舍明令禁止使用大功率电器（热得快、电磁炉、电热锅等），违规轻则没收重则处分。洗漱间禁止充电宝过夜充电。</p>
+                <p><i class="fas fa-exclamation-triangle"></i><strong>门禁时间：</strong>宿舍楼门禁时间为 23:30，之后仍可刷卡进出，但频繁晚归可能被宿管记录。</p>
+                <p><i class="fas fa-info-circle"></i><strong>贴心提示：</strong>入住后先检查设施（空调、热水器、门锁、网口），有问题当天拍照并找宿管报修，避免后续扯皮。重庆夏天闷热，空调要及时开。</p>
             </div>
         </div>
     </section>
