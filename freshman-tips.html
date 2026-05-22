@@ -25,6 +25,31 @@
         .tip-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; }
         .tip-desc ul { padding-left: 16px; margin-top: 6px; }
         .tip-desc li { margin-bottom: 4px; }
+
+        /* 食堂卡片 */
+        .canteen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+        .canteen-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-normal) ease; }
+        .canteen-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .canteen-name { font-size: 1.1rem; font-weight: var(--font-weight-bold); color: var(--cqu-blue); margin-bottom: 6px; }
+        .canteen-loc { font-size: 0.8rem; color: var(--cqu-orange); font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-sm); }
+        .canteen-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+        .canteen-highlight { display: inline-block; background: rgba(30,79,161,0.08); color: var(--cqu-blue);
+            border-radius: 20px; padding: 2px 10px; font-size: 0.78rem; margin: 3px 2px 0; }
+
+        /* App卡片 */
+        .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+        .app-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center;
+            transition: all var(--transition-normal) ease; }
+        .app-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
+        .app-icon { font-size: 2rem; color: var(--cqu-blue); margin-bottom: 8px; }
+        .app-name { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
+        .app-desc { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+
+        /* 信息卡片 */
         .info-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
             padding: var(--spacing-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--spacing-xl); }
@@ -35,15 +60,7 @@
         .info-card .card-title { font-size: 1.2rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); }
         .info-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: var(--spacing-sm); }
         .info-card p:last-child { margin-bottom: 0; }
-        .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
-        .app-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.4); border-radius: var(--border-radius-lg);
-            padding: var(--spacing-md); box-shadow: var(--shadow-sm); text-align: center;
-            transition: all var(--transition-normal) ease; }
-        .app-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.88); }
-        .app-icon { font-size: 2rem; color: var(--cqu-blue); margin-bottom: 8px; }
-        .app-name { font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--cqu-blue); margin-bottom: 4px; }
-        .app-desc { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+
         @media (max-width: 768px) {
             .page-hero { padding: calc(var(--spacing-lg) + 56px) 0 var(--spacing-sm); }
             .page-hero .hero-icon { font-size: 2.5rem; margin-bottom: var(--spacing-sm); }
@@ -55,6 +72,11 @@
             .tip-title { font-size: 1.02rem; }
             .tip-desc { font-size: .85rem; line-height: 1.55; }
             .tip-desc ul { padding-left: 14px; }
+            .canteen-grid { grid-template-columns: 1fr; gap: 12px; }
+            .canteen-card { padding: 14px; }
+            .canteen-name { font-size: 1rem; }
+            .canteen-desc { font-size: .82rem; }
+            .canteen-highlight { font-size: .72rem; }
             .info-card { padding: 14px; }
             .info-card .card-icon { width: 38px; height: 38px; font-size: 1rem; }
             .info-card .card-title { font-size: 1.05rem; }
@@ -92,22 +114,24 @@
                     <div class="tip-icon"><i class="fas fa-wifi"></i></div>
                     <div class="tip-title">连上校园网</div>
                     <div class="tip-desc">
-                        宿舍有有线网接口，Wi-Fi连接「CQUNET」（虎溪校区），首次登录弹出网页认证，用学号+初始密码登录（初始密码通常为身份证后6位）。
+                        宿舍有有线网接口，Wi-Fi连接「<strong>CQUNET</strong>」（虎溪校区），首次登录时浏览器会弹出认证页，用学号+初始密码登录（初始密码通常为身份证后6位）。
                         <ul>
-                            <li>宿舍有线宽带：流量套餐制，超出后限速，可在信息化办充值</li>
-                            <li>教学楼/图书馆：连接「CQUNET」同样需要认证登录</li>
+                            <li>A/B/C区 WiFi名称为「cqu_net」，同样需要认证</li>
+                            <li>宿舍有线宽带：套餐制，超出限速，可在信息化办充值</li>
+                            <li>教学楼/图书馆：连接「CQUNET」同样需认证登录</li>
+                            <li>注意：虎溪宿舍网络周日至周四约凌晨12点断网</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
-                    <div class="tip-icon"><i class="fas fa-utensils"></i></div>
-                    <div class="tip-title">吃饭去哪里</div>
+                    <div class="tip-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="tip-title">校园一卡通怎么用</div>
                     <div class="tip-desc">
-                        虎溪校区有多个食堂，口味各异，价格公道（一顿饭6–15元）。
+                        校园卡报到时统一发放，是饭卡+门禁卡+图书馆卡三合一。
                         <ul>
-                            <li>结算方式：校园卡扫码 / 微信支付宝</li>
-                            <li>营业时间：早6:30–9:00，午11:00–13:30，晚17:00–19:30</li>
-                            <li>周末有些窗口关闭，可去校门口餐饮街</li>
+                            <li><strong>充值</strong>：关注微信公众号「重大财小通」→ 绑定校园卡，或农行APP「生活缴费」充值；ATM充值在校内各自助终端也可办理</li>
+                            <li><strong>挂失</strong>：登录 card.cqu.edu.cn 立即线上挂失，再到服务窗口补办</li>
+                            <li>餐厅、超市、浴室、洗衣机等均支持扫码，首次充值建议300–500元</li>
                         </ul>
                     </div>
                 </div>
@@ -115,83 +139,179 @@
                     <div class="tip-icon"><i class="fas fa-bicycle"></i></div>
                     <div class="tip-title">校园内出行</div>
                     <div class="tip-desc">
-                        虎溪校区面积较大，骑车是最高效的出行方式。
+                        虎溪校区面积大，骑车是最高效的出行方式。
                         <ul>
-                            <li>共享单车：哈啰、美团单车校内均有，月卡划算</li>
-                            <li>校园班车：定时运营，连通各校区及地铁站</li>
-                            <li>步行约15–20分钟可走完大部分区域</li>
+                            <li><strong>共享单车</strong>：哈啰、美团单车校内均有，月卡约10元，非常划算</li>
+                            <li><strong>校区穿梭巴士</strong>：A区–B区–C区之间每天运营，用微信小程序「车来了」查 D260 线实时位置，9月8日起运行</li>
+                            <li>步行约15–20分钟可走完虎溪校区大部分区域</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
                     <div class="tip-icon"><i class="fas fa-shopping-cart"></i></div>
-                    <div class="tip-title">购物去哪里</div>
+                    <div class="tip-title">购物 & 快递</div>
                     <div class="tip-desc">
                         <ul>
-                            <li>校内超市：日用品、零食，价格略高于外面</li>
-                            <li>校门口步行街：餐饮、奶茶、复印、修鞋应有尽有</li>
-                            <li>大学城周边：龙湖U城天街等购物中心，地铁/公交可达</li>
-                            <li>网购：京东/淘宝，快递寄到菜鸟驿站/快递柜</li>
+                            <li><strong>校内超市</strong>：二食堂一楼有小超市，各园区门口有便利店（罗森等）</li>
+                            <li><strong>校门口</strong>：北门/西门步行街有餐饮、奶茶、复印、修鞋、药店</li>
+                            <li><strong>大学城购物</strong>：龙湖U城天街、大学城西路商业街，地铁1号线大学城站可达</li>
+                            <li><strong>菜鸟驿站</strong>：中门附近（学城科苑8栋）；顺丰营业站在竹园三栋背后停车场；开学季快递量大，提前查好位置</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-tshirt"></i></div>
+                    <div class="tip-title">宿舍日常设施</div>
+                    <div class="tip-desc">
+                        虎溪标准4人间，独立卫生间，24小时热水，空调，阳台。
+                        <ul>
+                            <li><strong>洗衣机</strong>：宿舍单数楼层设公共洗衣机，用校园卡/扫码付费，建议早点抢位</li>
+                            <li><strong>用电</strong>：每学期补贴200度，超出按度数自费充值；不要使用大功率电器（违规）</li>
+                            <li><strong>晾晒</strong>：阳台和走廊均可晾衣，可备折叠晾衣架</li>
+                            <li><strong>饮水</strong>：每层或每间有饮水机，烧水壶自备</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
                     <div class="tip-icon"><i class="fas fa-heartbeat"></i></div>
-                    <div class="tip-title">医疗 & 健康</div>
+                    <div class="tip-title">医疗 & 医保</div>
                     <div class="tip-desc">
                         <ul>
-                            <li>校医院（医务室）：在校区内，可处理常见小病，凭学生证就诊</li>
-                            <li>校外就医：重庆医科大学附属大学城医院（三级综合医院），打车约10分钟</li>
-                            <li>药店：校门口步行街有药店，常备感冒药、肠胃药</li>
-                            <li>学生医保：入校后会统一参加，注意保存医保凭证</li>
+                            <li><strong>校医院</strong>：虎溪校区内（梅园附近），凭校园卡就诊，可处理常见小病</li>
+                            <li><strong>校外就医</strong>：重庆医科大学附属大学城医院（三甲综合），打车约10分钟</li>
+                            <li><strong>大学生医保</strong>：每年9月起参保，通过「重庆税务」微信公众号或学校统一缴纳，约380–775元/年（困难学生约76元），缴费次日起享受待遇</li>
+                            <li>药店在校门口步行街，常备感冒药、肠胃药</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-university"></i></div>
+                    <div class="tip-title">开银行卡 & 日常财务</div>
+                    <div class="tip-desc">
+                        <ul>
+                            <li>校内银行网点以<strong>农业银行</strong>和<strong>重庆银行</strong>为主，大学城周边各大银行均有营业厅</li>
+                            <li>建议开一张借记卡用于接收奖助学金、生活费，也可绑定微信/支付宝</li>
+                            <li><strong>国家助学金</strong>：家庭困难学生入学后向学院提出申请，平均约3300元/年</li>
+                            <li><strong>国家奖学金</strong>：8000元/年；励志奖学金：5000元/年（入学后按成绩评定）</li>
                         </ul>
                     </div>
                 </div>
                 <div class="tip-card">
                     <div class="tip-icon"><i class="fas fa-book"></i></div>
-                    <div class="tip-title">图书馆怎么用</div>
+                    <div class="tip-title">图书馆 & 自习</div>
                     <div class="tip-desc">
                         <ul>
                             <li>凭校园卡进入，首次需在前台激活图书馆借阅功能</li>
                             <li>可借阅纸质书，也可在官网/App下载电子资源</li>
-                            <li>自习室需提前预约（在「重庆大学图书馆」公众号或App）</li>
-                            <li>开放时间：全周7:30–22:30（节假日可能调整，以公告为准）</li>
+                            <li>自习室需提前预约（「重庆大学图书馆」公众号或App）</li>
+                            <li>开放时间：<strong>全周7:30–22:30</strong>（节假日可能调整，以公告为准）</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">必装 App</h2>
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-sm);">虎溪三大食堂推荐</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--spacing-lg);">价格普遍在6–20元，校园卡/微信/支付宝均可结算。</p>
+            <div class="canteen-grid">
+                <div class="canteen-card">
+                    <div class="canteen-name">一食堂</div>
+                    <div class="canteen-loc"><i class="fas fa-map-marker-alt" style="margin-right:4px;"></i>梅园旁，靠近北门</div>
+                    <div class="canteen-desc">
+                        最受欢迎的食堂，人流量最大。<br>
+                        <strong>一楼千喜鹤</strong>：豆汤饭、啵啵鱼<br>
+                        <strong>二楼快乐食间</strong>：粤式烧腊、明炉烤鸭、铁板烧、焖锅、罐罐米线；<strong>8元起一荤一素</strong>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <span class="canteen-highlight">豆汤饭</span>
+                        <span class="canteen-highlight">板烧</span>
+                        <span class="canteen-highlight">烤鸭</span>
+                        <span class="canteen-highlight">啵啵鱼</span>
+                    </div>
+                </div>
+                <div class="canteen-card">
+                    <div class="canteen-name">二食堂</div>
+                    <div class="canteen-loc"><i class="fas fa-map-marker-alt" style="margin-right:4px;"></i>竹园梅园之间，共4层</div>
+                    <div class="canteen-desc">
+                        性价比之选，1楼有打印店和小超市。<br>
+                        <strong>2楼</strong>：灌汤包、锅贴<br>
+                        <strong>3楼</strong>：各地风味小吃<br>
+                        <strong>4楼</strong>：小炒肉盖饭（量大味好）、各类炒饭
+                    </div>
+                    <div style="margin-top:8px;">
+                        <span class="canteen-highlight">小炒肉盖饭</span>
+                        <span class="canteen-highlight">灌汤包</span>
+                        <span class="canteen-highlight">煎饼果子</span>
+                    </div>
+                </div>
+                <div class="canteen-card">
+                    <div class="canteen-name">三食堂</div>
+                    <div class="canteen-loc"><i class="fas fa-map-marker-alt" style="margin-right:4px;"></i>兰园旁，靠近图书馆</div>
+                    <div class="canteen-desc">
+                        兰园/理科生常去，相对安静。<br>
+                        <strong>一楼</strong>：石锅鸡蛋、各类盖饭<br>
+                        <strong>二楼</strong>：大表哥牛肉面、煲仔饭<br>
+                        山东杂粮煎饼也是这里的特色
+                    </div>
+                    <div style="margin-top:8px;">
+                        <span class="canteen-highlight">大表哥牛肉面</span>
+                        <span class="canteen-highlight">煲仔饭</span>
+                        <span class="canteen-highlight">石锅鸡蛋</span>
+                    </div>
+                </div>
+            </div>
+            <div style="background: rgba(30,79,161,0.05); border: 1px solid rgba(30,79,161,0.15); border-radius: var(--border-radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-xxl);">
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin: 0;">
+                    <i class="fas fa-info-circle" style="color: var(--cqu-blue); margin-right: 6px;"></i>
+                    食堂营业时间参考：早餐约 6:30–9:00，午餐约 11:00–13:30，晚餐约 17:00–19:30。周末部分窗口关闭，可前往校门口餐饮街，或点外卖（虎溪部分外卖可送入校园）。
+                </p>
+            </div>
+
+            <h2 class="section-title" style="font-size:1.8rem; text-align:left; margin-bottom:var(--spacing-lg);">必装 App & 公众号</h2>
             <div class="app-grid" style="margin-bottom: var(--spacing-xxl);">
                 <div class="app-card">
-                    <div class="app-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="app-name">重庆大学 App</div>
-                    <div class="app-desc">课表、成绩、一卡通余额、校园巴士实时位置，一站搞定</div>
+                    <div class="app-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="app-name">今日校园</div>
+                    <div class="app-desc">重大官方移动端入口，绑定统一身份认证账号，课表、通知、校务一站搞定</div>
                 </div>
                 <div class="app-card">
                     <div class="app-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <div class="app-name">综合教务系统</div>
-                    <div class="app-desc">选课、查成绩、查课表，开学第一件事先把账号激活</div>
+                    <div class="app-name">教务系统</div>
+                    <div class="app-desc">my.cqu.edu.cn，选课、查成绩、课表，开学第一件事先把账号激活</div>
                 </div>
                 <div class="app-card">
-                    <div class="app-icon"><i class="fas fa-book-open"></i></div>
-                    <div class="app-name">重大图书馆</div>
-                    <div class="app-desc">预约自习室、借阅查询、电子书下载，学习必备</div>
+                    <div class="app-icon"><i class="fas fa-laptop"></i></div>
+                    <div class="app-name">网上服务大厅</div>
+                    <div class="app-desc">casp.cqu.edu.cn，各类校务在线办理，证明开具、信息修改等</div>
                 </div>
                 <div class="app-card">
                     <div class="app-icon"><i class="fas fa-qrcode"></i></div>
-                    <div class="app-name">重大一卡通</div>
-                    <div class="app-desc">查余额、充值、查消费记录，告别现金</div>
+                    <div class="app-name">重大财小通（公众号）</div>
+                    <div class="app-desc">校园卡充值、体检缴费、水电费查缴，报到第一时间关注</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="app-name">重大图书馆（公众号）</div>
+                    <div class="app-desc">预约自习室、借阅查询、电子书下载，学习必备</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-bus"></i></div>
+                    <div class="app-name">车来了（小程序）</div>
+                    <div class="app-desc">查 D260 线路（A-B-C区穿梭巴士）实时位置，跨校区必备</div>
                 </div>
                 <div class="app-card">
                     <div class="app-icon"><i class="fas fa-bicycle"></i></div>
                     <div class="app-name">哈啰 / 美团单车</div>
-                    <div class="app-desc">校内骑行首选，办理月卡更划算</div>
+                    <div class="app-desc">校内骑行首选，办月卡约10元，远比按次计费划算</div>
                 </div>
                 <div class="app-card">
                     <div class="app-icon"><i class="fas fa-box"></i></div>
                     <div class="app-name">菜鸟 / 快递100</div>
-                    <div class="app-desc">查快递，设置取件提醒，开学季必备</div>
+                    <div class="app-desc">查快递到件提醒，开学季大件行李必备</div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="app-name">重大虎溪（公众号）</div>
+                    <div class="app-desc">虎溪校区官方公众号，通知公告第一时间查看</div>
                 </div>
             </div>
 
