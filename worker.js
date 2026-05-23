@@ -68,6 +68,9 @@ export default {
         if (method === 'GET' && pathname === '/api/posts') {
             return handleGetPosts(env, cors);
         }
+        if (method === 'GET' && /^\/api\/posts\/[^/]+$/.test(pathname)) {
+            return handleGetPost(env, pathname.slice('/api/posts/'.length), cors);
+        }
         if (method === 'GET' && pathname === '/api/comments') {
             return handleGetComments(env, url, cors);
         }
@@ -158,6 +161,18 @@ async function handleGetPosts(env, cors) {
             'SELECT id, title, category, summary, date, is_pinned FROM posts ORDER BY is_pinned DESC, date DESC'
         ).all();
         return cors(results, 200);
+    } catch (e) {
+        return cors({ error: '获取失败' }, 500);
+    }
+}
+
+async function handleGetPost(env, id, cors) {
+    try {
+        const post = await env.DB.prepare(
+            'SELECT id, title, category, summary, content, date, is_pinned FROM posts WHERE id = ?'
+        ).bind(decodeURIComponent(id)).first();
+        if (!post) return cors({ error: '帖子不存在' }, 404);
+        return cors(post, 200);
     } catch (e) {
         return cors({ error: '获取失败' }, 500);
     }
