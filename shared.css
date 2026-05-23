@@ -595,7 +595,9 @@ footer {
 
     .mobile-menu-toggle { display: flex; }
 
-    .nav-center { display: none; }
+    .nav-center { display: flex; }
+
+    .school-badge { width: 38px; height: 38px; }
 
     .nav-links {
         display: none;
