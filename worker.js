@@ -368,6 +368,10 @@ async function handleSubmitFeedback(request, env, cors) {
     if (!name?.trim() || !description?.trim()) {
         return cors({ error: '缺少必填字段' }, 400);
     }
+    if (name.length > 20 || description.length > 1000 ||
+        (student_id && student_id.length > 20) || (contact && contact.length > 50)) {
+        return cors({ error: '提交内容过长，请精简后重试' }, 400);
+    }
 
     const descLower = description.toLowerCase();
     const hitWord = BLOCKED_WORDS.find(w => descLower.includes(w.toLowerCase()));
@@ -415,6 +419,9 @@ async function handleSubmitSuggestion(request, env, cors) {
     if (!name?.trim() || !content?.trim()) {
         return cors({ error: '缺少必填字段' }, 400);
     }
+    if (name.length > 20 || content.length > 1000 || (contact && contact.length > 50)) {
+        return cors({ error: '提交内容过长，请精简后重试' }, 400);
+    }
 
     const contentLower = content.toLowerCase();
     const hitWord = BLOCKED_WORDS.find(w => contentLower.includes(w.toLowerCase()));
@@ -441,6 +448,9 @@ async function handleSubmitRating(request, env, cors) {
     const { name, category, rating, review } = body;
     if (!name?.trim() || !review?.trim() || !rating) {
         return cors({ error: '缺少必填字段' }, 400);
+    }
+    if (name.length > 20 || review.length > 500) {
+        return cors({ error: '提交内容过长，请精简后重试' }, 400);
     }
     const ratingNum = parseInt(rating, 10);
     if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
