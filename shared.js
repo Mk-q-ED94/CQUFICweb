@@ -46,7 +46,6 @@
                 { label: '体验评价', href: 'ty.html'               },
             ],
         },
-        { label: '关于',   href: '#about' },
     ];
 
     /* 页脚配置 */
@@ -76,7 +75,6 @@
                     { label: '问题反馈', href: 'problem-feedback.html' },
                     { label: '功能建议', href: 'fs.html'               },
                     { label: '体验评价', href: 'ty.html'               },
-                    { label: '关于我们', href: '#about'                },
                 ],
             },
             {
