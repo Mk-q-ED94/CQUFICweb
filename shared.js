@@ -152,7 +152,7 @@
         header.innerHTML = `
           <div class="nav-container">
             <a href="${SITE_CONFIG.homeUrl}" class="logo">
-              <div class="logo-icon">${SITE_CONFIG.abbr}</div>
+              <img src="assets/logo-mark.png" class="logo-icon-img" alt="${SITE_CONFIG.abbr}">
               <div class="logo-text">
                 <div class="logo-main">${SITE_CONFIG.name}</div>
                 <div class="logo-sub">${logoSubText}</div>
@@ -328,7 +328,7 @@
         header.innerHTML = `
           <div class="nav-container">
             <a href="${SITE_CONFIG.homeUrl}" class="logo">
-              <div class="logo-icon">${SITE_CONFIG.abbr}</div>
+              <img src="assets/logo-mark.png" class="logo-icon-img" alt="${SITE_CONFIG.abbr}">
               <div class="logo-text">
                 <div class="logo-main">${logoMain}</div>
                 <div class="logo-sub">${logoSub}</div>
