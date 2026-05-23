@@ -957,15 +957,25 @@
        视图 B：帖子详情
     ============================================================ */
     async function showDetail(postId) {
-        const post = allPosts.find(p => p.id === postId);
-        if (!post) { navigateTo('/'); return; }
-
         currentPostId = postId;
         replyingTo    = null;
 
         document.getElementById('view-list').classList.add('hidden');
         document.getElementById('view-detail').classList.remove('hidden');
         resetForm();
+        document.getElementById('postArticle').innerHTML =
+            `<div class="loading-comments"><i class="fas fa-circle-notch fa-spin"></i>&nbsp; 加载中…</div>`;
+
+        let post;
+        try {
+            const res = await fetch(`${API_URL}/api/posts/${encodeURIComponent(postId)}`);
+            if (!res.ok) throw new Error(res.status);
+            post = await res.json();
+        } catch {
+            document.getElementById('postArticle').innerHTML =
+                `<p class="no-comments"><i class="fas fa-exclamation-circle"></i> 帖子加载失败，请返回重试</p>`;
+            return;
+        }
 
         const shareUrl = location.origin + location.pathname + '#/post/' + encodeURIComponent(postId);
 
