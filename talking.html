@@ -656,6 +656,173 @@
             to   { transform: translateX(-50%) translateY(20px); opacity: 0; }
         }
 
+        /* ── 工具栏（帖子数 + 视图切换） ─────────────── */
+        .posts-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .posts-total {
+            font-size: .88rem;
+            color: var(--text-tertiary);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 3px;
+            background: rgba(255,255,255,.55);
+            backdrop-filter: blur(10px);
+            border-radius: 999px;
+            padding: 3px;
+            border: 1.5px solid rgba(30,79,161,.15);
+        }
+
+        .view-toggle-btn {
+            padding: 5px 14px;
+            border-radius: 999px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-family: var(--font-family);
+            font-size: .82rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-toggle-btn.active {
+            background: var(--cqu-blue);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(30,79,161,.25);
+        }
+
+        /* ── 列表视图 ─────────────────────────────────── */
+        .posts-list {
+            background: rgba(255,255,255,.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,.5);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .post-list-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: 13px var(--spacing-lg);
+            border-bottom: 1px solid rgba(0,0,0,.055);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .post-list-item:last-child { border-bottom: none; }
+
+        .post-list-item:hover {
+            background: rgba(255,255,255,.9);
+        }
+
+        .post-list-badge {
+            flex-shrink: 0;
+            font-size: .72rem;
+            font-weight: var(--font-weight-semibold);
+            letter-spacing: .3px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(30,79,161,.09);
+            color: var(--cqu-blue);
+            white-space: nowrap;
+        }
+
+        .post-list-title {
+            flex: 1;
+            font-size: .97rem;
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        .post-list-pin {
+            font-size: .72rem;
+            color: var(--cqu-orange);
+            flex-shrink: 0;
+        }
+
+        .post-list-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-shrink: 0;
+            font-size: .8rem;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .post-list-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── 分页 ─────────────────────────────────────── */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            min-width: 36px;
+            padding: 6px 12px;
+            border-radius: var(--border-radius-md);
+            border: 1.5px solid rgba(30,79,161,.2);
+            background: rgba(255,255,255,.65);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-size: .88rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+            text-align: center;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,.95);
+            color: var(--cqu-blue);
+            border-color: var(--cqu-blue);
+        }
+
+        .page-btn.active {
+            background: var(--cqu-blue);
+            color: #fff;
+            border-color: var(--cqu-blue);
+            box-shadow: 0 2px 8px rgba(30,79,161,.3);
+        }
+
+        .page-btn:disabled {
+            opacity: .38;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-size: .88rem;
+            color: var(--text-tertiary);
+            padding: 0 var(--spacing-xs);
+        }
+
         /* ── 响应式 ───────────────────────────────────── */
         @media (max-width: 768px) {
             .forum-hero { padding: var(--spacing-md) 0 10px; margin-bottom: var(--spacing-md); }
@@ -675,6 +842,9 @@
             .comments-section { padding: var(--spacing-md); border-radius: 16px; }
             .comments-title { font-size: 1.1rem; }
             .form-row { grid-template-columns: 1fr; gap: 10px; }
+            .post-list-item { padding: 11px var(--spacing-md); gap: 10px; }
+            .post-list-meta { gap: var(--spacing-sm); font-size: .74rem; }
+            .post-list-meta .list-date { display: none; }
         }
     </style>
 </head>
@@ -705,7 +875,21 @@
                     </div>
                 </div>
 
-                <div id="postsGrid" class="posts-grid"></div>
+                <div class="posts-toolbar">
+                    <span class="posts-total" id="postsTotal"></span>
+                    <div class="view-toggle" id="viewToggle">
+                        <button class="view-toggle-btn" data-view="list">
+                            <i class="fas fa-list"></i> 列表
+                        </button>
+                        <button class="view-toggle-btn" data-view="grid">
+                            <i class="fas fa-th-large"></i> 卡片
+                        </button>
+                    </div>
+                </div>
+
+                <div id="postsList" class="posts-list"></div>
+                <div id="postsGrid" class="posts-grid" style="display:none"></div>
+                <div id="paginationBar" class="pagination"></div>
             </div>
 
             <!-- ══ 视图 B：帖子详情 ══ -->
@@ -782,9 +966,13 @@
     /* ============================================================
        应用状态
     ============================================================ */
+    const PAGE_SIZE = 20;
+
     let allPosts      = [];
     let filteredPosts = [];
     let activeCat     = '全部';
+    let currentPage   = 1;
+    let viewMode      = localStorage.getItem('forum_view') || 'list';
     let currentPostId = null;
     let replyingTo    = null;
 
@@ -824,6 +1012,7 @@
 
         initCategoryFilter();
         initSearch();
+        initViewToggle();
 
         window.addEventListener('hashchange', router);
         router();
@@ -871,37 +1060,81 @@
     function showList() {
         document.getElementById('view-list').classList.remove('hidden');
         document.getElementById('view-detail').classList.add('hidden');
-        renderGrid(filteredPosts);
+        renderPosts(filteredPosts);
     }
 
-    function renderGrid(list) {
-        const grid = document.getElementById('postsGrid');
-
-        if (!API_URL) {
-            grid.innerHTML = `
-                <p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">
-                    <i class="fas fa-tools" style="display:block;font-size:2rem;opacity:.35;margin-bottom:12px"></i>
-                    社区功能正在搭建中，敬请期待 ✨
-                </p>`;
-            return;
-        }
-
-        if (!list.length) {
-            grid.innerHTML = `
-                <p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">
-                    暂无符合条件的帖子
-                </p>`;
-            return;
-        }
-
-        // 置顶帖优先，同级按日期降序
-        const sorted = [...list].sort((a, b) => {
+    function sortPosts(list) {
+        return [...list].sort((a, b) => {
             if (!!a.is_pinned !== !!b.is_pinned) return a.is_pinned ? -1 : 1;
             return new Date(b.date) - new Date(a.date);
         });
+    }
 
-        grid.innerHTML = sorted.map((post, i) => `
-            <div class="post-card" style="animation-delay:${i * 0.07}s"
+    function renderPosts(list) {
+        if (!API_URL) {
+            const msg = `<p style="text-align:center;color:var(--text-tertiary);padding:3rem 0">
+                <i class="fas fa-tools" style="display:block;font-size:2rem;opacity:.35;margin-bottom:12px"></i>
+                社区功能正在搭建中，敬请期待 ✨</p>`;
+            document.getElementById('postsList').innerHTML = msg;
+            document.getElementById('postsGrid').innerHTML = msg;
+            document.getElementById('paginationBar').innerHTML = '';
+            document.getElementById('postsTotal').textContent = '';
+            return;
+        }
+
+        const sorted     = sortPosts(list);
+        const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const page = sorted.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+        document.getElementById('postsTotal').textContent =
+            sorted.length ? `共 ${sorted.length} 篇帖子` : '';
+
+        if (viewMode === 'list') {
+            renderListView(page, sorted.length);
+        } else {
+            renderGridView(page, sorted.length);
+        }
+        renderPagination(sorted.length);
+    }
+
+    function renderListView(page, total) {
+        document.getElementById('postsGrid').style.display = 'none';
+        const el = document.getElementById('postsList');
+        el.style.display = '';
+
+        if (!total) {
+            el.innerHTML = `<p style="text-align:center;color:var(--text-tertiary);padding:3rem 0">暂无符合条件的帖子</p>`;
+            return;
+        }
+
+        el.innerHTML = page.map(post => `
+            <div class="post-list-item" onclick="navigateTo('/post/${encodeURIComponent(post.id)}')">
+                <span class="post-list-badge">${esc(post.category)}</span>
+                <span class="post-list-title">${esc(post.title)}</span>
+                ${post.is_pinned ? '<span class="post-list-pin">📌</span>' : ''}
+                <div class="post-list-meta">
+                    ${post.comments_count != null
+                        ? `<span><i class="far fa-comment"></i> ${esc(String(post.comments_count))}</span>`
+                        : ''}
+                    <span class="list-date"><i class="far fa-calendar"></i> ${esc(post.date)}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderGridView(page, total) {
+        document.getElementById('postsList').style.display = 'none';
+        const grid = document.getElementById('postsGrid');
+        grid.style.display = '';
+
+        if (!total) {
+            grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">暂无符合条件的帖子</p>`;
+            return;
+        }
+
+        grid.innerHTML = page.map((post, i) => `
+            <div class="post-card" style="animation-delay:${i * 0.06}s"
                  onclick="navigateTo('/post/${encodeURIComponent(post.id)}')">
                 <div class="post-card-top">
                     <span class="post-card-top-left">
@@ -920,6 +1153,61 @@
                 </div>
             </div>
         `).join('');
+    }
+
+    function renderPagination(total) {
+        const bar        = document.getElementById('paginationBar');
+        const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        if (totalPages <= 1) { bar.innerHTML = ''; return; }
+
+        const prev = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''}
+                              onclick="goPage(${currentPage - 1})">
+                          <i class="fas fa-chevron-left"></i>
+                      </button>`;
+        const next = `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''}
+                              onclick="goPage(${currentPage + 1})">
+                          <i class="fas fa-chevron-right"></i>
+                      </button>`;
+
+        // 最多显示 5 个页码
+        const range = [];
+        const delta = 2;
+        for (let i = Math.max(1, currentPage - delta); i <= Math.min(totalPages, currentPage + delta); i++) {
+            range.push(i);
+        }
+        if (range[0] > 1) range.unshift('…', 1);
+        if (range[range.length - 1] < totalPages) range.push('…', totalPages);
+
+        const pages = range.map(p => typeof p === 'number'
+            ? `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`
+            : `<span class="page-info">${p}</span>`
+        ).join('');
+
+        bar.innerHTML = prev + pages + next;
+    }
+
+    function goPage(n) {
+        currentPage = n;
+        renderPosts(filteredPosts);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initViewToggle() {
+        document.getElementById('viewToggle').addEventListener('click', e => {
+            const btn = e.target.closest('.view-toggle-btn');
+            if (!btn) return;
+            setView(btn.dataset.view);
+        });
+        setView(viewMode, false);
+    }
+
+    function setView(mode, save = true) {
+        viewMode = mode;
+        if (save) localStorage.setItem('forum_view', mode);
+        document.querySelectorAll('.view-toggle-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.view === mode);
+        });
+        renderPosts(filteredPosts);
     }
 
     function initCategoryFilter() {
@@ -950,7 +1238,8 @@
                 (p.summary || '').toLowerCase().includes(q);
             return matchCat && matchSearch;
         });
-        renderGrid(filteredPosts);
+        currentPage = 1;
+        renderPosts(filteredPosts);
     }
 
     /* ============================================================
