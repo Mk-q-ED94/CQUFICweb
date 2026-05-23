@@ -98,12 +98,12 @@
                 <form id="suggestionForm">
                     <div class="form-group">
                         <label for="name" class="form-label">您的姓名</label>
-                        <input type="text" id="name" class="form-input" placeholder="请输入您的姓名">
+                        <input type="text" id="name" class="form-input" placeholder="请输入您的姓名" maxlength="20">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="email" class="form-label">联系方式</label>
-                        <input type="email" id="email" class="form-input" placeholder="请输入您的邮箱或电话">
+                        <input type="email" id="email" class="form-input" placeholder="请输入您的邮箱或电话" maxlength="50">
                     </div>
                     
                     <div class="form-group">
@@ -120,7 +120,7 @@
                     
                     <div class="form-group">
                         <label for="suggestion" class="form-label">具体建议</label>
-                        <textarea id="suggestion" class="form-textarea" placeholder="请详细描述您的建议或想法..."></textarea>
+                        <textarea id="suggestion" class="form-textarea" placeholder="请详细描述您的建议或想法..." maxlength="1000"></textarea>
                     </div>
                     
                     <button type="submit" class="form-submit">提交建议</button>
@@ -241,6 +241,7 @@
                 if (res.ok && data.success) {
                     btn.textContent = '✅ 已提交，感谢建议！';
                     this.reset();
+                    setTimeout(() => { btn.disabled = false; btn.textContent = '提交建议'; }, 3000);
                 } else {
                     btn.disabled = false;
                     btn.textContent = '提交建议';
