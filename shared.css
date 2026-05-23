@@ -111,19 +111,68 @@ header {
     transform: translateX(-50%);
     width: 90%;
     height: var(--header-height);
-    background: rgba(255,255,255,.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    /* ── iOS26 液态玻璃 ── */
+    background:
+        radial-gradient(125% 110% at 12% -25%, rgba(255,255,255,.55), rgba(255,255,255,0) 46%),
+        linear-gradient(148deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.06) 34%, rgba(255,255,255,0) 60%),
+        rgba(255,255,255,.12);
+    backdrop-filter: blur(44px) saturate(290%) brightness(1.12);
+    -webkit-backdrop-filter: blur(44px) saturate(290%) brightness(1.12);
     border-radius: var(--border-radius-xl);
-    box-shadow: var(--shadow-md);
+    border: 0.5px solid rgba(255,255,255,.40);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,.25),
+        0 8px 32px   rgba(0,0,0,.12),
+        0 2px 6px    rgba(0,0,0,.06),
+        inset 0  1.5px 0  rgba(255,255,255,.92),
+        inset 0 -10px 22px rgba(255,255,255,.10),
+        inset 0 -1px  0   rgba(0,0,0,.10);
     z-index: 1000;
     transition: all var(--transition-normal) ease;
-    border: 1px solid rgba(255,255,255,.3);
+    isolation: isolate;
 }
 
 header.scrolled {
-    background: rgba(255,255,255,.35);
-    box-shadow: var(--shadow-lg);
+    background:
+        radial-gradient(125% 110% at 12% -25%, rgba(255,255,255,.62), rgba(255,255,255,0) 46%),
+        linear-gradient(148deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.08) 34%, rgba(255,255,255,0) 60%),
+        rgba(255,255,255,.18);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,.30),
+        0 12px 40px  rgba(0,0,0,.15),
+        0 2px 8px    rgba(0,0,0,.08),
+        inset 0  1.5px 0  rgba(255,255,255,.96),
+        inset 0 -10px 22px rgba(255,255,255,.12),
+        inset 0 -1px  0   rgba(0,0,0,.12);
+}
+
+/* 缓慢流动的扫光，模拟液态玻璃随光转动；裁剪到圆角内 */
+header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(105deg,
+        rgba(255,255,255,0) 34%,
+        rgba(255,255,255,.42) 48%,
+        rgba(255,255,255,0) 60%);
+    background-size: 260% 100%;
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    opacity: .7;
+    animation: lg-sheen 8s ease-in-out infinite;
+}
+
+@keyframes lg-sheen {
+    0%, 100% { background-position: 135% 0; }
+    50%      { background-position: -35% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    header::after { animation: none; opacity: .4; background-position: 60% 0; }
 }
 
 .nav-container {
@@ -132,6 +181,8 @@ header.scrolled {
     align-items: center;
     height: 100%;
     padding: 0 var(--spacing-md);
+    position: relative;
+    z-index: 1;
 }
 
 /* Logo */
