@@ -364,6 +364,18 @@ section[style*="background"] {
 
 
 /* ═══════════════════════════════════════════════════
+   触摸设备 — 降低 blur 提升帧率（移动 GPU 通常弱于桌面）
+═══════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  :root {
+    --lg-filter-sm: blur(12px) saturate(160%) brightness(1.04);
+    --lg-filter-md: blur(16px) saturate(180%) brightness(1.05);
+    --lg-filter-lg: blur(16px) saturate(180%) brightness(1.05);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
    Reduced motion / lower-cost glass
 ═══════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
