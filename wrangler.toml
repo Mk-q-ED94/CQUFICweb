@@ -24,6 +24,7 @@ binding = "ASSETS"
 pattern = "cqufic.cn"
 custom_domain = true
 
-# D1 数据库绑定通过 Cloudflare 控制台配置：
-# Workers & Pages → cqufic-api → Settings → Bindings → D1 Database
-# binding name = "DB"，选择 "cqufic-db"
+[[d1_databases]]
+binding = "DB"
+database_name = "cqufic-db"
+database_id = "530c9c7c-f426-4804-9aef-92982ac366c2"

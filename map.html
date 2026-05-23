@@ -634,7 +634,7 @@
     <div class="static-map-fallback" id="staticMapFallback" aria-hidden="true">
         <picture id="campusStaticPicture">
             <source type="image/webp" srcset="assets/maps/a-960.webp 960w, assets/maps/a-1920.webp 1920w" sizes="100vw">
-            <img id="campusStaticImage" src="assets/maps/a-1920.webp" alt="重庆大学老校区 A区平面图" decoding="async">
+            <img id="campusStaticImage" src="Aquditu2560.png" alt="重庆大学老校区 A区平面图" decoding="async">
         </picture>
         <div class="static-map-caption liquid-glass" id="campusStaticCaption">老校区 A区平面图</div>
     </div>
@@ -703,11 +703,11 @@
 
     <script>
         const STATIC_MAPS = {
-            A: { label: '老校区 A区', file: 'a' },
-            B: { label: '老校区 B区', file: 'b' },
-            C: { label: '老校区 C区', file: 'c' },
-            HUXI: { label: '虎溪校区', file: 'huxi' },
-            LIANGJIANG: { label: '两江校区', file: 'liangjiang' }
+            A: { label: '老校区 A区', file: 'a', fallback: 'Aquditu2560.png' },
+            B: { label: '老校区 B区', file: 'b', fallback: 'Bquditu2560.jpg' },
+            C: { label: '老校区 C区', file: 'c', fallback: 'Cquditu2560.jpg' },
+            HUXI: { label: '虎溪校区', file: 'huxi', fallback: 'huxiditu2560.jpg' },
+            LIANGJIANG: { label: '两江校区', file: 'liangjiang', fallback: 'liangjiangxinquditu2560.jpg' }
         };
 
         function renderStaticMap(campusKey = 'A') {
@@ -717,7 +717,7 @@
             if (!picture || !caption) return;
             picture.innerHTML = `
                 <source type="image/webp" srcset="assets/maps/${info.file}-960.webp 960w, assets/maps/${info.file}-1920.webp 1920w" sizes="100vw">
-                <img id="campusStaticImage" src="assets/maps/${info.file}-1920.webp" alt="重庆大学${info.label}平面图" decoding="async">
+                <img id="campusStaticImage" src="${info.fallback}" alt="重庆大学${info.label}平面图" decoding="async">
             `;
             caption.textContent = `${info.label}平面图`;
         }
@@ -830,16 +830,16 @@
             map.on('click', 'huxi-clusters', e => {
                 const features = map.queryRenderedFeatures(e.point, { layers: ['huxi-clusters'] });
                 const clusterId = features[0].properties.cluster_id;
-                map.getSource(CLUSTER_SOURCE_ID).getClusterExpansionZoom(clusterId, (err, zoom) => {
-                    if (err) return;
-                    moveMap({
-                        center: features[0].geometry.coordinates,
-                        zoom,
-                        pitch: 42,
-                        bearing: -12,
-                        speed: 1.25
+                map.getSource(CLUSTER_SOURCE_ID).getClusterExpansionZoom(clusterId)
+                    .then(zoom => {
+                        moveMap({
+                            center: features[0].geometry.coordinates,
+                            zoom,
+                            pitch: 42,
+                            bearing: -12,
+                            speed: 1.25
+                        });
                     });
-                });
             });
 
             map.on('click', 'huxi-unclustered-point', e => {
@@ -1035,6 +1035,9 @@
 
         map.on('load', () => {
             window.clearTimeout(mapLoadFallbackTimer);
+            document.documentElement.classList.remove('mapbox-failed');
+            const staticFallback = document.getElementById('staticMapFallback');
+            if (staticFallback) staticFallback.classList.remove('show');
             // 设置环境光，让建筑看起来更像陶瓷
             map.setLight({ anchor: 'viewport', color: '#fff', intensity: 0.6 });
 

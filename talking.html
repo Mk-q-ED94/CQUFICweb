@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="mobile.css">
 
-
     <style>
         /* ── 页面背景 ─────────────────────────────────── */
         body {
@@ -94,6 +93,52 @@
             box-shadow: 0 4px 12px rgba(30,79,161,.3);
         }
 
+        /* 搜索框 */
+        .search-bar {
+            margin-top: var(--spacing-md);
+            animation: fadeInUp .7s .35s ease both;
+            opacity: 0;
+        }
+
+        .search-input-wrap {
+            position: relative;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .search-input-wrap .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: .9rem;
+            pointer-events: none;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(30,79,161,.2);
+            background: rgba(255,255,255,.6);
+            backdrop-filter: blur(10px);
+            font-size: .95rem;
+            font-family: var(--font-family);
+            color: var(--text-primary);
+            outline: none;
+            transition: all var(--transition-fast);
+            box-sizing: border-box;
+        }
+
+        #searchInput:focus {
+            border-color: var(--cqu-blue);
+            background: rgba(255,255,255,.9);
+            box-shadow: 0 0 0 3px rgba(30,79,161,.08);
+        }
+
+        #searchInput::placeholder { color: var(--text-tertiary); }
+
         /* 帖子卡片网格 */
         .posts-grid {
             display: grid;
@@ -130,6 +175,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .post-card-top-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .post-category-badge {
@@ -140,6 +194,15 @@
             border-radius: 999px;
             background: rgba(30,79,161,.1);
             color: var(--cqu-blue);
+        }
+
+        .pin-badge {
+            font-size: .72rem;
+            background: rgba(245,124,0,.12);
+            color: var(--cqu-orange);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: var(--font-weight-medium);
         }
 
         .post-card-date {
@@ -235,6 +298,33 @@
             margin-bottom: var(--spacing-xl);
             padding-bottom: var(--spacing-lg);
             border-bottom: 1px solid rgba(0,0,0,.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(30,79,161,.25);
+            background: rgba(255,255,255,.5);
+            backdrop-filter: blur(10px);
+            color: var(--text-secondary);
+            font-size: .82rem;
+            font-family: var(--font-family);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .share-btn:hover {
+            background: var(--cqu-blue);
+            border-color: var(--cqu-blue);
+            color: #fff;
         }
 
         /* 正文排版 */
@@ -486,9 +576,20 @@
         .form-textarea {
             height: 120px;
             resize: vertical;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 4px;
             display: block;
         }
+
+        .char-counter {
+            text-align: right;
+            font-size: .78rem;
+            color: var(--text-tertiary);
+            margin-bottom: var(--spacing-md);
+            transition: color var(--transition-fast);
+        }
+
+        .char-counter.near-limit { color: var(--cqu-orange); }
+        .char-counter.at-limit   { color: var(--cqu-red); }
 
         .form-submit-row {
             display: flex;
@@ -595,6 +696,13 @@
                         <button class="cat-btn" data-cat="学习资源">学习资源</button>
                         <button class="cat-btn" data-cat="互助问答">互助问答</button>
                     </div>
+                    <div class="search-bar">
+                        <div class="search-input-wrap">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="search" id="searchInput"
+                                   placeholder="搜索帖子标题或内容…" autocomplete="off">
+                        </div>
+                    </div>
                 </div>
 
                 <div id="postsGrid" class="posts-grid"></div>
@@ -645,7 +753,10 @@
                         </div>
 
                         <textarea class="form-textarea" id="fieldContent"
-                                  placeholder="写下你的想法、疑问或回答…" maxlength="500"></textarea>
+                                  placeholder="写下你的想法、疑问或回答… （Ctrl+Enter 发送）"
+                                  maxlength="500"></textarea>
+
+                        <div class="char-counter" id="charCounter">0 / 500</div>
 
                         <div class="form-submit-row">
                             <button class="submit-btn" id="submitBtn">
@@ -654,9 +765,7 @@
                         </div>
                     </div>
                 </section>
-        </div>
-    </div>
-            </div>
+
             </div>
 
         </div>
@@ -665,15 +774,17 @@
     <script src="shared.js"></script>
     <script>
     /* ============================================================
-       ⚙️  配置区
+       ⚙️  配置区 — 填入后端 Worker/API 的完整 URL
+       例：const API_URL = 'https://my-worker.example.workers.dev';
     ============================================================ */
-    const API_URL = '';
+    const API_URL = 'https://cqufic.cn';
 
     /* ============================================================
        应用状态
     ============================================================ */
     let allPosts      = [];
     let filteredPosts = [];
+    let activeCat     = '全部';
     let currentPostId = null;
     let replyingTo    = null;
 
@@ -686,19 +797,54 @@
         document.getElementById('backBtn').addEventListener('click', () => navigateTo('/'));
         document.getElementById('cancelReplyBtn').addEventListener('click', cancelReply);
         document.getElementById('submitBtn').addEventListener('click', submitComment);
+
+        // 事件委托处理回复按钮，避免 inline onclick 注入风险
+        document.getElementById('commentsList').addEventListener('click', e => {
+            const btn = e.target.closest('.reply-trigger');
+            if (!btn) return;
+            startReply(btn.dataset.commentId, btn.dataset.nickname);
+        });
+
+        // 事件委托处理分享按钮
+        document.getElementById('postArticle').addEventListener('click', e => {
+            const btn = e.target.closest('.share-btn');
+            if (!btn) return;
+            copyShareLink(btn.dataset.shareUrl);
+        });
+
+        // 字符计数器 + Ctrl+Enter 快捷提交
+        const ta = document.getElementById('fieldContent');
+        ta.addEventListener('input', updateCharCount);
+        ta.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                submitComment();
+            }
+        });
+
         initCategoryFilter();
+        initSearch();
 
         window.addEventListener('hashchange', router);
         router();
     }
 
     async function loadPosts() {
+        if (!API_URL) {
+            renderGrid([]);
+            return;
+        }
         try {
             const res = await fetch(`${API_URL}/api/posts`);
+            if (!res.ok) throw new Error(res.status);
             allPosts = filteredPosts = await res.json();
-        } catch (e) {
-            console.error('无法加载帖子', e);
+        } catch {
             allPosts = filteredPosts = [];
+            document.getElementById('postsGrid').innerHTML = `
+                <p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">
+                    <i class="fas fa-exclamation-circle" style="display:block;font-size:2rem;opacity:.35;margin-bottom:12px"></i>
+                    帖子加载失败，请检查网络后刷新
+                </p>`;
         }
     }
 
@@ -709,8 +855,6 @@
         const hash = window.location.hash;
         if (hash.startsWith('#/post/')) {
             showDetail(decodeURIComponent(hash.slice(7)));
-        } else if (hash === '#/admin') {
-            window.location.href = 'admin.html';
         } else {
             showList();
         }
@@ -732,22 +876,47 @@
 
     function renderGrid(list) {
         const grid = document.getElementById('postsGrid');
-        if (!list.length) {
-            grid.innerHTML = '<p style="text-align:center;color:var(--text-tertiary);padding:3rem 0">该分类暂无帖子</p>';
+
+        if (!API_URL) {
+            grid.innerHTML = `
+                <p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">
+                    <i class="fas fa-tools" style="display:block;font-size:2rem;opacity:.35;margin-bottom:12px"></i>
+                    社区功能正在搭建中，敬请期待 ✨
+                </p>`;
             return;
         }
-        grid.innerHTML = list.map((post, i) => `
+
+        if (!list.length) {
+            grid.innerHTML = `
+                <p style="grid-column:1/-1;text-align:center;color:var(--text-tertiary);padding:3rem 0">
+                    暂无符合条件的帖子
+                </p>`;
+            return;
+        }
+
+        // 置顶帖优先，同级按日期降序
+        const sorted = [...list].sort((a, b) => {
+            if (!!a.is_pinned !== !!b.is_pinned) return a.is_pinned ? -1 : 1;
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        grid.innerHTML = sorted.map((post, i) => `
             <div class="post-card" style="animation-delay:${i * 0.07}s"
                  onclick="navigateTo('/post/${encodeURIComponent(post.id)}')">
                 <div class="post-card-top">
-                    <span class="post-category-badge">${post.category}</span>
-                    <span class="post-card-date">${post.date}</span>
+                    <span class="post-card-top-left">
+                        <span class="post-category-badge">${esc(post.category)}</span>
+                        ${post.is_pinned ? '<span class="pin-badge">📌 置顶</span>' : ''}
+                    </span>
+                    <span class="post-card-date">${esc(post.date)}</span>
                 </div>
                 <h2 class="post-card-title">${esc(post.title)}</h2>
                 <p class="post-card-summary">${esc(post.summary)}</p>
                 <div class="post-card-footer">
-                    <span><i class="far fa-comment"></i> 留言</span>
-                    <span><i class="far fa-calendar"></i> ${post.date}</span>
+                    <span><i class="far fa-comment"></i>
+                        ${post.comments_count != null ? esc(String(post.comments_count)) + ' 条留言' : '留言'}
+                    </span>
+                    <span><i class="far fa-calendar"></i> ${esc(post.date)}</span>
                 </div>
             </div>
         `).join('');
@@ -759,10 +928,29 @@
             if (!btn) return;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const cat = btn.dataset.cat;
-            filteredPosts = cat === '全部' ? [...allPosts] : allPosts.filter(p => p.category === cat);
-            renderGrid(filteredPosts);
+            activeCat = btn.dataset.cat;
+            applyFilters();
         });
+    }
+
+    function initSearch() {
+        let debounceTimer;
+        document.getElementById('searchInput').addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(applyFilters, 200);
+        });
+    }
+
+    function applyFilters() {
+        const q = document.getElementById('searchInput').value.trim().toLowerCase();
+        filteredPosts = allPosts.filter(p => {
+            const matchCat    = activeCat === '全部' || p.category === activeCat;
+            const matchSearch = !q ||
+                p.title.toLowerCase().includes(q) ||
+                (p.summary || '').toLowerCase().includes(q);
+            return matchCat && matchSearch;
+        });
+        renderGrid(filteredPosts);
     }
 
     /* ============================================================
@@ -779,11 +967,16 @@
         document.getElementById('view-detail').classList.remove('hidden');
         resetForm();
 
+        const shareUrl = location.origin + location.pathname + '#/post/' + encodeURIComponent(postId);
+
         document.getElementById('postArticle').innerHTML = `
-            <span class="post-category-badge">${post.category}</span>
+            <span class="post-category-badge">${esc(post.category)}</span>
             <h1 class="post-article-title">${esc(post.title)}</h1>
             <p class="post-article-meta">
-                <i class="far fa-calendar-alt"></i>&nbsp;${post.date}
+                <span><i class="far fa-calendar-alt"></i>&nbsp;${esc(post.date)}</span>
+                <button class="share-btn" data-share-url="${esc(shareUrl)}">
+                    <i class="fas fa-share-alt"></i> 复制链接
+                </button>
             </p>
             <div class="post-body">${post.content}</div>
         `;
@@ -791,10 +984,29 @@
         await loadComments(postId);
     }
 
+    function copyShareLink(url) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(() => showToast('链接已复制 ✓'));
+        } else {
+            const el = document.createElement('input');
+            el.value = url;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            el.remove();
+            showToast('链接已复制 ✓');
+        }
+    }
+
     /* ============================================================
        评论：加载
     ============================================================ */
     async function loadComments(postId) {
+        if (!API_URL) {
+            document.getElementById('commentsList').innerHTML =
+                `<p class="no-comments">留言功能需要后端支持，暂未开放。</p>`;
+            return;
+        }
         document.getElementById('commentsList').innerHTML =
             `<div class="loading-comments"><i class="fas fa-circle-notch fa-spin"></i>&nbsp; 加载留言中…</div>`;
         try {
@@ -812,13 +1024,15 @@
        评论：渲染（一级嵌套）
     ============================================================ */
     function renderComments(comments) {
-        const topLevel  = comments.filter(c => !c.parent_id);
+        // 过滤未审核留言（is_approved 字段不存在时默认显示）
+        const visible   = comments.filter(c => c.is_approved !== false);
+        const topLevel  = visible.filter(c => !c.parent_id);
         const repliesOf = {};
-        comments.filter(c => c.parent_id).forEach(r => {
+        visible.filter(c => c.parent_id).forEach(r => {
             (repliesOf[r.parent_id] = repliesOf[r.parent_id] || []).push(r);
         });
 
-        const count = comments.length;
+        const count = visible.length;
         document.getElementById('commentsCount').textContent = count ? `${count} 条` : '';
 
         if (!topLevel.length) {
@@ -828,7 +1042,7 @@
         }
 
         document.getElementById('commentsList').innerHTML = topLevel.map((c, i) => `
-            <div class="comment-item" id="c-${c.id}" style="animation-delay:${i * 0.05}s">
+            <div class="comment-item" id="c-${esc(String(c.id))}" style="animation-delay:${i * 0.05}s">
                 <div class="comment-avatar">${initial(c.nickname)}</div>
                 <div class="comment-bubble">
                     <div class="comment-header">
@@ -837,14 +1051,15 @@
                     </div>
                     <div class="comment-content">${fmtContent(c.content)}</div>
                     <button class="reply-trigger"
-                            onclick="startReply('${c.id}','${escAttr(c.nickname)}')">
+                            data-comment-id="${esc(String(c.id))}"
+                            data-nickname="${esc(c.nickname)}">
                         <i class="fas fa-reply"></i> 回复
                     </button>
 
                     ${(repliesOf[c.id] || []).length ? `
                     <div class="replies-list">
                         ${(repliesOf[c.id] || []).map(r => `
-                        <div class="comment-item is-reply" id="c-${r.id}">
+                        <div class="comment-item is-reply" id="c-${esc(String(r.id))}">
                             <div class="comment-avatar">${initial(r.nickname)}</div>
                             <div class="comment-bubble">
                                 <div class="comment-header">
@@ -853,7 +1068,8 @@
                                 </div>
                                 <div class="comment-content">${fmtContent(r.content)}</div>
                                 <button class="reply-trigger"
-                                        onclick="startReply('${c.id}','${escAttr(r.nickname)}')">
+                                        data-comment-id="${esc(String(c.id))}"
+                                        data-nickname="${esc(r.nickname)}">
                                     <i class="fas fa-reply"></i> 回复
                                 </button>
                             </div>
@@ -884,9 +1100,20 @@
 
     function resetForm() {
         cancelReply();
-        ['fieldNickname', 'fieldContact', 'fieldContent'].forEach(id => {
-            document.getElementById(id).value = '';
-        });
+        document.getElementById('fieldContact').value = '';
+        document.getElementById('fieldContent').value = '';
+        updateCharCount();
+        // 恢复上次保存的昵称
+        const saved = localStorage.getItem('forum_nickname');
+        document.getElementById('fieldNickname').value = saved || '';
+    }
+
+    function updateCharCount() {
+        const len     = document.getElementById('fieldContent').value.length;
+        const counter = document.getElementById('charCounter');
+        counter.textContent = `${len} / 500`;
+        counter.className = 'char-counter' +
+            (len >= 500 ? ' at-limit' : len >= 450 ? ' near-limit' : '');
     }
 
     async function submitComment() {
@@ -898,6 +1125,9 @@
         if (!text)     { showToast('内容不能为空', 'warn');   return; }
 
         const content = replyingTo ? `@${replyingTo.nickname} ${text}` : text;
+
+        // 记住昵称，下次自动填入
+        localStorage.setItem('forum_nickname', nickname);
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
@@ -919,18 +1149,17 @@
             const result = await res.json();
 
             if (!res.ok) {
-                // 服务器返回的错误信息直接展示给用户
                 showToast(result.error || '发送失败，请稍后重试', 'error');
                 return;
             }
 
             document.getElementById('fieldContent').value = '';
+            updateCharCount();
             cancelReply();
             showToast('留言已发送！✨');
             await loadComments(currentPostId);
 
-        } catch (e) {
-            console.error(e);
+        } catch {
             showToast('网络错误，请稍后重试 😥', 'error');
         } finally {
             btn.disabled = false;
@@ -957,13 +1186,9 @@
             .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    function escAttr(s = '') {
-        return String(s).replace(/'/g,"\\'");
-    }
-
     function fmtContent(text = '') {
         return esc(text)
-            .replace(/@([\u4e00-\u9fa5\w]+)/g, '<span class="mention">@$1</span>')
+            .replace(/@([一-龥\w]+)/g, '<span class="mention">@$1</span>')
             .replace(/\n/g, '<br>');
     }
 
@@ -979,7 +1204,6 @@
             toast.addEventListener('animationend', () => toast.remove(), { once: true });
         }, 2800);
     }
-
 
     /* ── 启动 ─────────────────────────────────────────────── */
     init();
