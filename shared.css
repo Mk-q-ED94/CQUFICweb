@@ -538,6 +538,10 @@ footer {
     flex-shrink: 0;
 }
 
+/* 使用插画图标时去掉色块底,让插画独立展示 */
+.feature-icon:has(img) { background: none; box-shadow: none; }
+.feature-icon img { width: 100%; height: 100%; object-fit: contain; }
+
 .feature-title {
     font-size: 1.4rem;
     font-weight: var(--font-weight-semibold);
