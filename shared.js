@@ -356,6 +356,31 @@
 
         const isHome = (page === 'index.html' || page === '');
 
+        // 按页面套校园照片底图（文件放 assets/bg/<name>.jpg；缺失则仅显示极光）
+        const PAGE_BG = {
+            'index.html': 'home', '': 'home',
+            'admission-process.html': 'admission',
+            'complete-process.html': 'admission',
+            'admission-letter.html': 'admission',
+            'registration.html': 'admission',
+            'continued.html': 'campus',
+            'military-tips.html': 'military',
+            'pre-military.html': 'military',
+            'dormitory-overview.html': 'dorm',
+            'talking.html': 'life',
+            'info-library.html': 'library',
+            'info-detail.html': 'library',
+            'freshman-tips.html': 'campus',
+            'freshman-trivia.html': 'campus',
+            'problem-feedback.html': 'feedback',
+            'fs.html': 'feedback',
+            'ty.html': 'feedback',
+            'admin.html': 'campus',
+        };
+        if (PAGE_BG[page]) {
+            document.body.style.setProperty('--page-bg', `url("assets/bg/${PAGE_BG[page]}.jpg")`);
+        }
+
         injectHeaderWithOverride(page);
 
         if (isHome) {

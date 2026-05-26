@@ -1,4 +1,6 @@
 # Cloudflare Workers Assets — 排除服务端文件，不作为静态资源提供
+.git/
+.github/
 worker.js
 wrangler.toml
 setup-d1.sql

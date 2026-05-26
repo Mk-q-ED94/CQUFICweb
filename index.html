@@ -16,8 +16,8 @@
     <title>重庆大学新生服务融合中心平台</title>
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="shared.css?v=20260525b">
-    <link rel="stylesheet" href="mobile.css?v=20260525b">
+    <link rel="stylesheet" href="shared.css?v=20260525c">
+    <link rel="stylesheet" href="mobile.css?v=20260525c">
     <style>
         /* 流沙背景 */
         .sand-background {
@@ -54,6 +54,12 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            background-image:
+                linear-gradient(rgba(16,26,46,.42), rgba(16,26,46,.58)),
+                url('assets/bg/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .hero-content {
@@ -68,13 +74,16 @@
             font-weight: var(--font-weight-bold);
             margin-bottom: var(--spacing-md);
             line-height: 1.1;
+            color: #fff;
+            text-shadow: 0 2px 16px rgba(0,0,0,.45);
             opacity: 0;
             animation: fadeInUp 1s var(--transition-slow) forwards;
         }
 
         .hero-subtitle {
             font-size: clamp(1.1rem, 2vw, 1.3rem);
-            color: var(--text-secondary);
+            color: rgba(255,255,255,.92);
+            text-shadow: 0 1px 10px rgba(0,0,0,.4);
             margin-bottom: var(--spacing-xl);
             opacity: 0;
             animation: fadeInUp 1s var(--transition-slower) forwards;
@@ -188,7 +197,7 @@
         </div>
     </section>
 
-    <script src="shared.js?v=20260525b"></script>
+    <script src="shared.js?v=20260525c"></script>
     <script>
         (function () {
             const colors = ['#1e4fa1', '#2a65c7', '#1e88e5', '#64b5f6', '#90caf9'];

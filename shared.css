@@ -86,19 +86,33 @@ body {
     min-height: 100vh;
 }
 
-/* --- 全站极光柔光斑背景 --- */
+/* --- 最底层：校园照片(按页面经 --page-bg 注入；未设置则仅显示浅底)--- */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(238,242,249,.60), rgba(238,242,249,.70)),
+        var(--page-bg, none);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+}
+
+/* --- 中间层：极光柔光斑(半透明，叠在照片之上)--- */
 body::before {
     content: '';
     position: fixed;
     inset: -25%;
     z-index: -1;
     pointer-events: none;
-    background-color: #eef2f9;
     background-image:
-        radial-gradient(36% 36% at 18% 20%, rgba(42,101,199,.30), transparent 70%),
-        radial-gradient(32% 32% at 84% 16%, rgba(96,165,250,.24), transparent 70%),
-        radial-gradient(40% 42% at 78% 82%, rgba(245,124,0,.14), transparent 70%),
-        radial-gradient(40% 40% at 20% 84%, rgba(30,79,161,.22), transparent 72%);
+        radial-gradient(36% 36% at 18% 20%, rgba(42,101,199,.26), transparent 70%),
+        radial-gradient(32% 32% at 84% 16%, rgba(96,165,250,.20), transparent 70%),
+        radial-gradient(40% 42% at 78% 82%, rgba(245,124,0,.12), transparent 70%),
+        radial-gradient(40% 40% at 20% 84%, rgba(30,79,161,.20), transparent 72%);
     filter: blur(8px);
     animation: aurora-drift 40s ease-in-out infinite alternate;
     will-change: transform;
