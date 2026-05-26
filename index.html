@@ -56,7 +56,7 @@
             overflow: hidden;
         }
 
-        /* 照片层：淡入 + 极慢缓推镜头 */
+        /* 照片层：仅淡入，不缩放 */
         .hero::before {
             content: '';
             position: absolute;
@@ -68,8 +68,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transform-origin: center;
-            animation: heroFade 1.6s ease both, heroZoom 22s ease-out both;
+            animation: heroFade 1.6s ease both;
         }
 
         /* 底部渐隐，柔和过渡到下方板块 */
@@ -86,10 +85,9 @@
         }
 
         @keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes heroZoom { from { transform: scale(1.09); } to { transform: scale(1); } }
 
         @media (prefers-reduced-motion: reduce) {
-            .hero::before { animation: heroFade 1.6s ease both; transform: none; }
+            .hero::before { animation: none; }
         }
 
         .hero-content {
