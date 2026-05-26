@@ -71,6 +71,19 @@
             animation: heroFade 1.6s ease both;
         }
 
+        /* 底部渐隐，柔和过渡到下方板块 */
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 55%;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(238,242,249,0) 0%, rgba(238,242,249,.35) 45%, rgba(238,242,249,.8) 78%, #eef2f9 100%);
+        }
+
         @keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
 
         @media (prefers-reduced-motion: reduce) {
@@ -110,25 +123,18 @@
             animation: fadeInUp 1s 1s forwards;
         }
 
-        /* “你需要什么？”板块背景照片：向上延伸与 hero 叠化过渡 */
+        /* “你需要什么？”板块背景照片(浅纱 + 上下渐隐衔接) */
         #features { position: relative; }
         #features::before {
             content: '';
             position: absolute;
-            left: 0;
-            right: 0;
-            top: -24vh;
-            bottom: 0;
+            inset: 0;
             z-index: -1;
             background-image:
-                linear-gradient(to bottom,
-                    rgba(238,242,249,0) 0,
-                    rgba(238,242,249,.72) 24vh,
-                    rgba(238,242,249,.72) calc(100% - 16vh),
-                    #eef2f9 100%),
+                linear-gradient(to bottom, #eef2f9 0%, rgba(238,242,249,.72) 28%, rgba(238,242,249,.72) 78%, #eef2f9 100%),
                 url('assets/bg/features.jpg');
-            background-size: cover, cover;
-            background-position: center, center;
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
         }
 
