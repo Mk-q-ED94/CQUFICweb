@@ -16,8 +16,8 @@
     <title>资源详情 - 重庆大学新生服务融合中心平台</title>
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="shared.css?v=20260526a">
-    <link rel="stylesheet" href="mobile.css?v=20260526a">
+    <link rel="stylesheet" href="shared.css?v=20260526b">
+    <link rel="stylesheet" href="mobile.css?v=20260526b">
     <style>
         body {
             background:
@@ -746,7 +746,7 @@
         <div class="container" id="app"></div>
     </section>
 
-    <script src="shared.js?v=20260526a"></script>
+    <script src="shared.js?v=20260526b"></script>
     <script>
         const TOPICS = {
             'course-selection': {
@@ -1229,7 +1229,7 @@
 
             const ICON_IMGS = new Set(['course-selection','academic-planning','library-resources','online-learning','teacher-contact','dormitory-assignment','canteen-guide','campus-transport','living-shopping','medical-service','calendar','campus-news','clubs','competitions','important-notices','documents','network-service','printing','map']);
             const iconHtml = ICON_IMGS.has(topicId)
-                ? `<img src="assets/icons/topic/${topicId}.png" alt="">`
+                ? `<img src="assets/icons/topic/${topicId}.png" alt="" loading="lazy" decoding="async">`
                 : `${iconHtml}`;
 
             document.title = `${topic.title} - 信息汇总库`;
