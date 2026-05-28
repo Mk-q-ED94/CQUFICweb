@@ -543,3 +543,24 @@ body {
   .container       { padding: 0 10px !important; }
   .feature-card    { padding: 16px 12px !important; }
 }
+
+/* ═══════════════════════════════════════════════════
+   14. 性能：移动端关掉全屏动画 / 降低 blur(省电省 GPU)
+═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* 极光不再漂移，blur 半径降低 */
+  body::before {
+    animation: none !important;
+    filter: blur(4px) !important;
+  }
+  /* 顶栏液态玻璃扫光不再循环 */
+  header::after {
+    animation: none !important;
+    opacity: .35 !important;
+  }
+  /* 底部安全区(iOS home indicator) */
+  footer,
+  #cqu-footer {
+    padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
