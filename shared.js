@@ -124,40 +124,6 @@
     /* --------------------------------------------------------
        4. 注入 Header
     -------------------------------------------------------- */
-    function injectHeader(showFullNav) {
-        // 如果页面已有 header，不重复注入
-        if (document.getElementById('cqu-header')) return;
-
-        const logoSubText = showFullNav ? SITE_CONFIG.nameEn : 'Back to Home';
-
-        const easterEggBtn = showFullNav
-            ? `<div class="nav-center">
-                 <div class="school-badge" id="easterEggTrigger" title="（点击5次试试）">
-                   <img src="${SITE_CONFIG.logoSrc}" alt="${SITE_CONFIG.logoAlt}" class="school-logo">
-                 </div>
-               </div>`
-            : '';
-
-        const header = document.createElement('header');
-        header.id = 'cqu-header';
-        header.innerHTML = `
-          <div class="nav-container">
-            <a href="${SITE_CONFIG.homeUrl}" class="logo">
-              <img src="assets/logo-mark.png" class="logo-icon-img" alt="${SITE_CONFIG.abbr}">
-              <div class="logo-text">
-                <div class="logo-main">${SITE_CONFIG.name}</div>
-                <div class="logo-sub">${logoSubText}</div>
-              </div>
-            </a>
-            ${easterEggBtn}
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="菜单">
-              <span></span><span></span><span></span>
-            </button>
-            ${buildNav(showFullNav)}
-          </div>`;
-
-        document.body.prepend(header);
-    }
 
     /* --------------------------------------------------------
        5. 注入 Footer（只在首页显示完整页脚）
