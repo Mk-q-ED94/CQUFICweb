@@ -77,15 +77,6 @@
                     { label: '体验评价', href: 'ty.html'               },
                 ],
             },
-            {
-                title: '关注我们',
-                links: [
-                    { label: '微信公众号', href: '#', icon: 'fab fa-weixin'   },
-                    { label: 'QQ群',       href: '#', icon: 'fab fa-qq'       },
-                    { label: '微博',       href: '#', icon: 'fab fa-weibo'    },
-                    { label: '邮箱',       href: '#', icon: 'fas fa-envelope' },
-                ],
-            },
         ],
     };
 
